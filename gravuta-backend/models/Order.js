@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+// gij 
 const orderItemSchema = new mongoose.Schema({
     product: {
         type: mongoose.Schema.Types.ObjectId,
