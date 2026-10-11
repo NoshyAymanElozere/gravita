@@ -1,0 +1,6 @@
+{
+  "name": "AURA Laboratories",
+  "description": "A luxury, clean, minimal skincare and beauty e-commerce experience including bilingual English/Arabic (RTL) support, interactive skin tools, and a dynamic order-to-checkout engine.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
