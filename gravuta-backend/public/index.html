@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجر Bob الإلكتروني | لوحة التحكم</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <!-- main App -->
+    <div class="app-container">
+        <!-- Sidebar / Navigation -->
+        <header class="main-header">
+            <div class="logo">
+                <i class="fa-solid fa-bag-shopping brand-icon"></i>
+                <div class="brand-text">
+                    <h1>متجر بوب</h1>
+                    <span>الجيل الجديد للتسوق</span>
+                </div>
+            </div>
+            <nav class="nav-links">
+                <button class="nav-btn active" data-target="store-tab">
+                    <i class="fa-solid fa-store"></i> المعرض
+                </button>
+                <button class="nav-btn" data-target="categories-tab">
+                    <i class="fa-solid fa-list"></i> الفئات
+                </button>
+                <button class="nav-btn" data-target="cart-tab">
+                    <i class="fa-solid fa-cart-shopping"></i> السلة
+                    <span class="badge" id="cart-count">0</span>
+                </button>
+                <button class="nav-btn" data-target="orders-tab" id="nav-orders-btn" style="display: none;">
+                    <i class="fa-solid fa-box-open"></i> طلباتي
+                </button>
+                <button class="nav-btn" data-target="profile-tab" id="nav-profile-btn" style="display: none;">
+                    <i class="fa-solid fa-user-gear"></i> حسابي
+                </button>
+                <button class="nav-btn admin-only" data-target="admin-tab" id="nav-admin-btn" style="display: none;">
+                    <i class="fa-solid fa-screwdriver-wrench"></i> الإدارة
+                </button>
+                <button class="nav-btn auth-btn" data-target="auth-tab" id="nav-auth-btn">
+                    <i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول
+                </button>
+            </nav>
+            <div class="user-status-bar" id="user-status-bar" style="display: none;">
+                <div class="user-info">
+                    <span class="user-avatar" id="status-avatar">U</span>
+                    <div>
+                        <h4 id="status-username">اسم المستخدم</h4>
+                        <p id="status-role">عميل</p>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logout-button" title="تسجيل الخروج">
+                    <i class="fa-solid fa-power-off"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- 1️⃣ Store Tab -->
+            <section id="store-tab" class="tab-content active">
+                <div class="section-header">
+                    <h2>📦 المنتجات المتاحة</h2>
+                    <p>تصفح أحدث المنتجات والماركات العالمية</p>
+                </div>
+                <div class="products-grid" id="store-products-grid">
+                    <!-- Products will be dynamically rendered here -->
+                </div>
+                <!-- Pagination -->
+                <div class="pagination-container" id="products-pagination">
+                    <!-- Pagination buttons dynamic -->
+                </div>
+            </section>
+
+            <!-- 2️⃣ Categories Tab -->
+            <section id="categories-tab" class="tab-content">
+                <div class="section-header">
+                    <h2>🏷️ الفئات</h2>
+                    <p>تصفح المنتجات حسب التخصصات والفئات</p>
+                </div>
+                <div class="categories-grid" id="store-categories-grid">
+                    <!-- Categories dynamically rendered here -->
+                </div>
+                <!-- Pagination -->
+                <div class="pagination-container" id="categories-pagination"></div>
+            </section>
+
+            <!-- 3️⃣ Cart Tab -->
+            <section id="cart-tab" class="tab-content">
+                <div class="section-header">
+                    <h2>🛒 عربة التسوق</h2>
+                    <p>قم بمراجعة منتجاتك وإتمام عملية الدفع بأمان</p>
+                </div>
+                <div class="cart-layout">
+                    <div class="cart-items-container">
+                        <h3>العناصر المضافة</h3>
+                        <div id="cart-items-list">
+                            <!-- Cart items rendered here -->
+                            <div class="empty-state">
+                                <i class="fa-solid fa-cart-arrow-down"></i>
+                                <p>عربة التسوق فارغة حالياً</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart-checkout-card">
+                        <h3>تفاصيل الطلب</h3>
+                        <div class="summary-row">
+                            <span>إجمالي العناصر:</span>
+                            <span id="cart-summary-qty">0</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>المجموع الكلي:</span>
+                            <span><span id="cart-summary-total">0</span> $</span>
+                        </div>
+                        <hr>
+                        <form id="checkout-form">
+                            <div class="form-group">
+                                <label for="checkout-address">📍 عنوان الشحن</label>
+                                <input type="text" id="checkout-address" placeholder="شارع التحرير، القاهرة، مصر..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkout-phone">📞 رقم الهاتف</label>
+                                <input type="tel" id="checkout-phone" placeholder="010XXXXXXXX" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkout-payment">💳 طريقة الدفع</label>
+                                <select id="checkout-payment">
+                                    <option value="COD">الدفع عند الاستلام (COD)</option>
+                                    <option value="CARD">بطاقة الائتمان (قريباً)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="primary-btn checkout-btn">
+                                <i class="fa-solid fa-circle-check"></i> تأكيد الطلب والدفع
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4️⃣ Orders Tab -->
+            <section id="orders-tab" class="tab-content">
+                <div class="section-header">
+                    <h2>📦 طلباتي السابقة</h2>
+                    <p>تابع حالة شحن وتوصيل طلباتك</p>
+                </div>
+                <div class="orders-list" id="my-orders-list">
+                    <!-- User orders list dynamically loaded -->
+                </div>
+            </section>
+
+            <!-- 5️⃣ Auth Tab -->
+            <section id="auth-tab" class="tab-content">
+                <div class="auth-box">
+                    <!-- Toggle Switch -->
+                    <div class="auth-toggle">
+                        <button id="toggle-login" class="active">تسجيل الدخول</button>
+                        <button id="toggle-register">إنشاء حساب جديد</button>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="login-form" class="auth-form active">
+                        <h2>👋 مرحباً بك مجدداً</h2>
+                        <p>سجل الدخول للمتابعة واستعراض الميزات</p>
+                        <div class="form-group">
+                            <label for="login-email">البريد الإلكتروني</label>
+                            <input type="email" id="login-email" placeholder="email@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">كلمة المرور</label>
+                            <input type="password" id="login-password" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="primary-btn">
+                            <i class="fa-solid fa-right-to-bracket"></i> تسجيل دخول
+                        </button>
+                    </form>
+
+                    <!-- Register Form -->
+                    <form id="register-form" class="auth-form">
+                        <h2>👤 حساب جديد</h2>
+                        <p>أنشئ حسابك للتسوق وبدء التجربة</p>
+                        <div class="form-group">
+                            <label for="register-name">الاسم بالكامل</label>
+                            <input type="text" id="register-name" placeholder="محمد أحمد..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-email">البريد الإلكتروني</label>
+                            <input type="email" id="register-email" placeholder="email@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password">كلمة المرور (6 أحرف فأكثر)</label>
+                            <input type="password" id="register-password" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="primary-btn">
+                            <i class="fa-solid fa-user-plus"></i> تسجيل حساب جديد
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 6️⃣ Profile Tab (User CRUD) -->
+            <section id="profile-tab" class="tab-content">
+                <div class="section-header">
+                    <h2>⚙️ إدارة الملف الشخصي</h2>
+                    <p>تحديث بياناتك أو حذف حسابك بأمان</p>
+                </div>
+                <div class="profile-container">
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <div class="avatar-large" id="profile-avatar-char">U</div>
+                            <h3 id="profile-display-name">اسم المستخدم</h3>
+                            <span class="role-badge" id="profile-display-role">مستخدم</span>
+                        </div>
+                        <div class="profile-details">
+                            <div class="detail-item">
+                                <span>📧 البريد الإلكتروني:</span>
+                                <strong id="profile-display-email">email@example.com</strong>
+                            </div>
+                            <div class="detail-item">
+                                <span>📅 تاريخ الإنضمام:</span>
+                                <strong id="profile-display-date">2026-07-25</strong>
+                            </div>
+                        </div>
+                        <div class="danger-zone">
+                            <h3>⚠️ منطقة الخطر</h3>
+                            <p>حذف حسابك نهائياً من قاعدة البيانات، هذا الإجراء لا يمكن التراجع عنه.</p>
+                            <button class="danger-btn" id="delete-profile-button">
+                                <i class="fa-solid fa-user-slash"></i> حذف حسابي نهائياً
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="profile-edit-card">
+                        <h3>✨ تحديث بيانات الملف الشخصي</h3>
+                        <form id="profile-update-form">
+                            <div class="form-group">
+                                <label for="edit-profile-name">✏️ الاسم</label>
+                                <input type="text" id="edit-profile-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-profile-email">📧 البريد الإلكتروني</label>
+                                <input type="email" id="edit-profile-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-profile-password">🔒 كلمة مرور جديدة (اتركه فارغاً للاحتفاظ بالحالية)</label>
+                                <input type="password" id="edit-profile-password" placeholder="••••••••">
+                            </div>
+                            <button type="submit" class="primary-btn">
+                                <i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7️⃣ Admin Panel Tab -->
+            <section id="admin-tab" class="tab-content">
+                <div class="section-header">
+                    <h2>🛠️ لوحة تحكم المسؤول (Admin Dashboard)</h2>
+                    <p>إدارة كاملة لمنتجات وفئات وطلبات ومستخدمي المتجر</p>
+                </div>
+
+                <!-- Admin sub-navigation -->
+                <div class="admin-subnav">
+                    <button class="subnav-btn active" data-sub="admin-products">🛍️ المنتجات</button>
+                    <button class="subnav-btn" data-sub="admin-categories">🏷️ الفئات</button>
+                    <button class="subnav-btn" data-sub="admin-users">👥 المستخدمين</button>
+                    <button class="subnav-btn" data-sub="admin-orders">🚚 الطلبات</button>
+                </div>
+
+                <!-- Admin Sub-tabs -->
+                <!-- 7.1 Products Admin -->
+                <div id="admin-products" class="admin-subcontent active">
+                    <div class="action-bar">
+                        <h3>إدارة المنتجات</h3>
+                        <button class="primary-btn" id="open-product-modal-btn">
+                            <i class="fa-solid fa-plus"></i> إضافة منتج جديد
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>الصورة</th>
+                                    <th>المنتج</th>
+                                    <th>الفئة</th>
+                                    <th>السعر</th>
+                                    <th>تاريخ الإضافة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-products-table-body">
+                                <!-- Products rows dynamically rendered -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-container" id="admin-products-pagination"></div>
+                </div>
+
+                <!-- 7.2 Categories Admin -->
+                <div id="admin-categories" class="admin-subcontent">
+                    <div class="action-bar">
+                        <h3>إدارة الفئات</h3>
+                        <button class="primary-btn" id="open-category-modal-btn">
+                            <i class="fa-solid fa-plus"></i> إضافة فئة جديدة
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>الصورة</th>
+                                    <th>الفئة</th>
+                                    <th>الوصف</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-categories-table-body">
+                                <!-- Categories rows dynamically rendered -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-container" id="admin-categories-pagination"></div>
+                </div>
+
+                <!-- 7.3 Users Admin -->
+                <div id="admin-users" class="admin-subcontent">
+                    <div class="action-bar">
+                        <h3>إدارة المستخدمين والأذونات</h3>
+                        <button class="primary-btn" id="open-user-modal-btn">
+                            <i class="fa-solid fa-plus"></i> إضافة مستخدم/أدمن جديد
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>الاسم</th>
+                                    <th>البريد الإلكتروني</th>
+                                    <th>الصلاحية</th>
+                                    <th>الحالة</th>
+                                    <th>تاريخ التسجيل</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-users-table-body">
+                                <!-- Users rows dynamically rendered -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-container" id="admin-users-pagination"></div>
+                </div>
+
+                <!-- 7.4 Orders Admin -->
+                <div id="admin-orders" class="admin-subcontent">
+                    <div class="action-bar">
+                        <h3>إدارة ومتابعة طلبات الشحن</h3>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>المعرف</th>
+                                    <th>العميل</th>
+                                    <th>المجموع</th>
+                                    <th>العنوان</th>
+                                    <th>الحالة</th>
+                                    <th>تاريخ الطلب</th>
+                                    <th>تحديث الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-orders-table-body">
+                                <!-- Orders rows dynamically rendered -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-container" id="admin-orders-pagination"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Product Modal (Add/Edit) -->
+    <div id="product-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="product-modal-title">إضافة منتج جديد</h3>
+                <button class="close-modal-btn" id="close-product-modal">&times;</button>
+            </div>
+            <form id="product-form" enctype="multipart/form-data">
+                <input type="hidden" id="product-id-hidden">
+                <div class="form-group">
+                    <label for="product-name">اسم المنتج</label>
+                    <input type="text" id="product-name" required placeholder="مثال: آيفون 15...">
+                </div>
+                <div class="form-group">
+                    <label for="product-category">الفئة</label>
+                    <select id="product-category" required>
+                        <!-- Categories list dynamic options -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="product-price">السعر ($)</label>
+                    <input type="number" id="product-price" required min="1" placeholder="999">
+                </div>
+                <div class="form-group">
+                    <label for="product-description">الوصف</label>
+                    <textarea id="product-description" required rows="3" placeholder="مواصفات المنتج الفنية والتفاصيل..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="product-image">صورة المنتج</label>
+                    <input type="file" id="product-image" accept="image/*">
+                    <p class="file-tip">الحد الأقصى للحجم 5 ميجابايت (JPG, PNG, WEBP)</p>
+                </div>
+                <button type="submit" class="primary-btn modal-submit-btn">حفظ المنتج</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Category Modal (Add/Edit) -->
+    <div id="category-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="category-modal-title">إضافة فئة جديدة</h3>
+                <button class="close-modal-btn" id="close-category-modal">&times;</button>
+            </div>
+            <form id="category-form" enctype="multipart/form-data">
+                <input type="hidden" id="category-id-hidden">
+                <div class="form-group">
+                    <label for="category-name">اسم الفئة</label>
+                    <input type="text" id="category-name" required placeholder="مثال: الكترونيات...">
+                </div>
+                <div class="form-group">
+                    <label for="category-description">الوصف</label>
+                    <textarea id="category-description" required rows="3" placeholder="أجهزة ذكية، هواتف ولابتوبات..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="category-image">صورة الفئة</label>
+                    <input type="file" id="category-image" accept="image/*">
+                    <p class="file-tip">الحد الأقصى للحجم 5 ميجابايت (JPG, PNG, WEBP)</p>
+                </div>
+                <button type="submit" class="primary-btn modal-submit-btn">حفظ الفئة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- User Modal (Add/Edit) -->
+    <div id="user-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="user-modal-title">إضافة مستخدم جديد</h3>
+                <button class="close-modal-btn" id="close-user-modal">&times;</button>
+            </div>
+            <form id="user-form">
+                <input type="hidden" id="user-id-hidden">
+                <div class="form-group">
+                    <label for="user-name">الاسم بالكامل</label>
+                    <input type="text" id="user-name" required placeholder="أحمد علي...">
+                </div>
+                <div class="form-group">
+                    <label for="user-email">البريد الإلكتروني</label>
+                    <input type="email" id="user-email" required placeholder="name@domain.com">
+                </div>
+                <div class="form-group">
+                    <label for="user-password" id="user-password-label">كلمة المرور</label>
+                    <input type="password" id="user-password" placeholder="••••••••">
+                    <p class="file-tip" id="user-password-tip">مطلوب عند إنشاء حساب جديد، واتركه فارغاً عند التعديل للاحتفاظ بالحالية.</p>
+                </div>
+                <div class="form-row">
+                    <div class="form-group flex-1">
+                        <label for="user-role">الصلاحية</label>
+                        <select id="user-role">
+                            <option value="user">عميل (user)</option>
+                            <option value="admin">مدير (admin)</option>
+                        </select>
+                    </div>
+                    <div class="form-group flex-1" id="user-status-group" style="display: none;">
+                        <label for="user-status">حالة الحساب</label>
+                        <select id="user-status">
+                            <option value="true">نشط (Active)</option>
+                            <option value="false">معطل (Deactive)</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="primary-btn modal-submit-btn">حفظ البيانات</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main JavaScript App -->
+    <script src="app.js"></script>
+</body>
+</html>
