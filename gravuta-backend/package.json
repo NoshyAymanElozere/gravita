@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "seed:admin": "node scripts/seedAdmin.js"
+    "seed:admin": "node scripts/seedAdmin.js",
+    "seed:bundles": "node scripts/seedBundles.js",
+    "postman": "node scripts/buildPostmanCollection.js"
   },
   "keywords": [],
   "author": "",

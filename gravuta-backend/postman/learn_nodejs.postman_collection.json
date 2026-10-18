@@ -134,7 +134,98 @@
 									"path": [
 										"api",
 										"products",
-										"PRODUCT_ID"
+										"6ad53e72ce5be60fa6318ca1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Bundles",
+					"item": [
+						{
+							"name": "Get All Active Bundles",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/bundles?page=1&limit=10",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"bundles"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Bundle By Slug",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/bundles/dewy-hydration-duo",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"bundles",
+										"dewy-hydration-duo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Bundle By ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/bundles/6ad53e7229f647c88e8a422f",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"bundles",
+										"6ad53e7229f647c88e8a422f"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Bundles By Product ID (Upsell)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/bundles/by-product/6ad53e72ce5be60fa6318ca1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"bundles",
+										"by-product",
+										"6ad53e72ce5be60fa6318ca1"
 									]
 								}
 							},
@@ -176,7 +267,7 @@
 									"path": [
 										"api",
 										"categories",
-										"CATEGORY_ID"
+										"6ad53e71ce5be60fa6318c9b"
 									]
 								}
 							},
@@ -232,7 +323,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"productId\": \"REPLACE_WITH_PRODUCT_ID\",\n    \"quantity\": 2\n}",
+									"raw": "{\n    \"productId\": \"6ad53e72ce5be60fa6318ca1\",\n    \"quantity\": 2\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -269,7 +360,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"productId\": \"REPLACE_WITH_PRODUCT_ID\",\n    \"quantity\": 5\n}",
+									"raw": "{\n    \"productId\": \"6ad53e72ce5be60fa6318ca1\",\n    \"quantity\": 5\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -312,7 +403,7 @@
 									"path": [
 										"api",
 										"cart",
-										"PRODUCT_ID"
+										"6ad53e72ce5be60fa6318ca1"
 									]
 								}
 							},
@@ -341,6 +432,112 @@
 									"path": [
 										"api",
 										"cart"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Bundle to Cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"bundleId\": \"6ad53e7229f647c88e8a422f\",\n    \"quantity\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/cart/bundles",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"cart",
+										"bundles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Bundle Quantity in Cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"bundleId\": \"6ad53e7229f647c88e8a422f\",\n    \"quantity\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/cart/bundles",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"cart",
+										"bundles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove Bundle from Cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/cart/bundles/6ad53e7229f647c88e8a422f",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"cart",
+										"bundles",
+										"6ad53e7229f647c88e8a422f"
 									]
 								}
 							},
@@ -592,7 +789,7 @@
 										},
 										{
 											"key": "category",
-											"value": "REPLACE_WITH_CATEGORY_ID",
+											"value": "6ad53e71ce5be60fa6318c9b",
 											"type": "text"
 										},
 										{
@@ -665,7 +862,7 @@
 										"api",
 										"admin",
 										"products",
-										"PRODUCT_ID"
+										"6ad53e72ce5be60fa6318ca1"
 									]
 								}
 							},
@@ -695,7 +892,189 @@
 										"api",
 										"admin",
 										"products",
-										"PRODUCT_ID"
+										"6ad53e72ce5be60fa6318ca1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Bundle Management",
+					"item": [
+						{
+							"name": "Get All Bundles (Admin)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/bundles?page=1&limit=10",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"bundles"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Bundle",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"slug\": \"custom-glow-set\",\n    \"nameEn\": \"Custom Glow Set\",\n    \"nameAr\": \"مجموعة التوهج المخصصة\",\n    \"subtitleEn\": \"Hydrating serum and restorative cream pair\",\n    \"subtitleAr\": \"ثنائي السيروم المرطب وكريم الترميم\",\n    \"descriptionEn\": \"A high-performance two-step daily clinical ritual.\",\n    \"descriptionAr\": \"روتين سريري يومي من خطوتين عالي الفعالية.\",\n    \"discountPercentage\": 15,\n    \"bundlePrice\": 595,\n    \"benefitsEn\": [\n        \"Deep hydration\",\n        \"Repairs lipid barrier\"\n    ],\n    \"benefitsAr\": [\n        \"ترطيب عميق\",\n        \"ترميم حاجز البشرة\"\n    ],\n    \"items\": [\n        {\n            \"product\": \"6ad53e72ce5be60fa6318ca1\",\n            \"stepEn\": \"Step 1: Hydrate\",\n            \"stepAr\": \"الخطوة 1: الترطيب الفائق\",\n            \"benefitEn\": \"Deep moisture reservoir\",\n            \"benefitAr\": \"تغذية عميقة بمخازن الرطوبة\",\n            \"quantity\": 1,\n            \"order\": 1\n        },\n        {\n            \"product\": \"6ad53e72ce5be60fa6318ca2\",\n            \"stepEn\": \"Step 2: Seal\",\n            \"stepAr\": \"الخطوة 2: قفل الترطيب\",\n            \"benefitEn\": \"Locks hydration with ceramides\",\n            \"benefitAr\": \"يحبس الترطيب بالسيراميد\",\n            \"quantity\": 1,\n            \"order\": 2\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/bundles",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"bundles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Bundle",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"discountPercentage\": 20\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/admin/bundles/6ad53e7229f647c88e8a422f",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"bundles",
+										"6ad53e7229f647c88e8a422f"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Recalculate Bundle Prices",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/bundles/6ad53e7229f647c88e8a422f/recalculate",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"bundles",
+										"6ad53e7229f647c88e8a422f",
+										"recalculate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Bundle",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/admin/bundles/6ad53e7229f647c88e8a422f",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"bundles",
+										"6ad53e7229f647c88e8a422f"
 									]
 								}
 							},
@@ -799,7 +1178,7 @@
 										"api",
 										"admin",
 										"categories",
-										"CATEGORY_ID"
+										"6ad53e71ce5be60fa6318c9b"
 									]
 								}
 							},
@@ -829,7 +1208,7 @@
 										"api",
 										"admin",
 										"categories",
-										"CATEGORY_ID"
+										"6ad53e71ce5be60fa6318c9b"
 									]
 								}
 							},
@@ -935,7 +1314,7 @@
 									"options": {
 										"raw": {
 											"language": "json"
-								}
+										}
 									}
 								},
 								"url": {
@@ -1014,7 +1393,7 @@
 										"api",
 										"admin",
 										"users",
-										"USER_ID"
+										"6ad53e7129f647c88e8a422e"
 									]
 								}
 							},
@@ -1044,7 +1423,7 @@
 										"api",
 										"admin",
 										"users",
-										"USER_ID"
+										"6ad53e7129f647c88e8a422e"
 									]
 								}
 							},
@@ -1084,6 +1463,31 @@
 		{
 			"key": "token",
 			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "category_id",
+			"value": "6ad53e71ce5be60fa6318c9b",
+			"type": "string"
+		},
+		{
+			"key": "product_id",
+			"value": "6ad53e72ce5be60fa6318ca1",
+			"type": "string"
+		},
+		{
+			"key": "bundle_id",
+			"value": "6ad53e7229f647c88e8a422f",
+			"type": "string"
+		},
+		{
+			"key": "bundle_slug",
+			"value": "dewy-hydration-duo",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "6ad53e7129f647c88e8a422e",
 			"type": "string"
 		}
 	]

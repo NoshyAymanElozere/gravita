@@ -1,24 +1,44 @@
 const mongoose = require('mongoose');
-// gij 
+
+// نسخة ثابتة من منتجات الباقة وقت الشراء (لأن الباقة قد تتغير أو تُحذف لاحقاً)
+const bundleSnapshotItemSchema = new mongoose.Schema({
+    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+    name: String,
+    quantity: Number,
+    stepEn: String,
+    stepAr: String
+}, { _id: false });
+
 const orderItemSchema = new mongoose.Schema({
+    itemType: {
+        type: String,
+        enum: ['product', 'bundle'],
+        default: 'product'
+    },
     product: {
         type: mongoose.Schema.Types.ObjectId,
-        
         ref: 'Product',
-        required: [true, 'المنتج مطلوب في الطلب']
+        required: [function () { return this.itemType !== 'bundle'; }, 'المنتج مطلوب في الطلب']
+    },
+    bundle: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Bundle',
+        required: [function () { return this.itemType === 'bundle'; }, 'الباقة مطلوبة في الطلب']
+    },
+    // بيانات الباقة وقت الشراء (فقط لعناصر الباقات)
+    bundleSnapshot: {
+        nameEn: String,
+        nameAr: String,
+        originalPrice: Number,
+        discountPercentage: Number,
+        items: [bundleSnapshotItemSchema]
     },
     quantity: {
         type: Number,
         required: [true, 'الكمية مطلوبة']
     },
     price: {
-        _type: Number,
-        get type() {
-            return this._type;
-        },
-        set type(value) {
-            this._type = value;
-        },
+        type: Number,
         required: [true, 'السعر وقت الشراء مطلوب'] // يتم تسجيل السعر الحالي للمنتج وقت الطلب لأن الأسعار تتغير لاحقاً
     }
 }, { _id: false });
@@ -30,15 +50,9 @@ const orderSchema = new mongoose.Schema({
         required: [true, 'المستخدم مطلوب للطلب']
     },
     items: [orderItemSchema],
-    _totalPrice: {
+    totalPrice: {
         type: Number,
         required: true
-    },
-    get totalPrice() {
-        return this._totalPrice;
-    },
-    set totalPrice(value) {
-        this._totalPrice = value;
     },
     shippingAddress: {
         type: String,

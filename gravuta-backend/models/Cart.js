@@ -1,10 +1,21 @@
 const mongoose = require('mongoose');
 
+// عنصر العربة يمكن أن يكون منتجاً منفرداً أو باقة كاملة
 const cartItemSchema = new mongoose.Schema({
+    itemType: {
+        type: String,
+        enum: ['product', 'bundle'],
+        default: 'product'
+    },
     product: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product',
-        required: [true, 'المنتج مطلوب في العربة']
+        required: [function () { return this.itemType !== 'bundle'; }, 'المنتج مطلوب في العربة']
+    },
+    bundle: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Bundle',
+        required: [function () { return this.itemType === 'bundle'; }, 'الباقة مطلوبة في العربة']
     },
     quantity: {
         type: Number,

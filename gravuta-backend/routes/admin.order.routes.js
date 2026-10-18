@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
             Order,
             {},
             req.query,
-            [{ path: 'user', select: 'name email' }, { path: 'items.product' }]
+            [{ path: 'user', select: 'name email' }, { path: 'items.product' }, { path: 'items.bundle' }]
         );
             
         res.status(200).json({
@@ -44,7 +44,7 @@ router.put('/:id/status', validate(updateOrderStatusSchema), async (req, res) =>
             req.params.id,
             { status },
             { new: true, runValidators: true }
-        ).populate('user', 'name email').populate('items.product');
+        ).populate('user', 'name email').populate('items.product').populate('items.bundle');
 
         if (!order) {
             return res.status(404).json({

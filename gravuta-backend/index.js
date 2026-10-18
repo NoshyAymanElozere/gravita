@@ -42,12 +42,14 @@ const authRoutes = require('./routes/auth.routes');
 const cartRoutes = require('./routes/cart.routes');
 const orderRoutes = require('./routes/order.routes');
 const userRoutes = require('./routes/user.routes');
+const bundleRoutes = require('./routes/bundle.routes');
 
 // استيراد مسارات الإدارة للأدمن (Admin Routes)
 const productAdminRoutes = require('./routes/admin.product.routes');
 const categoryAdminRoutes = require('./routes/admin.category.routes');
 const userAdminRoutes = require('./routes/admin.user.routes');
 const orderAdminRoutes = require('./routes/admin.order.routes');
+const bundleAdminRoutes = require('./routes/admin.bundle.routes');
 
 // ربط مسارات المستخدمين والمسارات العامة (User / Public Endpoints)
 app.use('/api/products', productRoutes);
@@ -56,12 +58,14 @@ app.use('/api/auth', authRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/bundles', bundleRoutes);
 
 // ربط مسارات الإدارة (Admin Endpoints)
 app.use('/api/admin/products', productAdminRoutes);
 app.use('/api/admin/categories', categoryAdminRoutes);
 app.use('/api/admin/users', userAdminRoutes);
 app.use('/api/admin/orders', orderAdminRoutes);
+app.use('/api/admin/bundles', bundleAdminRoutes);
 
 // المسار الرئيسي للسيرفر (Root Route)
 app.get('/', (req, res) => {

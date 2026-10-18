@@ -16,7 +16,10 @@ router.post('/', validate(createOrderSchema), async (req, res) => {
         const { shippingAddress, phone, paymentMethod } = req.body;
 
         // 1. جلب عربة تسوق المستخدم مع بيانات المنتجات
-        const cart = await Cart.findOne({ user: req.user._id }).populate('items.product');
+        const cart = await Cart.findOne({ user: req.user._id }).populate([
+            { path: 'items.product' },
+            { path: 'items.bundle', populate: { path: 'items.product', select: 'name price' } }
+        ]);
         if (!cart || cart.items.length === 0) {
             return res.status(400).json({
                 status: 'fail',
@@ -29,6 +32,45 @@ router.post('/', validate(createOrderSchema), async (req, res) => {
         const orderItems = [];
 
         for (const item of cart.items) {
+            // 🎁 عنصر باقة: يُحسب بسعر الباقة ويُحفظ محتواها وقت الشراء
+            if (item.itemType === 'bundle') {
+                const bundle = item.bundle;
+                if (!bundle || !bundle.isActive) {
+                    return res.status(400).json({
+                        status: 'fail',
+                        message: 'إحدى الباقات في العربة لم تعد متوفرة!'
+                    });
+                }
+                if (bundle.items.some(bi => !bi.product)) {
+                    return res.status(400).json({
+                        status: 'fail',
+                        message: `الباقة "${bundle.nameAr}" تحتوي على منتج تم حذفه!`
+                    });
+                }
+
+                totalPrice += bundle.bundlePrice * item.quantity;
+                orderItems.push({
+                    itemType: 'bundle',
+                    bundle: bundle._id,
+                    quantity: item.quantity,
+                    price: bundle.bundlePrice,
+                    bundleSnapshot: {
+                        nameEn: bundle.nameEn,
+                        nameAr: bundle.nameAr,
+                        originalPrice: bundle.originalPrice,
+                        discountPercentage: bundle.discountPercentage,
+                        items: bundle.items.map(bi => ({
+                            product: bi.product._id,
+                            name: bi.product.name,
+                            quantity: bi.quantity,
+                            stepEn: bi.stepEn,
+                            stepAr: bi.stepAr
+                        }))
+                    }
+                });
+                continue;
+            }
+
             if (!item.product) {
                 return res.status(400).json({
                     status: 'fail',
@@ -39,6 +81,7 @@ router.post('/', validate(createOrderSchema), async (req, res) => {
             totalPrice += itemPrice * item.quantity;
             
             orderItems.push({
+                itemType: 'product',
                 product: item.product._id,
                 quantity: item.quantity,
                 price: itemPrice // حفظ السعر الحالي
@@ -79,7 +122,7 @@ router.post('/', validate(createOrderSchema), async (req, res) => {
 // 2️⃣ جلب جميع طلبات المستخدم الحالي - GET /api/orders/my-orders
 router.get('/my-orders', async (req, res) => {
     try {
-        const { results, pagination } = await paginate(Order, { user: req.user._id }, req.query, 'items.product');
+        const { results, pagination } = await paginate(Order, { user: req.user._id }, req.query, ['items.product', 'items.bundle']);
         res.status(200).json({
             status: 'success',
             count: results.length,
@@ -101,7 +144,8 @@ router.get('/:id', async (req, res) => {
     try {
         const order = await Order.findById(req.params.id)
             .populate('user', 'name email')
-            .populate('items.product');
+            .populate('items.product')
+            .populate('items.bundle');
 
         if (!order) {
             return res.status(404).json({
