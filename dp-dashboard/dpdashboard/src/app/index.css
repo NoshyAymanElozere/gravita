@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 233 33% 95%; /* #eeeff8 */
+    --foreground: 224 71.4% 4.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 71.4% 4.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71.4% 4.1%;
+    --primary: 233 33% 52%; /* #5c66ae */
+    --primary-foreground: 210 20% 98%;
+    --secondary: 228 60% 98%; /* #f8f9fd */
+    --secondary-foreground: 220.9 39.3% 11%;
+    --muted: 228 60% 98%; /* #f8f9fd */
+    --muted-foreground: 220 8.9% 46.1%;
+    --accent: 228 60% 98%;
+    --accent-foreground: 220.9 39.3% 11%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 233 33% 52%;
+    --radius: 0.625rem;
+    --sidebar: 0 0% 100%; /* #ffffff */
+    --sidebar-foreground: 224 71.4% 4.1%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-accent: 228 60% 98%;
+    --sidebar-accent-foreground: 233 33% 52%;
+    --sidebar-ring: 233 33% 52%;
+    --chart-1: 233 33% 52%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --primary-blue: #5c66ae;
+    --primary-navy: #485199;
+    --main-color: #5c66ae;
+    --primary-gradient: linear-gradient(145deg, #5c66ae, #485199);
+    --main-gradient: linear-gradient(145deg, #5c66ae, #485199);
+    --gradient-start: #5c66ae;
+    --gradient-end: #485199;
+  }
+
+  .dark {
+    --background: 222 47% 7%;
+    --foreground: 210 20% 98%;
+    --card: 222 47% 9%;
+    --card-foreground: 210 20% 98%;
+    --popover: 222 47% 9%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 229 85% 70%;
+    --primary-foreground: 222 47% 7%;
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 210 20% 98%;
+    --muted: 217 32% 15%;
+    --muted-foreground: 215 20% 55%;
+    --accent: 217 32% 17%;
+    --accent-foreground: 210 20% 98%;
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 217 32% 17%;
+    --input: 217 32% 17%;
+    --ring: 229 85% 70%;
+    --sidebar: 222 47% 6%;
+    --sidebar-foreground: 210 20% 98%;
+    --sidebar-border: 217 32% 17%;
+    --sidebar-accent: 217 32% 14%;
+    --sidebar-accent-foreground: 217 91% 70%;
+    --sidebar-ring: 217 91% 60%;
+    --chart-1: 217 91% 60%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --primary-blue: #5c66ae;
+    --primary-navy: #485199;
+    --main-color: #5c66ae;
+    --primary-gradient: linear-gradient(145deg, #5c66ae, #485199);
+    --main-gradient: linear-gradient(145deg, #5c66ae, #485199);
+    --gradient-start: #5c66ae;
+    --gradient-end: #485199;
+  }
+}
+
+@layer utilities {
+  .bg-primary-gradient {
+    background: linear-gradient(145deg, var(--gradient-start), var(--gradient-end));
+    box-shadow: 0px 5px 16px rgba(92, 102, 174, 0.25);
+  }
+  .bg-gradient-primary {
+    background: linear-gradient(145deg, var(--gradient-start), var(--gradient-end));
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/40;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-sm border border-border/60 shadow-sm;
+  }
+
+  .gradient-primary {
+    @apply bg-gradient-to-br from-primary to-primary/80;
+  }
+
+  .animate-in {
+    animation: fade-in 0.25s ease-out;
+  }
+}
+
+/* Edge/IE draw their own reveal/clear buttons — password fields provide a custom toggle */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
+
+
+@keyframes dialog-show {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes dialog-hide {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+}
+
+.animate-dialog-show {
+  animation: dialog-show 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-dialog-hide {
+  animation: dialog-hide 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Modern CKEditor 5 Overrides */
+.ck-editor {
+  @apply shadow-sm rounded-xl overflow-hidden transition-all duration-200;
+  border: 1px solid rgb(229, 231, 235) !important;
+}
+
+.ck-editor:focus-within {
+  border-color: #5c66ae !important;
+  box-shadow: 0 0 0 2px rgba(92, 102, 174, 0.15) !important;
+}
+
+.ck.ck-editor__top .ck-toolbar {
+  background: rgb(249, 250, 251) !important;
+  border: none !important;
+  border-bottom: 1px solid rgb(229, 231, 235) !important;
+  padding: 6px 12px !important;
+}
+
+.ck.ck-editor__main>.ck-editor__editable {
+  background: #ffffff !important;
+  border: none !important;
+  box-shadow: none !important;
+  min-height: 150px;
+  padding: 14px 18px !important;
+  font-size: 0.875rem !important;
+  color: rgb(31, 41, 55) !important;
+  line-height: 1.625 !important;
+}
+
+.ck.ck-toolbar .ck-button {
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.ck.ck-toolbar .ck-button:hover {
+  background: rgb(237, 239, 242) !important;
+}
+
+.ck.ck-toolbar .ck-button.ck-on {
+  background: rgba(92, 102, 174, 0.1) !important;
+  color: #5c66ae !important;
+}
+
+/* Remove AG Grid Cell Focus Border */
+.ag-cell:focus,
+.ag-cell-focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Ensure AG Grid header text does not break or truncate with ellipsis */
+.ag-header-cell-text {
+  white-space: nowrap !important;
+  text-overflow: clip !important;
+  overflow: visible !important;
+}
+

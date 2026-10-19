@@ -1,0 +1,135 @@
+- generic [ref=f4e3]:
+  - complementary [ref=f4e5]:
+    - generic [ref=f4e7]:
+      - img "Al Wathiqa Icon" [ref=f4e8]
+      - generic [ref=f4e9]:
+        - generic [ref=f4e10]: الوثيقة
+        - generic [ref=f4e11]: Al Wathiqa
+    - button "Collapse sidebar" [ref=f4e12] [cursor=pointer]
+    - navigation [ref=f4e15]:
+      - paragraph [ref=f4e16]: القائمة الرئيسية
+      - list [ref=f4e17]:
+        - listitem [ref=f4e18]:
+          - link "طلبات تأمين المركبات" [ref=f4e19] [cursor=pointer]:
+            - /url: /wathiqa-dashboard/vehicle-requests
+        - listitem [ref=f4e25]:
+          - link "عروضي للمركبات" [ref=f4e26] [cursor=pointer]:
+            - /url: /wathiqa-dashboard/vehicle-offers
+    - generic [ref=f4e32] [cursor=pointer]:
+      - generic [ref=f4e33]: شا
+      - generic [ref=f4e34]:
+        - paragraph [ref=f4e35]: شركة التعاونية للتأمين
+        - paragraph [ref=f4e36]: Administrator
+  - generic [ref=f4e37]:
+    - banner [ref=f4e38]:
+      - generic [ref=f4e39]:
+        - button "AR" [ref=f4e40] [cursor=pointer]
+        - button "الوضع الداكن" [ref=f4e45] [cursor=pointer]
+        - button "2" [ref=f4e48] [cursor=pointer]
+        - button "شا شركة التعاونية للتأمين" [ref=f4e53] [cursor=pointer]:
+          - generic [ref=f4e54]: شا
+          - generic [ref=f4e55]: شركة التعاونية للتأمين
+    - main [ref=f4e58]:
+      - generic [ref=f4e65]:
+        - generic [ref=f4e66]:
+          - button "العودة للطلبات" [ref=f4e67] [cursor=pointer]
+          - generic [ref=f4e70]:
+            - generic [ref=f4e77]:
+              - generic [ref=f4e78]:
+                - heading "VR-000016" [level=1] [ref=f4e79]
+                - generic [ref=f4e80]: بانتظار العروض
+                - generic [ref=f4e81]: تمت المشاهدة
+              - paragraph [ref=f4e83]: استُلم 18 أكتوبر 2026، 03:29 م
+            - generic [ref=f4e84]:
+              - button "اعتذار" [ref=f4e85] [cursor=pointer]
+              - link "إرسال عرض" [ref=f4e86] [cursor=pointer]:
+                - /url: /wathiqa-dashboard/vehicle-requests/16/offer
+        - generic [ref=f4e87]:
+          - generic [ref=f4e94]:
+            - paragraph [ref=f4e95]: المركبة
+            - paragraph [ref=f4e96]: Hyundai Sonata
+            - paragraph [ref=f4e97]: "2022"
+          - generic [ref=f4e103]:
+            - paragraph [ref=f4e104]: نوع التأمين
+            - paragraph [ref=f4e105]: ضد الغير
+            - paragraph [ref=f4e106]: مركبة محفوظة
+          - generic [ref=f4e112]:
+            - paragraph [ref=f4e113]: القيمة التقديرية
+            - paragraph [ref=f4e114]: 85,000 ر.س
+            - paragraph [ref=f4e115]: استخدام شخصي / خاص
+          - generic [ref=f4e120]:
+            - paragraph [ref=f4e121]: تاريخ بداية الوثيقة
+            - paragraph [ref=f4e122]: 19 أكتوبر 2026
+        - generic [ref=f4e123]:
+          - generic [ref=f4e124]:
+            - generic [ref=f4e125]:
+              - heading "المركبة" [level=2] [ref=f4e128]
+              - generic [ref=f4e133]:
+                - generic [ref=f4e134]:
+                  - term [ref=f4e135]: نوع المركبة
+                  - definition [ref=f4e136]: مركبة محفوظة
+                - generic [ref=f4e137]:
+                  - term [ref=f4e138]: الرقم التسلسلي
+                  - definition [ref=f4e139]:
+                    - generic [ref=f4e140]: "782194012"
+                - generic [ref=f4e141]:
+                  - term [ref=f4e142]: الشركة والطراز
+                  - definition [ref=f4e143]: Hyundai Sonata
+                - generic [ref=f4e144]:
+                  - term [ref=f4e145]: سنة الصنع
+                  - definition [ref=f4e146]: "2022"
+                - generic [ref=f4e147]:
+                  - term [ref=f4e148]: اللوحة
+                  - definition [ref=f4e149]:
+                    - generic [ref=f4e150]:
+                      - generic [ref=f4e151]: د ه و
+                      - generic [ref=f4e152]: 5 6 7 8
+                - generic [ref=f4e153]:
+                  - term [ref=f4e154]: الفحص الدوري
+                  - definition [ref=f4e155]: مفحوصة وسارية
+                - generic [ref=f4e156]:
+                  - term [ref=f4e157]: الغرض من الاستخدام
+                  - definition [ref=f4e158]: استخدام شخصي / خاص
+                - generic [ref=f4e159]:
+                  - term [ref=f4e160]: القيمة التقديرية
+                  - definition [ref=f4e161]: 85,000 ر.س
+                - generic [ref=f4e162]:
+                  - term [ref=f4e163]: هوية المالك
+                  - definition [ref=f4e164]:
+                    - generic [ref=f4e165]: "1084920184"
+                - generic [ref=f4e166]:
+                  - term [ref=f4e167]: تاريخ ميلاد المالك
+                  - definition [ref=f4e168]: 15 مايو 1992
+            - generic [ref=f4e169]:
+              - heading "السائق الإضافي" [level=2] [ref=f4e172]
+              - generic [ref=f4e176]:
+                - generic [ref=f4e177]:
+                  - term [ref=f4e178]: رقم الهوية
+                  - definition [ref=f4e179]:
+                    - generic [ref=f4e180]: "2345675432"
+                - generic [ref=f4e181]:
+                  - term [ref=f4e182]: تاريخ الميلاد
+                  - definition [ref=f4e183]:
+                    - text: 2026-10-16
+                    - generic [ref=f4e184]: (ميلادي)
+                - generic [ref=f4e185]:
+                  - term [ref=f4e186]: نسبة القيادة
+                  - definition [ref=f4e187]:
+                    - generic [ref=f4e188]: 50%
+          - generic [ref=f4e193]:
+            - generic [ref=f4e194]:
+              - heading "ردي" [level=2] [ref=f4e196]
+              - generic [ref=f4e201]: تمت المشاهدة
+            - list [ref=f4e204]:
+              - listitem [ref=f4e205]:
+                - paragraph [ref=f4e209]: تاريخ الاستلام
+                - paragraph [ref=f4e210]: 18 أكتوبر 2026، 03:29 م
+              - listitem [ref=f4e211]:
+                - paragraph [ref=f4e215]: تاريخ المشاهدة
+                - paragraph [ref=f4e216]: 18 أكتوبر 2026، 03:31 م
+              - listitem [ref=f4e217]:
+                - paragraph [ref=f4e219]: تاريخ الرد
+                - paragraph [ref=f4e220]: —
+        - generic [ref=f4e221]:
+          - heading "عروضي على هذا الطلب" [level=2] [ref=f4e224]
+          - paragraph [ref=f4e233]: لم ترسل عرضًا على هذا الطلب بعد.

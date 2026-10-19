@@ -1,0 +1,77 @@
+- generic [ref=f3e3]:
+  - complementary [ref=f3e5]:
+    - generic [ref=f3e7]:
+      - img "Al Wathiqa Icon" [ref=f3e8]
+      - generic [ref=f3e9]:
+        - generic [ref=f3e10]: الوثيقة
+        - generic [ref=f3e11]: Al Wathiqa
+    - button "Collapse sidebar" [ref=f3e12] [cursor=pointer]
+    - navigation [ref=f3e15]:
+      - paragraph [ref=f3e16]: القائمة الرئيسية
+      - list [ref=f3e17]:
+        - listitem [ref=f3e18]:
+          - link "طلبات تأمين المركبات" [ref=f3e19] [cursor=pointer]:
+            - /url: /wathiqa-dashboard/vehicle-requests
+        - listitem [ref=f3e25]:
+          - link "عروضي للمركبات" [ref=f3e26] [cursor=pointer]:
+            - /url: /wathiqa-dashboard/vehicle-offers
+    - generic [ref=f3e32] [cursor=pointer]:
+      - generic [ref=f3e33]: شا
+      - generic [ref=f3e34]:
+        - paragraph [ref=f3e35]: شركة التعاونية للتأمين
+        - paragraph [ref=f3e36]: Administrator
+  - generic [ref=f3e37]:
+    - banner [ref=f3e38]:
+      - generic [ref=f3e39]:
+        - button "AR" [ref=f3e40] [cursor=pointer]
+        - button "الوضع الداكن" [ref=f3e45] [cursor=pointer]
+        - button "2" [ref=f3e48] [cursor=pointer]
+        - button "شا شركة التعاونية للتأمين" [ref=f3e53] [cursor=pointer]:
+          - generic [ref=f3e54]: شا
+          - generic [ref=f3e55]: شركة التعاونية للتأمين
+    - main [ref=f3e58]:
+      - generic [ref=f3e60]:
+        - generic [ref=f3e62]:
+          - generic [ref=f3e68]:
+            - heading "طلبات تأمين المركبات" [level=1] [ref=f3e70]
+            - paragraph [ref=f3e71]: الطلبات المرسلة إلى شركتك. راجع التفاصيل ثم أرسل عرض سعر أو اعتذر.
+          - generic [ref=f3e72]:
+            - button "تحديث" [disabled]
+        - generic [ref=f3e73]:
+          - tablist [ref=f3e74]:
+            - tab "جديدة" [selected] [ref=f3e75] [cursor=pointer]
+            - tab "تمت مشاهدتها" [ref=f3e76] [cursor=pointer]
+            - tab "تم إرسال عرض" [ref=f3e77] [cursor=pointer]
+            - tab "معتذر عنها" [ref=f3e78] [cursor=pointer]
+          - generic [ref=f3e79]:
+            - searchbox "ابحث برقم الطلب، مثل VR-000123" [ref=f3e81]
+            - combobox "كل حالات الطلب" [ref=f3e82] [cursor=pointer]:
+              - option "كل حالات الطلب" [selected]
+              - option "بانتظار العروض"
+              - option "وصلت عروض"
+              - option "ملغي"
+              - option "منتهي"
+            - combobox "كل أنواع التأمين" [ref=f3e83] [cursor=pointer]:
+              - option "كل أنواع التأمين" [selected]
+              - option "شامل"
+              - option "ضد الغير"
+              - option "بلس (VIP)"
+        - generic [ref=f3e86]:
+          - button "تعديل الأعمدة" [ref=f3e89] [cursor=pointer]
+          - grid [ref=f3e98]:
+            - rowgroup [ref=f3e99]:
+              - row [ref=f3e100]:
+                - columnheader "رقم الطلب" [ref=f3e101]
+                - columnheader "المركبة" [ref=f3e104]
+                - columnheader "التأمين المطلوب" [ref=f3e107]
+                - columnheader "القيمة التقديرية" [ref=f3e110]
+                - columnheader "بداية الوثيقة" [ref=f3e113]
+                - columnheader "ردي" [ref=f3e116]
+                - columnheader "حالة الطلب" [ref=f3e119]
+                - columnheader [ref=f3e122]
+          - generic [ref=f3e173]:
+            - generic [ref=f3e174]: الصفحة 1 من 1
+            - generic [ref=f3e175]:
+              - button [disabled] [ref=f3e176] [cursor=pointer]
+              - button "1" [ref=f3e179] [cursor=pointer]
+              - button [disabled] [ref=f3e180] [cursor=pointer]
