@@ -1,6 +1,5 @@
 const Joi = require('joi');
-
-const objectIdRegex = /^[0-9a-fA-F]{24}$/;
+const { objectIdRegex, objectId } = require('./common.validation');
 
 // مخطط التحقق لإضافة منتج للعربة
 const addToCartSchema = Joi.object({
@@ -17,7 +16,7 @@ const addToCartSchema = Joi.object({
         .min(1)
         .default(1)
         .messages({
-            'number.base': 'الكمية يجب أن تكون رقماً صحبحاً',
+            'number.base': 'الكمية يجب أن تكون رقماً صحيحاً',
             'number.min': 'الكمية يجب أن تكون 1 على الأقل'
         })
 });
@@ -43,7 +42,32 @@ const updateCartItemSchema = Joi.object({
         })
 });
 
+// تطبيق كوبون خصم على العربة
+const applyCouponSchema = Joi.object({
+    code: Joi.string().trim().uppercase().min(2).max(40).required().messages({
+        'any.required': 'كود الخصم مطلوب',
+        'string.empty': 'كود الخصم مطلوب'
+    })
+});
+
+// دمج عربة الزائر (المحفوظة في المتصفح) مع عربة الحساب بعد تسجيل الدخول
+const mergeCartSchema = Joi.object({
+    items: Joi.array().items(Joi.object({
+        itemType: Joi.string().valid('product', 'bundle').default('product'),
+        id: objectId('معرف المنتج/الباقة').required(),
+        quantity: Joi.number().integer().min(1).default(1)
+    })).max(50).required()
+});
+
+// GET /api/cart?paymentMethod=cod - لعرض رسوم الدفع عند الاستلام ضمن الحساب
+const cartQuerySchema = Joi.object({
+    paymentMethod: Joi.string().valid('cod', 'credit_card', 'apple_pay', 'google_pay')
+});
+
 module.exports = {
     addToCartSchema,
-    updateCartItemSchema
+    updateCartItemSchema,
+    applyCouponSchema,
+    mergeCartSchema,
+    cartQuerySchema
 };

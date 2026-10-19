@@ -31,7 +31,13 @@ const cartSchema = new mongoose.Schema({
         required: [true, 'المستخدم مطلوب للعربة'],
         unique: true // كل مستخدم يملك عربة تسوق واحدة فقط
     },
-    items: [cartItemSchema]
+    items: [cartItemSchema],
+    // كوبون الخصم المطبق على العربة (يُعاد التحقق منه عند كل حساب للأسعار)
+    coupon: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Coupon',
+        default: null
+    }
 }, {
     timestamps: true
 });

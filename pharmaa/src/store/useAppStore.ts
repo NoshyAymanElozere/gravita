@@ -1,6 +1,28 @@
 import { create } from 'zustand';
-import { Language, Product, CartItem, Coupon, Order, Address, UserProfile, Category, Bundle } from '../types';
-import { PRODUCTS, CATEGORIES, COUPONS, BUNDLES } from '../constants/data';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import toast from 'react-hot-toast';
+import { Language, Product, CartItem, Coupon, Order, Address, UserProfile, Category, Bundle, Review } from '../types';
+import { api, ApiError, setAuthToken, setUnauthorizedHandler } from '../lib/api';
+import {
+    mapProduct,
+    mapBundle,
+    mapCategory,
+    mapReview,
+    mapCartLine,
+    mapCoupon,
+    mapAddress,
+    mapUser,
+    mapOrder,
+    bundleToProduct,
+    isBundleProduct,
+    cartItemId
+} from '../lib/mappers';
+
+interface OrderContact {
+    name: string;
+    email: string;
+    phone: string;
+}
 
 interface AppState {
     language: Language;
@@ -19,6 +41,15 @@ interface AppState {
     priceRange: [number, number];
     sortBy: string;
 
+    // Backend data & session
+    token: string | null;
+    authReady: boolean;
+    catalogLoaded: boolean;
+    products: Product[];
+    bundles: Bundle[];
+    categories: Category[];
+    reviews: Review[];
+
     setLanguage: (lang: Language) => void;
     setActivePage: (page: string) => void;
     setSelectedProduct: (product: Product | null) => void;
@@ -28,14 +59,17 @@ interface AppState {
     updateCartQuantity: (cartItemId: string, qty: number) => void;
     clearCart: () => void;
     toggleWishlist: (productId: string) => void;
-    applyCoupon: (code: string) => string | null;
+    applyCoupon: (code: string) => Promise<string | null>;
     removeCoupon: () => void;
-    loginUser: (email: string, name?: string) => void;
-    registerUser: (name: string, email: string, phone: string) => void;
+    loginUser: (email: string, password: string) => Promise<string | null>;
+    registerUser: (name: string, email: string, phone: string, password: string) => Promise<string | null>;
     logoutUser: () => void;
-    addNewAddress: (address: Omit<Address, 'id'>) => void;
+    updateProfile: (data: { name?: string; email?: string; phone?: string }) => Promise<string | null>;
+    addNewAddress: (address: Omit<Address, 'id'>) => Promise<string | null>;
     deleteAddress: (id: string) => void;
-    placeOrder: (shippingAddress: Address, paymentMethod: Order['paymentMethod']) => Order;
+    placeOrder: (shippingAddress: Address, paymentMethod: Order['paymentMethod'], contact?: OrderContact) => Promise<Order>;
+    cancelOrder: (orderId: string, reason?: string) => Promise<string | null>;
+    reorder: (orderId: string) => Promise<string | null>;
     setSearchQuery: (query: string) => void;
     addToSearchHistory: (query: string) => void;
     clearSearchHistory: () => void;
@@ -43,386 +77,430 @@ interface AppState {
     setActiveSkinType: (type: string | null) => void;
     setPriceRange: (range: [number, number]) => void;
     setSortBy: (sort: string) => void;
+
+    loadCatalog: () => Promise<void>;
+    initSession: () => Promise<void>;
+    loadAccount: () => Promise<void>;
+    loadOrders: () => Promise<void>;
 }
 
-const DEFAULT_USER: UserProfile = {
-    id: 'usr_premium_1',
-    name: 'Serene Al-Ghamdi',
-    email: 'serene@aura.com',
-    phone: '+966 54 123 4567',
-    addresses: [
-        {
-            id: 'addr_1',
-            fullName: 'Serene Al-Ghamdi',
-            addressLine1: '7821 Al Reem Boulevard, Floor 14',
-            addressLine2: 'Al Murooj District',
-            city: 'Riyadh',
-            state: 'Central Province',
-            postalCode: '12282',
-            country: 'Saudi Arabia',
-            phone: '+966 54 123 4567',
-            isDefault: true
-        }
-    ],
-    wishlist: ['prod_ocean_glow']
+// Backend messages are Arabic with an English hint in parentheses; pick the right one for the UI language
+export const errorMessage = (error: unknown, language: Language): string => {
+    const message = error instanceof Error ? error.message : String(error);
+    if (language === 'ar') return message;
+    const english = message.match(/\(([^()]*[A-Za-z][^()]*)\)/);
+    if (english) return english[1];
+    if (!/[؀-ۿ]/.test(message)) return message;
+    return 'Something went wrong. Please try again.';
 };
 
-const DEFAULT_ORDERS: Order[] = [
-    {
-        id: 'ord_mock_1',
-        orderNumber: 'NFD1234',
-        date: '12/2/2024',
-        status: 'delivered',
-        items: [
-            {
-                productId: 'prod_ocean_glow',
-                productNameEn: 'Coastal Ocean Glow Hyaluronic Elixir',
-                productNameAr: 'سيروم الهيالورونيك الساحلي لإشراقة المحيط',
-                price: 1240,
-                quantity: 3,
-                image: 'https://images.unsplash.com/photo-1608248597481-496100c80836?auto=format&fit=crop&w=150&q=80',
-                selectedSize: '50ml'
-            }
-        ],
-        shippingAddress: DEFAULT_USER.addresses[0],
-        paymentMethod: 'credit_card',
-        subtotal: 3720,
-        discount: 0,
-        shippingFee: 0,
-        total: 3720,
-        trackingNumber: 'TRK-98312019',
-        estimatedDelivery: '2024-02-15'
-    },
-    {
-        id: 'ord_mock_2',
-        orderNumber: 'NFD1234',
-        date: '12/2/2024',
-        status: 'processing',
-        items: [
-            {
-                productId: 'prod_ocean_glow',
-                productNameEn: 'Coastal Ocean Glow Hyaluronic Elixir',
-                productNameAr: 'سيروم الهيالورونيك الساحلي لإشراقة المحيط',
-                price: 1240,
-                quantity: 3,
-                image: 'https://images.unsplash.com/photo-1608248597481-496100c80836?auto=format&fit=crop&w=150&q=80',
-                selectedSize: '50ml'
-            }
-        ],
-        shippingAddress: DEFAULT_USER.addresses[0],
-        paymentMethod: 'credit_card',
-        subtotal: 3720,
-        discount: 0,
-        shippingFee: 0,
-        total: 3720,
-        trackingNumber: 'TRK-98312020',
-        estimatedDelivery: '2024-02-16'
-    },
-    {
-        id: 'ord_mock_3',
-        orderNumber: 'NFD1234',
-        date: '12/2/2024',
-        status: 'in-transit',
-        items: [
-            {
-                productId: 'prod_ocean_glow',
-                productNameEn: 'Coastal Ocean Glow Hyaluronic Elixir',
-                productNameAr: 'سيروم الهيالورونيك الساحلي لإشراقة المحيط',
-                price: 1240,
-                quantity: 3,
-                image: 'https://images.unsplash.com/photo-1608248597481-496100c80836?auto=format&fit=crop&w=150&q=80',
-                selectedSize: '50ml'
-            }
-        ],
-        shippingAddress: DEFAULT_USER.addresses[0],
-        paymentMethod: 'credit_card',
-        subtotal: 3720,
-        discount: 0,
-        shippingFee: 0,
-        total: 3720,
-        trackingNumber: 'TRK-98312021',
-        estimatedDelivery: '2024-02-15'
-    },
-    {
-        id: 'ord_mock_4',
-        orderNumber: 'NFD1234',
-        date: '12/2/2024',
-        status: 'returned',
-        items: [
-            {
-                productId: 'prod_botanical_gel',
-                productNameEn: 'Prebiotic Botanical Gel Cleanser',
-                productNameAr: 'غسول الجل النباتي الحيوي المقوي للبشرة',
-                price: 1240,
-                quantity: 1,
-                image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=150&q=80',
-                selectedSize: '150ml'
-            }
-        ],
-        shippingAddress: DEFAULT_USER.addresses[0],
-        paymentMethod: 'credit_card',
-        subtotal: 1240,
-        discount: 0,
-        shippingFee: 0,
-        total: 1240,
-        trackingNumber: 'TRK-98312022',
-        estimatedDelivery: '2024-02-14'
-    }
-];
+// Kept for existing imports: a bundle displayed and stored in the cart as a product
+export const convertBundleToProduct = bundleToProduct;
 
-export function convertBundleToProduct(bundle: Bundle): Product {
-    return {
-        id: bundle.id,
-        slug: bundle.slug,
-        nameEn: bundle.nameEn,
-        nameAr: bundle.nameAr,
-        subtitleEn: bundle.subtitleEn,
-        subtitleAr: bundle.subtitleAr,
-        descriptionEn: bundle.descriptionEn,
-        descriptionAr: bundle.descriptionAr,
-        ingredientsEn: bundle.items.map(item => item.product.nameEn).join(', '),
-        ingredientsAr: bundle.items.map(item => item.product.nameAr).join('، '),
-        skinTypeEn: 'Various',
-        skinTypeAr: 'مختلف',
-        benefitsEn: bundle.benefitsEn,
-        benefitsAr: bundle.benefitsAr,
-        howToUseEn: bundle.items.map((item, idx) => `Step ${idx + 1}: ${item.stepEn}`).join('\n'),
-        howToUseAr: bundle.items.map((item, idx) => `الخطوة ${idx + 1}: ${item.stepAr}`).join('\n'),
-        price: bundle.originalPrice,
-        discountPrice: bundle.bundlePrice,
-        rating: 5.0,
-        reviewCount: 1,
-        size: 'Complete Set',
-        image: bundle.image,
-        galleryImages: [bundle.image],
-        isBestSeller: true,
-        isNew: false,
-        stockStatus: 'in_stock',
-        categorySlug: 'bundles'
+export const useAppStore = create<AppState>()(persist((set, get) => {
+    const notifyError = (error: unknown) => toast.error(errorMessage(error, get().language));
+
+    // Replace the local cart with the server's priced cart
+    const applyServerCart = (cart: any) => {
+        const items = (cart.items || []).map(mapCartLine).filter(Boolean) as CartItem[];
+        const current = get().appliedCoupon;
+        const coupon = cart.coupon && cart.coupon.valid
+            ? (current && current.code === cart.coupon.code ? current : mapCoupon(cart.coupon))
+            : null;
+        set({ cart: items, appliedCoupon: coupon });
     };
-}
 
-export const useAppStore = create<AppState>((set, get) => ({
-    language: 'en',
-    activePage: 'home',
-    selectedProduct: null,
-    selectedBundle: null,
-    cart: [],
-    wishlist: ['prod_ocean_glow'],
-    appliedCoupon: null,
-    user: DEFAULT_USER,
-    orders: DEFAULT_ORDERS,
-    searchQuery: '',
-    searchHistory: ['Serum', 'Moisturizer', 'Cleanser'],
-    activeCategory: null,
-    activeSkinType: null,
-    priceRange: [0, 500],
-    sortBy: 'best-selling',
-
-    setLanguage: (lang) => {
-        set({ language: lang });
-        if (typeof window !== 'undefined') {
-            document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-            document.documentElement.setAttribute('lang', lang);
+    const refreshCart = async () => {
+        try {
+            const res = await api.get('/cart');
+            applyServerCart(res.data.cart);
+        } catch (error) {
+            notifyError(error);
         }
-    },
-    setActivePage: (page) => set({ activePage: page }),
-    setSelectedProduct: (product) => set({ selectedProduct: product, selectedBundle: product ? null : get().selectedBundle }),
-    setSelectedBundle: (bundle) => set({ selectedBundle: bundle, selectedProduct: bundle ? null : get().selectedProduct }),
+    };
 
-    addToCart: (product, size, qty = 1) => {
-        const itemId = `${product.id}_${size}`;
-        const prevCart = get().cart;
-        const matchIndex = prevCart.findIndex((item) => item.id === itemId);
-        if (matchIndex > -1) {
-            const newCart = [...prevCart];
-            newCart[matchIndex].quantity += qty;
-            set({ cart: newCart });
-        } else {
-            set({ cart: [...prevCart, { id: itemId, product, quantity: qty, selectedSize: size }] });
+    // Push the guest cart / wishlist / coupon into the account after signing in
+    const mergeGuestData = async () => {
+        const { cart, wishlist, appliedCoupon } = get();
+        if (cart.length) {
+            const items = cart.map(item => ({
+                itemType: isBundleProduct(item.product) ? 'bundle' : 'product',
+                id: item.product.id,
+                quantity: item.quantity
+            }));
+            await api.post('/cart/merge', { items }).catch(() => undefined);
         }
-    },
-
-    removeFromCart: (cartItemId) => {
-        set({ cart: get().cart.filter((item) => item.id !== cartItemId) });
-    },
-
-    updateCartQuantity: (cartItemId, qty) => {
-        if (qty <= 0) {
-            get().removeFromCart(cartItemId);
-            return;
-        }
-        set({
-            cart: get().cart.map((item) => (item.id === cartItemId ? { ...item, quantity: qty } : item))
-        });
-    },
-
-    clearCart: () => set({ cart: [], appliedCoupon: null }),
-
-    toggleWishlist: (productId) => {
-        const prevWish = get().wishlist;
-        const isExist = prevWish.includes(productId);
-        if (isExist) {
-            set({ wishlist: prevWish.filter((id) => id !== productId) });
-        } else {
-            set({ wishlist: [...prevWish, productId] });
-        }
-    },
-
-    applyCoupon: (code) => {
-        const codeClean = code.toUpperCase().trim();
-        const coupon = COUPONS.find((c) => c.code === codeClean);
-        if (!coupon) {
-            return get().language === 'en' ? 'Invalid promotion code' : 'كود الخصم غير صالح';
-        }
-
-        const currentSubtotal = get().cart.reduce(
-            (sum, item) => sum + (item.product.discountPrice ?? item.product.price) * item.quantity,
-            0
-        );
-
-        if (currentSubtotal < coupon.minOrderAmount) {
-            return get().language === 'en'
-                ? `Minimum order amount for this coupon is ${coupon.minOrderAmount} AED/SAR`
-                : `الحد الأدنى لتفعيل هذا الكوبون هو ${coupon.minOrderAmount} ريال/درهم`;
-        }
-
-        set({ appliedCoupon: coupon });
-        return null;
-    },
-
-    removeCoupon: () => set({ appliedCoupon: null }),
-
-    loginUser: (email, name = 'Valued Customer') => {
-        set({
-            user: {
-                id: `usr_${Date.now()}`,
-                name,
-                email,
-                phone: '+966 50 000 0000',
-                addresses: [
-                    {
-                        id: 'addr_init',
-                        fullName: name,
-                        addressLine1: 'Tahlia Terrace Street, House 42A',
-                        city: 'Jeddah',
-                        state: 'Western Area',
-                        postalCode: '21563',
-                        country: 'Saudi Arabia',
-                        phone: '+966 50 000 0000',
-                        isDefault: true
-                    }
-                ],
-                wishlist: []
-            }
-        });
-    },
-
-    registerUser: (name, email, phone) => {
-        set({
-            user: {
-                id: `usr_${Date.now()}`,
-                name,
-                email,
-                phone,
-                addresses: [],
-                wishlist: []
-            }
-        });
-    },
-
-    logoutUser: () => set({ user: null, wishlist: [] }),
-
-    addNewAddress: (addr) => {
-        const user = get().user;
-        if (!user) return;
-        const newAddr: Address = {
-            ...addr,
-            id: `addr_${Date.now()}`,
-            isDefault: user.addresses.length === 0 ? true : addr.isDefault
-        };
-
-        const updatedAddresses = newAddr.isDefault
-            ? user.addresses.map((a) => ({ ...a, isDefault: false })).concat(newAddr)
-            : user.addresses.concat(newAddr);
-
-        set({
-            user: { ...user, addresses: updatedAddresses }
-        });
-    },
-
-    deleteAddress: (id) => {
-        const user = get().user;
-        if (!user) return;
-        set({
-            user: {
-                ...user,
-                addresses: user.addresses.filter((a) => a.id !== id)
-            }
-        });
-    },
-
-    placeOrder: (addr, payment) => {
-        const subtotal = get().cart.reduce(
-            (sum, item) => sum + (item.product.discountPrice ?? item.product.price) * item.quantity,
-            0
-        );
-
-        let discount = 0;
-        const appliedCoupon = get().appliedCoupon;
+        await Promise.all(wishlist.map(id => api.post(`/users/me/wishlist/${id}`).catch(() => undefined)));
         if (appliedCoupon) {
-            if (appliedCoupon.discountType === 'percentage') {
-                discount = Math.round((subtotal * appliedCoupon.value) / 100);
-            } else {
-                discount = appliedCoupon.value;
-            }
+            await api.post('/cart/coupon', { code: appliedCoupon.code }).catch(() => undefined);
         }
+    };
 
-        const shippingFee = subtotal - discount > 200 ? 0 : 25;
-        const total = subtotal - discount + shippingFee;
+    const startSession = async (token: string) => {
+        setAuthToken(token);
+        set({ token });
+        await mergeGuestData();
+        await get().loadAccount();
+    };
 
-        const newOrder: Order = {
-            id: `ord_${Date.now()}`,
-            orderNumber: `AURA-${Math.floor(Math.random() * 900000 + 100000)}`,
-            date: new Date().toISOString().split('T')[0],
-            status: 'processing',
-            items: get().cart.map((item) => ({
-                productId: item.product.id,
-                productNameEn: item.product.nameEn,
-                productNameAr: item.product.nameAr,
-                price: item.product.discountPrice ?? item.product.price,
-                quantity: item.quantity,
-                image: item.product.image,
-                selectedSize: item.selectedSize
-            })),
-            shippingAddress: addr,
-            paymentMethod: payment,
-            couponApplied: appliedCoupon?.code,
-            subtotal,
-            discount,
-            shippingFee,
-            total,
-            trackingNumber: `TRK-${Math.floor(Math.random() * 89000000 + 10000000)}`,
-            estimatedDelivery: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-        };
+    return {
+        language: 'en',
+        activePage: 'home',
+        selectedProduct: null,
+        selectedBundle: null,
+        cart: [],
+        wishlist: [],
+        appliedCoupon: null,
+        user: null,
+        orders: [],
+        searchQuery: '',
+        searchHistory: ['Serum', 'Moisturizer', 'Cleanser'],
+        activeCategory: null,
+        activeSkinType: null,
+        priceRange: [0, 500],
+        sortBy: 'best-selling',
 
-        set((state) => ({ orders: [newOrder, ...state.orders] }));
-        get().clearCart();
-        return newOrder;
-    },
+        token: null,
+        authReady: false,
+        catalogLoaded: false,
+        products: [],
+        bundles: [],
+        categories: [],
+        reviews: [],
 
-    setSearchQuery: (query) => set({ searchQuery: query }),
+        setLanguage: (lang) => {
+            set({ language: lang });
+            if (typeof window !== 'undefined') {
+                document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+                document.documentElement.setAttribute('lang', lang);
+            }
+        },
+        setActivePage: (page) => set({ activePage: page }),
+        setSelectedProduct: (product) => set({ selectedProduct: product, selectedBundle: product ? null : get().selectedBundle }),
+        setSelectedBundle: (bundle) => set({ selectedBundle: bundle, selectedProduct: bundle ? null : get().selectedProduct }),
 
-    addToSearchHistory: (query) => {
-        if (!query.trim()) return;
-        const prev = get().searchHistory;
-        const filtered = prev.filter((q) => q.toLowerCase() !== query.toLowerCase());
-        set({ searchHistory: [query, ...filtered].slice(0, 5) });
-    },
+        // ---------- Catalog ----------
+        loadCatalog: async () => {
+            try {
+                const [products, bundles, categories, reviews] = await Promise.all([
+                    api.get('/products?limit=100'),
+                    api.get('/bundles?limit=50'),
+                    api.get('/categories?limit=50'),
+                    api.get('/reviews/featured?limit=12')
+                ]);
+                set({
+                    products: products.data.map(mapProduct),
+                    bundles: bundles.data.map(mapBundle),
+                    categories: categories.data.map(mapCategory),
+                    reviews: reviews.data.map(mapReview),
+                    catalogLoaded: true
+                });
+            } catch (error) {
+                notifyError(error);
+            }
+        },
 
-    clearSearchHistory: () => set({ searchHistory: [] }),
-    setActiveCategory: (slug) => set({ activeCategory: slug }),
-    setActiveSkinType: (type) => set({ activeSkinType: type }),
-    setPriceRange: (range) => set({ priceRange: range }),
-    setSortBy: (sort) => set({ sortBy: sort })
+        // ---------- Session ----------
+        initSession: async () => {
+            setUnauthorizedHandler(() => {
+                get().logoutUser();
+                toast.error(get().language === 'en' ? 'Your session has expired. Please sign in again.' : 'انتهت الجلسة، يرجى تسجيل الدخول مرة أخرى');
+            });
+            const { token } = get();
+            if (token) {
+                setAuthToken(token);
+                try {
+                    await get().loadAccount();
+                } catch {
+                    get().logoutUser();
+                }
+            }
+            set({ authReady: true });
+        },
+
+        loadAccount: async () => {
+            const [profile, wishlist, cart, orders] = await Promise.all([
+                api.get('/users/me'),
+                api.get('/users/me/wishlist'),
+                api.get('/cart'),
+                api.get('/orders/my-orders?limit=100')
+            ]);
+            const ids: string[] = wishlist.data.ids.map(String);
+            set({
+                user: mapUser(profile.data.user, ids),
+                wishlist: ids,
+                orders: orders.data.orders.map(mapOrder)
+            });
+            applyServerCart(cart.data.cart);
+        },
+
+        loadOrders: async () => {
+            if (!get().token) return;
+            try {
+                const res = await api.get('/orders/my-orders?limit=100');
+                set({ orders: res.data.orders.map(mapOrder) });
+            } catch (error) {
+                notifyError(error);
+            }
+        },
+
+        loginUser: async (email, password) => {
+            try {
+                const res = await api.post('/auth/login', { email, password });
+                await startSession(res.token);
+                return null;
+            } catch (error) {
+                return errorMessage(error, get().language);
+            }
+        },
+
+        registerUser: async (name, email, phone, password) => {
+            try {
+                const res = await api.post('/auth/register', { name, email, phone, password });
+                await startSession(res.token);
+                return null;
+            } catch (error) {
+                if (error instanceof ApiError && error.errors?.length) {
+                    return (error.errors as string[]).join(' • ');
+                }
+                return errorMessage(error, get().language);
+            }
+        },
+
+        logoutUser: () => {
+            setAuthToken(null);
+            set({ token: null, user: null, wishlist: [], orders: [], cart: [], appliedCoupon: null });
+        },
+
+        updateProfile: async (data) => {
+            try {
+                const res = await api.put('/users/me', data);
+                set({ user: mapUser(res.data.user, get().wishlist) });
+                return null;
+            } catch (error) {
+                return errorMessage(error, get().language);
+            }
+        },
+
+        // ---------- Cart ----------
+        addToCart: (product, size, qty = 1) => {
+            const itemId = cartItemId(product, size);
+            const prevCart = get().cart;
+            const matchIndex = prevCart.findIndex((item) => item.id === itemId);
+            if (matchIndex > -1) {
+                const newCart = [...prevCart];
+                newCart[matchIndex] = { ...newCart[matchIndex], quantity: newCart[matchIndex].quantity + qty };
+                set({ cart: newCart });
+            } else {
+                set({ cart: [...prevCart, { id: itemId, product, quantity: qty, selectedSize: size }] });
+            }
+
+            if (!get().token) return;
+            const request = isBundleProduct(product)
+                ? api.post('/cart/bundles', { bundleId: product.id, quantity: qty })
+                : api.post('/cart', { productId: product.id, quantity: qty });
+            request.then(res => applyServerCart(res.data.cart)).catch(error => {
+                notifyError(error);
+                refreshCart();
+            });
+        },
+
+        removeFromCart: (cartItemId) => {
+            const item = get().cart.find((i) => i.id === cartItemId);
+            set({ cart: get().cart.filter((i) => i.id !== cartItemId) });
+
+            if (!get().token || !item) return;
+            const request = isBundleProduct(item.product)
+                ? api.delete(`/cart/bundles/${item.product.id}`)
+                : api.delete(`/cart/${item.product.id}`);
+            request.then(res => applyServerCart(res.data.cart)).catch(error => {
+                notifyError(error);
+                refreshCart();
+            });
+        },
+
+        updateCartQuantity: (cartItemId, qty) => {
+            if (qty <= 0) {
+                get().removeFromCart(cartItemId);
+                return;
+            }
+            const item = get().cart.find((i) => i.id === cartItemId);
+            set({
+                cart: get().cart.map((i) => (i.id === cartItemId ? { ...i, quantity: qty } : i))
+            });
+
+            if (!get().token || !item) return;
+            const request = isBundleProduct(item.product)
+                ? api.put('/cart/bundles', { bundleId: item.product.id, quantity: qty })
+                : api.put('/cart', { productId: item.product.id, quantity: qty });
+            request.then(res => applyServerCart(res.data.cart)).catch(error => {
+                notifyError(error);
+                refreshCart();
+            });
+        },
+
+        clearCart: () => {
+            set({ cart: [], appliedCoupon: null });
+            if (get().token) {
+                api.delete('/cart').catch(notifyError);
+            }
+        },
+
+        // ---------- Wishlist ----------
+        toggleWishlist: (productId) => {
+            const prevWish = get().wishlist;
+            const isExist = prevWish.includes(productId);
+            const next = isExist ? prevWish.filter((id) => id !== productId) : [...prevWish, productId];
+            set({ wishlist: next });
+
+            if (!get().token) return;
+            const request = isExist
+                ? api.delete(`/users/me/wishlist/${productId}`)
+                : api.post(`/users/me/wishlist/${productId}`);
+            request.catch(error => {
+                set({ wishlist: prevWish });
+                notifyError(error);
+            });
+        },
+
+        // ---------- Coupons ----------
+        applyCoupon: async (code) => {
+            const codeClean = code.toUpperCase().trim();
+            const subtotal = get().cart.reduce(
+                (sum, item) => sum + (item.product.discountPrice ?? item.product.price) * item.quantity,
+                0
+            );
+
+            try {
+                const res = await api.post('/coupons/validate', { code: codeClean, subtotal });
+                const coupon = mapCoupon(res.data.coupon);
+                if (get().token) {
+                    const cartRes = await api.post('/cart/coupon', { code: codeClean });
+                    set({ appliedCoupon: coupon });
+                    applyServerCart(cartRes.data.cart);
+                } else {
+                    set({ appliedCoupon: coupon });
+                }
+                return null;
+            } catch (error) {
+                return errorMessage(error, get().language);
+            }
+        },
+
+        removeCoupon: () => {
+            set({ appliedCoupon: null });
+            if (get().token) {
+                api.delete('/cart/coupon').catch(notifyError);
+            }
+        },
+
+        // ---------- Addresses ----------
+        addNewAddress: async (addr) => {
+            const user = get().user;
+            if (!user) return null;
+            try {
+                const { isDefault, ...fields } = addr;
+                const res = await api.post('/users/me/addresses', {
+                    ...fields,
+                    addressLine2: fields.addressLine2 || '',
+                    isDefault: user.addresses.length === 0 ? true : isDefault
+                });
+                set({ user: { ...user, addresses: res.data.addresses.map(mapAddress) } });
+                return null;
+            } catch (error) {
+                const message = error instanceof ApiError && error.errors?.length
+                    ? (error.errors as string[]).join(' • ')
+                    : errorMessage(error, get().language);
+                toast.error(message);
+                return message;
+            }
+        },
+
+        deleteAddress: (id) => {
+            const user = get().user;
+            if (!user) return;
+            set({ user: { ...user, addresses: user.addresses.filter((a) => a.id !== id) } });
+            api.delete(`/users/me/addresses/${id}`)
+                .then(res => {
+                    const latest = get().user;
+                    if (latest) set({ user: { ...latest, addresses: res.data.addresses.map(mapAddress) } });
+                })
+                .catch(error => {
+                    set({ user });
+                    notifyError(error);
+                });
+        },
+
+        // ---------- Orders ----------
+        placeOrder: async (addr, payment, contact) => {
+            const res = await api.post('/orders', {
+                address: {
+                    fullName: addr.fullName,
+                    phone: addr.phone,
+                    addressLine1: addr.addressLine1,
+                    addressLine2: addr.addressLine2 || '',
+                    city: addr.city,
+                    state: addr.state || '',
+                    postalCode: addr.postalCode || '',
+                    country: addr.country || 'Saudi Arabia'
+                },
+                ...(contact && { contact }),
+                paymentMethod: payment
+            });
+            const newOrder = mapOrder(res.data.order);
+            set((state) => ({ orders: [newOrder, ...state.orders], cart: [], appliedCoupon: null }));
+            return newOrder;
+        },
+
+        cancelOrder: async (orderId, reason) => {
+            try {
+                const res = await api.patch(`/orders/${orderId}/cancel`, { reason: reason || '' });
+                const updated = mapOrder(res.data.order);
+                set({ orders: get().orders.map(o => (o.id === orderId ? updated : o)) });
+                // Stock went back to the shelves - refresh product availability
+                get().loadCatalog();
+                return null;
+            } catch (error) {
+                return errorMessage(error, get().language);
+            }
+        },
+
+        reorder: async (orderId) => {
+            try {
+                const res = await api.post(`/orders/${orderId}/reorder`);
+                applyServerCart(res.data.cart);
+                return null;
+            } catch (error) {
+                return errorMessage(error, get().language);
+            }
+        },
+
+        setSearchQuery: (query) => set({ searchQuery: query }),
+
+        addToSearchHistory: (query) => {
+            if (!query.trim()) return;
+            const prev = get().searchHistory;
+            const filtered = prev.filter((q) => q.toLowerCase() !== query.toLowerCase());
+            set({ searchHistory: [query, ...filtered].slice(0, 5) });
+        },
+
+        clearSearchHistory: () => set({ searchHistory: [] }),
+        setActiveCategory: (slug) => set({ activeCategory: slug }),
+        setActiveSkinType: (type) => set({ activeSkinType: type }),
+        setPriceRange: (range) => set({ priceRange: range }),
+        setSortBy: (sort) => set({ sortBy: sort })
+    };
+}, {
+    name: 'aura-store',
+    storage: createJSONStorage(() => localStorage),
+    // Rehydrated manually in AppProvider (after mount) to avoid SSR hydration mismatches
+    skipHydration: true,
+    // Session token + guest cart/wishlist/coupon survive reloads; everything else comes from the API
+    partialize: (state) => ({
+        token: state.token,
+        cart: state.cart,
+        wishlist: state.wishlist,
+        appliedCoupon: state.appliedCoupon,
+        searchHistory: state.searchHistory
+    })
 }));

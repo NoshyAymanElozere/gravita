@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { phoneRule } = require('./common.validation');
 
 // مخطط التحقق لتسجيل الدخول (Login Validation Schema)
 const loginSchema = Joi.object({
@@ -47,6 +48,7 @@ const registerSchema = Joi.object({
             'string.min': 'كلمة المرور يجب أن لا تقل عن 6 أحرف',
             'any.required': 'كلمة المرور حقل إجباري'
         }),
+    phone: phoneRule.allow('').optional(),
     role: Joi.string().valid('user').optional() // نسمح بـ user فقط للتسجيل، ولا يمكن تسجيل أدمن من هنا
 });
 

@@ -1,125 +1,86 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const validate = require('../middlewares/validate.middleware');
 const { loginSchema, registerSchema } = require('../validations/auth.validation');
+const { protect, signToken } = require('../middlewares/auth.middleware');
+const asyncHandler = require('../utils/asyncHandler');
+const AppError = require('../utils/AppError');
 
-// مسار تسجيل حساب جديد لمستخدم عادي - POST /api/auth/register
-router.post('/register', validate(registerSchema), async (req, res) => {
-    try {
-        const { name, email, password } = req.body;
-
-        // 1. التحقق من عدم تكرار البريد الإلكتروني
-        const userExists = await User.findOne({ email });
-        if (userExists) {
-            return res.status(400).json({
-                status: 'fail',
-                message: 'البريد الإلكتروني مستخدم بالفعل! يرجى استخدام بريد آخر'
-            });
-        }
-
-        // 2. تشفير كلمة المرور
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // 3. إنشاء مستخدم جديد (بشكل افتراضي يكون دوره 'user')
-        const newUser = new User({
-            name,
-            email,
-            password: hashedPassword,
-            role: 'user' // إجبار الحساب على أن يكون 'user' فقط
-        });
-
-        // 4. حفظ المستخدم في قاعدة البيانات
-        const savedUser = await newUser.save();
-
-        // 5. إنشاء رمز الأمان (JWT Token) لتسجيل الدخول مباشرة
-        const token = jwt.sign(
-            { id: savedUser._id, role: savedUser.role },
-            process.env.JWT_SECRET,
-            { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
-        );
-
-        res.status(201).json({
-            status: 'success',
-            message: '🎉 تم تسجيل حسابك بنجاح!',
-            token,
-            data: {
-                user: {
-                    id: savedUser._id,
-                    name: savedUser.name,
-                    email: savedUser.email,
-                    role: savedUser.role
-                }
-            }
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: error.message
-        });
-    }
+// بيانات المستخدم التي تُرجع للواجهة (بدون كلمة المرور)
+const publicUser = (user) => ({
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    phone: user.phone,
+    role: user.role
 });
 
-// مسار تسجيل الدخول - POST /api/auth/login
-router.post('/login', validate(loginSchema), async (req, res) => {
-    try {
-        const { email, password } = req.body;
+// مسار تسجيل حساب جديد لمستخدم عادي - POST /api/auth/register
+router.post('/register', validate(registerSchema), asyncHandler(async (req, res) => {
+    const { name, email, password, phone } = req.body;
 
-        // 1. البحث عن المستخدم بالبريد الإلكتروني
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(401).json({
-                status: 'fail',
-                message: 'البريد الإلكتروني أو كلمة المرور غير صحيحة'
-            });
-        }
-
-        // التحقق مما إذا كان الحساب نشطاً
-        if (!user.isActive) {
-            return res.status(403).json({
-                status: 'fail',
-                message: 'تم تعطيل هذا الحساب، يرجى التواصل مع المسؤول!'
-            });
-        }
-
-        // 2. التحقق من صحة كلمة المرور
-        const isPasswordCorrect = await bcrypt.compare(password, user.password);
-        if (!isPasswordCorrect) {
-            return res.status(401).json({
-                status: 'fail',
-                message: 'البريد الإلكتروني أو كلمة المرور غير صحيحة'
-            });
-        }
-
-        // 3. إنشاء رمز الأمان (JWT Token)
-        const token = jwt.sign(
-            { id: user._id, role: user.role },
-            process.env.JWT_SECRET,
-            { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
-        );
-
-        // 4. إرجاع النتيجة والرمز
-        res.status(200).json({
-            status: 'success',
-            message: '👋 تم تسجيل الدخول بنجاح!',
-            token,
-            data: {
-                user: {
-                    id: user._id,
-                    name: user.name,
-                    email: user.email,
-                    role: user.role
-                }
-            }
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: error.message
-        });
+    // 1. التحقق من عدم تكرار البريد الإلكتروني
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+        throw new AppError('البريد الإلكتروني مستخدم بالفعل! يرجى استخدام بريد آخر', 400);
     }
+
+    // 2. تشفير كلمة المرور وإنشاء المستخدم (بشكل إجباري يكون دوره 'user')
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const savedUser = await User.create({
+        name,
+        email,
+        phone: phone || '',
+        password: hashedPassword,
+        role: 'user'
+    });
+
+    // 3. إنشاء رمز الأمان (JWT Token) لتسجيل الدخول مباشرة
+    res.status(201).json({
+        status: 'success',
+        message: '🎉 تم تسجيل حسابك بنجاح!',
+        token: signToken(savedUser),
+        data: {
+            user: publicUser(savedUser)
+        }
+    });
+}));
+
+// مسار تسجيل الدخول - POST /api/auth/login
+router.post('/login', validate(loginSchema), asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+
+    // 1. البحث عن المستخدم بالبريد الإلكتروني (مع كلمة المرور المخفية افتراضياً)
+    const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+        throw new AppError('البريد الإلكتروني أو كلمة المرور غير صحيحة', 401);
+    }
+
+    // 2. التحقق مما إذا كان الحساب نشطاً
+    if (!user.isActive) {
+        throw new AppError('تم تعطيل هذا الحساب، يرجى التواصل مع المسؤول!', 403);
+    }
+
+    res.status(200).json({
+        status: 'success',
+        message: '👋 تم تسجيل الدخول بنجاح!',
+        token: signToken(user),
+        data: {
+            user: publicUser(user)
+        }
+    });
+}));
+
+// جلب المستخدم الحالي من الـ Token (لاستعادة الجلسة عند فتح الموقع) - GET /api/auth/me
+router.get('/me', protect, (req, res) => {
+    res.status(200).json({
+        status: 'success',
+        data: {
+            user: publicUser(req.user)
+        }
+    });
 });
 
 module.exports = router;

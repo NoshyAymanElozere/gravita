@@ -41,6 +41,7 @@ const createBundleSchema = Joi.object({
     items: Joi.array().items(bundleItemSchema).min(2).required().messages({
         'array.min': 'الباقة يجب أن تحتوي على منتجين على الأقل'
     }),
+    sortOrder: Joi.number().integer(),
     isActive: Joi.boolean()
 });
 
@@ -60,6 +61,7 @@ const updateBundleSchema = Joi.object({
     items: Joi.array().items(bundleItemSchema).min(2).messages({
         'array.min': 'الباقة يجب أن تحتوي على منتجين على الأقل'
     }),
+    sortOrder: Joi.number().integer(),
     isActive: Joi.boolean()
 }).min(1).messages({
     'object.min': 'يجب تقديم حقل واحد على الأقل للتحديث'

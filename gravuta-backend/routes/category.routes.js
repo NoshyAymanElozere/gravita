@@ -1,54 +1,53 @@
 const express = require('express');
 const router = express.Router();
 const Category = require('../models/Category');
+const Product = require('../models/Product');
 const paginate = require('../utils/paginate');
+const asyncHandler = require('../utils/asyncHandler');
+const AppError = require('../utils/AppError');
+const { idOrSlugFilter } = require('../utils/helpers');
 
-// 1️⃣ جلب كافة الفئات - GET /api/categories
-router.get('/', async (req, res) => {
-    try {
-        const { results, pagination } = await paginate(Category, {}, req.query);
-        res.status(200).json({
-            status: 'success',
-            count: results.length,
-            pagination,
-            data: results
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: 'error',
-            message: error.message
-        });
+// عدد المنتجات المفعلة في كل فئة
+const countProductsByCategory = async () => {
+    const counts = await Product.aggregate([
+        { $match: { isActive: { $ne: false } } },
+        { $group: { _id: '$category', count: { $sum: 1 } } }
+    ]);
+    return Object.fromEntries(counts.map(c => [String(c._id), c.count]));
+};
+
+// 1️⃣ جلب كافة الفئات المفعلة مرتبة - GET /api/categories
+router.get('/', asyncHandler(async (req, res) => {
+    const { results, pagination } = await paginate(
+        Category,
+        { isActive: { $ne: false } },
+        { limit: 50, ...req.query },
+        '',
+        '',
+        { sortOrder: 1, nameEn: 1 }
+    );
+    const counts = await countProductsByCategory();
+
+    res.status(200).json({
+        status: 'success',
+        count: results.length,
+        pagination,
+        data: results.map(category => ({ ...category.toJSON(), productCount: counts[String(category._id)] || 0 }))
+    });
+}));
+
+// 2️⃣ جلب فئة واحدة بواسطة الـ ID أو الـ slug - GET /api/categories/:idOrSlug
+router.get('/:idOrSlug', asyncHandler(async (req, res) => {
+    const category = await Category.findOne({ ...idOrSlugFilter(req.params.idOrSlug), isActive: { $ne: false } });
+
+    if (!category) {
+        throw new AppError('الفئة غير موجودة', 404);
     }
-});
 
-// 2️⃣ جلب فئة واحدة بواسطة الـ ID - GET /api/categories/:id
-router.get('/:id', async (req, res) => {
-    try {
-        const category = await Category.findById(req.params.id);
-
-        if (!category) {
-            return res.status(404).json({
-                status: 'fail',
-                message: 'الفئة غير موجودة'
-            });
-        }
-
-        res.status(200).json({
-            status: 'success',
-            data: category
-        });
-    } catch (error) {
-        if (error.name === 'CastError') {
-            return res.status(400).json({
-                status: 'fail',
-                message: 'معرف الفئة غير صحيح (Invalid ID format)'
-            });
-        }
-        res.status(500).json({
-            status: 'error',
-            message: 'معرف الفئة غير صحيح أو حدث خطأ بالسيرفر'
-        });
-    }
-});
+    res.status(200).json({
+        status: 'success',
+        data: category
+    });
+}));
 
 module.exports = router;

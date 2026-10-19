@@ -270,14 +270,14 @@ async function fetchCart() {
             const totalQty = state.cart.items.reduce((acc, item) => acc + item.quantity, 0);
             countBadge.textContent = totalQty;
             summaryQty.textContent = totalQty;
-            summaryTotal.textContent = state.cart.totalPrice;
+            summaryTotal.textContent = state.cart.total ?? 0;
 
             itemsList.innerHTML = state.cart.items.map(item => `
                 <div class="cart-item">
                     <img src="${item.product && item.product.image ? API_URL + item.product.image : 'https://placehold.co/60x60?text=Product'}" class="cart-item-img" alt="">
                     <div class="cart-item-details">
-                        <h4 class="cart-item-name">${item.product ? item.product.name : 'منتج غير معروف'}</h4>
-                        <div class="cart-item-price">$${item.product ? item.product.price : 0}</div>
+                        <h4 class="cart-item-name">${item.product ? item.product.name : (item.bundle ? '🎁 ' + item.bundle.nameAr : 'منتج غير معروف')}</h4>
+                        <div class="cart-item-price">$${item.unitPrice ?? 0}</div>
                     </div>
                     <div class="cart-item-qty">
                         <button class="qty-btn" onclick="updateCartItemQty('${item.product ? item.product._id : ''}', ${item.quantity - 1})">-</button>
@@ -403,7 +403,16 @@ document.getElementById('checkout-form').addEventListener('submit', async (e) =>
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${state.token}`
             },
-            body: JSON.stringify({ shippingAddress, phone, paymentMethod })
+            // عنوان الشحن أصبح كائناً منظماً، والمدينة تؤخذ من آخر جزء في العنوان النصي
+            body: JSON.stringify({
+                address: {
+                    fullName: state.user.name,
+                    phone,
+                    addressLine1: shippingAddress,
+                    city: cityFromAddress(shippingAddress)
+                },
+                paymentMethod: paymentMethod === 'COD' ? 'cod' : 'credit_card'
+            })
         });
 
         const result = await response.json();
@@ -441,14 +450,14 @@ async function fetchMyOrders() {
                 <div class="order-card">
                     <div class="order-header">
                         <div>
-                            <span class="order-id-label">رقم الطلب: #${order._id.substring(order._id.length - 8).toUpperCase()}</span>
+                            <span class="order-id-label">رقم الطلب: #${order.orderNumber || order._id.substring(order._id.length - 8).toUpperCase()}</span>
                             <div class="order-date">${new Date(order.createdAt).toLocaleString('ar-EG')}</div>
                         </div>
                         <span class="order-status ${order.status}">${getOrderStatusArabic(order.status)}</span>
                     </div>
                     <div class="order-details-body">
                         <div class="order-items-summary">
-                            ${order.items.map(item => `• ${item.product ? item.product.name : 'منتج محذوف'} (x${item.quantity})`).join('<br>')}
+                            ${order.items.map(item => `• ${item.nameAr || item.nameEn || 'منتج محذوف'} (x${item.quantity})`).join('<br>')}
                         </div>
                         <div class="order-price-label">$${order.totalPrice}</div>
                     </div>
@@ -462,13 +471,29 @@ async function fetchMyOrders() {
     }
 }
 
+// عرض عنوان الشحن (كائن في الطلبات الجديدة أو نص في الطلبات القديمة)
+function formatAddress(address) {
+    if (!address) return '';
+    if (typeof address === 'string') return address;
+    return [address.addressLine1, address.city, address.phone].filter(Boolean).join(' - ');
+}
+
+// استخراج المدينة من آخر جزء في العنوان النصي (e.g. "Olaya St 5, Riyadh")
+function cityFromAddress(text) {
+    const last = (text.split(/[,،]/).pop() || '').trim();
+    return last.length >= 2 ? last : 'N/A';
+}
+
 function getOrderStatusArabic(status) {
     const statuses = {
         'pending': '⏳ معلق',
         'processing': '⚙️ قيد المعالجة',
         'shipped': '🚚 تم الشحن',
         'delivered': '✅ تم التوصيل',
-        'cancelled': '❌ ملغي'
+        'cancelled': '❌ ملغي',
+        'confirmed': '👍 مؤكد',
+        'return_requested': '↩ طلب استرجاع',
+        'returned': '📦 مُسترجع'
     };
     return statuses[status] || status;
 }
@@ -598,7 +623,13 @@ document.getElementById('profile-update-form').addEventListener('submit', async 
     const password = document.getElementById('edit-profile-password').value;
 
     const updateData = { name, email };
-    if (password) updateData.password = password;
+    if (password) {
+        // تغيير كلمة المرور يتطلب كلمة المرور الحالية
+        const currentPassword = window.prompt('أدخل كلمة المرور الحالية لتأكيد التغيير');
+        if (!currentPassword) return;
+        updateData.password = password;
+        updateData.currentPassword = currentPassword;
+    }
 
     try {
         const response = await fetch(`${API_URL}/api/users/profile`, {
@@ -1148,13 +1179,13 @@ async function fetchAdminOrders(page = 1) {
         if (result.status === 'success' && result.data.orders.length > 0) {
             tbody.innerHTML = result.data.orders.map(ord => `
                 <tr>
-                    <td style="font-family:var(--font-en)">#${ord._id.substring(ord._id.length - 8).toUpperCase()}</td>
+                    <td style="font-family:var(--font-en)">#${ord.orderNumber || ord._id.substring(ord._id.length - 8).toUpperCase()}</td>
                     <td>
                         <div style="font-weight:700;color:var(--text-white)">${ord.user ? ord.user.name : 'عميل غير معروف'}</div>
                         <div style="font-size:0.75rem;color:var(--text-muted)">${ord.user ? ord.user.email : ''}</div>
                     </td>
                     <td style="font-family:var(--font-en);font-weight:700">$${ord.totalPrice}</td>
-                    <td style="font-size:0.8rem;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${ord.shippingAddress}">${ord.shippingAddress}</td>
+                    <td style="font-size:0.8rem;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${formatAddress(ord.shippingAddress)}">${formatAddress(ord.shippingAddress)}</td>
                     <td>
                         <span class="order-status ${ord.status}">${getOrderStatusArabic(ord.status)}</span>
                     </td>
@@ -1162,10 +1193,13 @@ async function fetchAdminOrders(page = 1) {
                     <td>
                         <select class="form-group admin-order-status-select" onchange="updateOrderStatus('${ord._id}', this.value)">
                             <option value="pending" ${ord.status === 'pending' ? 'selected' : ''}>⏳ معلق</option>
+                            <option value="confirmed" ${ord.status === 'confirmed' ? 'selected' : ''}>👍 مؤكد</option>
                             <option value="processing" ${ord.status === 'processing' ? 'selected' : ''}>⚙️ معالجة</option>
                             <option value="shipped" ${ord.status === 'shipped' ? 'selected' : ''}>🚚 شحن</option>
                             <option value="delivered" ${ord.status === 'delivered' ? 'selected' : ''}>✅ توصيل</option>
                             <option value="cancelled" ${ord.status === 'cancelled' ? 'selected' : ''}>❌ إلغاء</option>
+                            <option value="return_requested" ${ord.status === 'return_requested' ? 'selected' : ''}>↩ طلب استرجاع</option>
+                            <option value="returned" ${ord.status === 'returned' ? 'selected' : ''}>📦 مُسترجع</option>
                         </select>
                     </td>
                 </tr>

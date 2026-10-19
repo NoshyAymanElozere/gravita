@@ -1,6 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const AppError = require('../utils/AppError');
 
 // التأكد من وجود مجلد uploads في مسار المشروع الرئيسي
 const uploadDir = path.join(__dirname, '../uploads');
@@ -29,7 +30,7 @@ const fileFilter = (req, file, cb) => {
     if (extname && mimetype) {
         return cb(null, true);
     } else {
-        cb(new Error('عذراً، يجب أن يكون الملف المرفوع صورة فقط (jpeg, jpg, png, gif, webp)'), false);
+        cb(new AppError('عذراً، يجب أن يكون الملف المرفوع صورة فقط (jpeg, jpg, png, gif, webp)', 400), false);
     }
 };
 

@@ -1,43 +1,66 @@
 const Joi = require('joi');
+const { objectId, phoneRule, addressSchema } = require('./common.validation');
+const { ORDER_STATUSES, PAYMENT_METHODS } = require('../models/Order');
 
 const updateOrderStatusSchema = Joi.object({
     status: Joi.string()
-        .valid('pending', 'processing', 'shipped', 'delivered', 'cancelled')
+        .valid(...ORDER_STATUSES)
         .required()
         .messages({
-            'any.only': 'حالة الطلب غير صالحة، يجب أن تكون إحدى القيم: pending, processing, shipped, delivered, cancelled',
+            'any.only': `حالة الطلب غير صالحة، يجب أن تكون إحدى القيم: ${ORDER_STATUSES.join(', ')}`,
             'any.required': 'حالة الطلب مطلوبة'
-        })
+        }),
+    note: Joi.string().trim().max(300).allow(''),
+    trackingNumber: Joi.string().trim().max(60).allow(''),
+    estimatedDelivery: Joi.date().iso()
 });
 
+// إنشاء طلب من العربة: إما addressId (عنوان محفوظ) أو address (عنوان جديد)
 const createOrderSchema = Joi.object({
-    shippingAddress: Joi.string()
-        .min(5)
-        .max(200)
-        .trim()
-        .required()
-        .messages({
-            'string.empty': 'عنوان الشحن مطلوب لإرسال الطلب',
-            'string.min': 'عنوان الشحن يجب أن لا يقل عن 5 أحرف',
-            'string.max': 'عنوان الشحن طويل جداً (الحد الأقصى 200 حرف)',
-            'any.required': 'عنوان الشحن حقل إجباري'
-        }),
-    phone: Joi.string()
-        .trim()
-        .required()
-        .messages({
-            'string.empty': 'رقم الهاتف مطلوب للاتصال والتسليم',
-            'any.required': 'رقم الهاتف حقل إجباري'
-        }),
+    addressId: objectId('معرف العنوان'),
+    address: addressSchema,
+    saveAddress: Joi.boolean().default(false),
+    contact: Joi.object({
+        name: Joi.string().trim().min(3).max(100),
+        email: Joi.string().trim().email(),
+        phone: phoneRule
+    }),
     paymentMethod: Joi.string()
-        .valid('COD', 'Card')
-        .default('COD')
+        .valid(...PAYMENT_METHODS)
+        .default('cod')
         .messages({
-            'any.only': 'طريقة الدفع المحددة غير مدعومة (يجب أن تكون COD أو Card)'
-        })
+            'any.only': `طريقة الدفع غير مدعومة (${PAYMENT_METHODS.join(', ')})`
+        }),
+    notes: Joi.string().trim().max(500).allow('')
+}).xor('addressId', 'address').messages({
+    'object.missing': 'عنوان الشحن مطلوب: أرسل addressId أو address',
+    'object.xor': 'أرسل addressId أو address وليس كلاهما'
+});
+
+const cancelOrderSchema = Joi.object({
+    reason: Joi.string().trim().max(300).allow('')
+});
+
+const returnOrderSchema = Joi.object({
+    reason: Joi.string().trim().min(5).max(500).required().messages({
+        'any.required': 'سبب الاسترجاع مطلوب',
+        'string.min': 'يرجى توضيح سبب الاسترجاع'
+    })
+});
+
+const orderQuerySchema = Joi.object({
+    page: Joi.number().integer().min(1),
+    limit: Joi.number().integer().min(1).max(100),
+    status: Joi.string().valid(...ORDER_STATUSES, 'in-transit'),
+    q: Joi.string().trim().max(100).allow(''),
+    from: Joi.date().iso(),
+    to: Joi.date().iso()
 });
 
 module.exports = {
     createOrderSchema,
-    updateOrderStatusSchema
+    updateOrderStatusSchema,
+    cancelOrderSchema,
+    returnOrderSchema,
+    orderQuerySchema
 };

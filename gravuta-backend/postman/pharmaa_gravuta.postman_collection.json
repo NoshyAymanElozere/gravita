@@ -1,1463 +1,3153 @@
 {
 	"info": {
-		"_postman_id": "7a7acbea-311b-45c4-a783-2904a2bd60bd",
-		"name": "Learn Node.js API Collection",
-		"description": "Clean separated folders for User APIs and Admin APIs.",
+		"name": "Pharmaa × Gravuta API",
+		"description": "كل مسارات الـ API المطلوبة لواجهة pharmaa. ابدأ بـ Auth → Login (user) و Login (admin) ثم Catalog لحفظ المعرفات تلقائياً.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "User APIs",
+			"name": "🔐 Auth",
 			"item": [
 				{
-					"name": "Authentication",
-					"item": [
-						{
-							"name": "Register",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"const response = pm.response.json();",
-											"if (response.token) {",
-											"    pm.collectionVariables.set(\"token\", response.token);",
-											"    console.log(\"✅ Saved token to collection variable 'token'\");",
-											"}"
-										],
-										"type": "text/javascript"
-									}
-								}
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": [
+								"{{base_url}}"
 							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"user@test.com\",\n    \"password\": \"password123\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}/api/auth/register",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"register"
-									]
-								}
-							},
-							"response": []
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
 						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Sara Ahmed\",\n    \"email\": \"sara@example.com\",\n    \"password\": \"secret12\",\n    \"phone\": \"+966 50 111 2222\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"event": [
 						{
-							"name": "Login",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"const response = pm.response.json();",
-											"if (response.token) {",
-											"    pm.collectionVariables.set(\"token\", response.token);",
-											"    console.log(\"✅ Saved token to collection variable 'token'\");",
-											"}"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"Admin\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}/api/auth/login",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"login"
-									]
-								}
-							},
-							"response": []
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.token; if (v) pm.collectionVariables.set('token', v); } catch (e) {}"
+								]
+							}
 						}
 					]
 				},
 				{
-					"name": "Products",
-					"item": [
-						{
-							"name": "Get All Products",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/products",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"products"
-									]
-								}
-							},
-							"response": []
+					"name": "Login (user)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
 						},
-						{
-							"name": "Get Product By ID",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/products/PRODUCT_ID",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"products",
-										"6ad53e72ce5be60fa6318ca1"
-									]
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user@test.com\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							},
-							"response": []
+							}
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.token; if (v) pm.collectionVariables.set('token', v); } catch (e) {}"
+								]
+							}
 						}
 					]
+				},
+				{
+					"name": "Login (admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"Admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.token; if (v) pm.collectionVariables.set('admin_token', v); } catch (e) {}"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Current user (restore session)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🛍️ Catalog",
+			"item": [
+				{
+					"name": "Categories (with productCount)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.data[0]._id; if (v) pm.collectionVariables.set('category_id', v); } catch (e) {}"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Category by slug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/categories/{{category_slug}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"{{category_slug}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Products (shop filters)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products?category=serums&skinType=dry&minPrice=0&maxPrice=500&sort=best-selling&page=1&limit=12",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "serums"
+								},
+								{
+									"key": "skinType",
+									"value": "dry"
+								},
+								{
+									"key": "minPrice",
+									"value": "0"
+								},
+								{
+									"key": "maxPrice",
+									"value": "500"
+								},
+								{
+									"key": "sort",
+									"value": "best-selling"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "12"
+								}
+							]
+						},
+						"description": "sort: best-selling | price-low-high | price-high-low | newest | rating. Also: q, bestSeller, isNew, inStock"
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.data[0]._id; if (v) pm.collectionVariables.set('product_id', v); } catch (e) {}"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Search products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products?q=serum",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "serum"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Best sellers (home)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products?bestSeller=true&limit=8",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "bestSeller",
+									"value": "true"
+								},
+								{
+									"key": "limit",
+									"value": "8"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "New arrivals (home)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products?isNew=true&sort=newest&limit=8",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "isNew",
+									"value": "true"
+								},
+								{
+									"key": "sort",
+									"value": "newest"
+								},
+								{
+									"key": "limit",
+									"value": "8"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Product by slug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/{{product_slug}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"{{product_slug}}"
+							]
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.data._id; if (v) pm.collectionVariables.set('product_id', v); } catch (e) {}"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Related products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/{{product_id}}/related?limit=4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"{{product_id}}",
+								"related"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "4"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Product reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/{{product_id}}/reviews?page=1&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"{{product_id}}",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					}
 				},
 				{
 					"name": "Bundles",
-					"item": [
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/bundles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bundles"
+							]
+						}
+					},
+					"event": [
 						{
-							"name": "Get All Active Bundles",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/bundles?page=1&limit=10",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"bundles"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "limit",
-											"value": "10"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get Bundle By Slug",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/bundles/dewy-hydration-duo",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"bundles",
-										"dewy-hydration-duo"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get Bundle By ID",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/bundles/6ad53e7229f647c88e8a422f",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"bundles",
-										"6ad53e7229f647c88e8a422f"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get Bundles By Product ID (Upsell)",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/bundles/by-product/6ad53e72ce5be60fa6318ca1",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"bundles",
-										"by-product",
-										"6ad53e72ce5be60fa6318ca1"
-									]
-								}
-							},
-							"response": []
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.data[0]._id; if (v) pm.collectionVariables.set('bundle_id', v); } catch (e) {}"
+								]
+							}
 						}
 					]
 				},
 				{
-					"name": "Categories",
-					"item": [
-						{
-							"name": "Get All Categories",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/categories",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"categories"
-									]
+					"name": "Bundle by slug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/bundles/{{bundle_slug}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bundles",
+								"{{bundle_slug}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Bundles containing product (upsell)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/bundles/by-product/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bundles",
+								"by-product",
+								"{{product_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Featured reviews (home)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/reviews/featured?limit=6",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"featured"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "6"
 								}
-							},
-							"response": []
+							]
+						}
+					}
+				},
+				{
+					"name": "Newsletter subscribe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/newsletter",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"newsletter"
+							]
 						},
-						{
-							"name": "Get Category By ID",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/categories/CATEGORY_ID",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"categories",
-										"6ad53e71ce5be60fa6318c9b"
-									]
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"news@example.com\",\n    \"lang\": \"en\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							},
-							"response": []
+							}
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "👤 Profile",
+			"item": [
+				{
+					"name": "Get profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Sara A.\",\n    \"phone\": \"+966 50 111 3333\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Change password",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/me/password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								"password"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"currentPassword\": \"password123\",\n    \"newPassword\": \"password456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.token; if (v) pm.collectionVariables.set('token', v); } catch (e) {}"
+								]
+							}
 						}
 					]
 				},
 				{
-					"name": "Cart",
-					"item": [
-						{
-							"name": "Get Cart",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/cart",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"cart"
-									]
-								}
-							},
-							"response": []
+					"name": "List addresses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/me/addresses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								"addresses"
+							]
 						},
-						{
-							"name": "Add Item to Cart",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"productId\": \"6ad53e72ce5be60fa6318ca1\",\n    \"quantity\": 2\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}/api/cart",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"cart"
-									]
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
 								}
-							},
-							"response": []
+							]
+						}
+					}
+				},
+				{
+					"name": "Add address",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/me/addresses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								"addresses"
+							]
 						},
-						{
-							"name": "Update Item Quantity in Cart",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"productId\": \"6ad53e72ce5be60fa6318ca1\",\n    \"quantity\": 5\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}/api/cart",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"cart"
-									]
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
 								}
-							},
-							"response": []
+							]
 						},
-						{
-							"name": "Remove Item from Cart",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/cart/PRODUCT_ID",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"cart",
-										"6ad53e72ce5be60fa6318ca1"
-									]
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"Sara Ahmed\",\n    \"phone\": \"+966501112222\",\n    \"addressLine1\": \"7821 Al Reem Blvd\",\n    \"addressLine2\": \"Floor 14\",\n    \"city\": \"Riyadh\",\n    \"state\": \"Central\",\n    \"postalCode\": \"12282\",\n    \"country\": \"Saudi Arabia\",\n    \"isDefault\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							},
-							"response": []
-						},
+							}
+						}
+					},
+					"event": [
 						{
-							"name": "Clear Cart",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/cart",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"cart"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Add Bundle to Cart",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"bundleId\": \"6ad53e7229f647c88e8a422f\",\n    \"quantity\": 1\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}/api/cart/bundles",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"cart",
-										"bundles"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update Bundle Quantity in Cart",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"bundleId\": \"6ad53e7229f647c88e8a422f\",\n    \"quantity\": 2\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}/api/cart/bundles",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"cart",
-										"bundles"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Remove Bundle from Cart",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/cart/bundles/6ad53e7229f647c88e8a422f",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"cart",
-										"bundles",
-										"6ad53e7229f647c88e8a422f"
-									]
-								}
-							},
-							"response": []
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.data.address._id; if (v) pm.collectionVariables.set('address_id', v); } catch (e) {}"
+								]
+							}
 						}
 					]
+				},
+				{
+					"name": "Update address",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/me/addresses/{{address_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								"addresses",
+								"{{address_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"city\": \"Jeddah\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Set default address",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/me/addresses/{{address_id}}/default",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								"addresses",
+								"{{address_id}}",
+								"default"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete address",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/me/addresses/{{address_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								"addresses",
+								"{{address_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Wishlist",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/me/wishlist",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								"wishlist"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Add to wishlist",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/me/wishlist/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								"wishlist",
+								"{{product_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Remove from wishlist",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/me/wishlist/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me",
+								"wishlist",
+								"{{product_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete my account",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🛒 Cart",
+			"item": [
+				{
+					"name": "Get cart (priced)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/cart?paymentMethod=cod",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cart"
+							],
+							"query": [
+								{
+									"key": "paymentMethod",
+									"value": "cod"
+								}
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Add product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/cart",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cart"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": \"{{product_id}}\",\n    \"quantity\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Update product quantity",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/cart",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cart"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": \"{{product_id}}\",\n    \"quantity\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Remove product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/cart/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cart",
+								"{{product_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Add bundle",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/cart/bundles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cart",
+								"bundles"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bundleId\": \"{{bundle_id}}\",\n    \"quantity\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Update bundle quantity",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/cart/bundles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cart",
+								"bundles"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bundleId\": \"{{bundle_id}}\",\n    \"quantity\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Remove bundle",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/cart/bundles/{{bundle_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cart",
+								"bundles",
+								"{{bundle_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Apply coupon",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/cart/coupon",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cart",
+								"coupon"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"AURA20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Remove coupon",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/cart/coupon",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cart",
+								"coupon"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Merge guest cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/cart/merge",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cart",
+								"merge"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"items\": [\n        {\n            \"itemType\": \"product\",\n            \"id\": \"{{product_id}}\",\n            \"quantity\": 1\n        },\n        {\n            \"itemType\": \"bundle\",\n            \"id\": \"{{bundle_id}}\",\n            \"quantity\": 1\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Clear cart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/cart",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cart"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "📦 Orders",
+			"item": [
+				{
+					"name": "Place order (saved address)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addressId\": \"{{address_id}}\",\n    \"paymentMethod\": \"cod\",\n    \"notes\": \"Please call before delivery\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.data.order._id; if (v) pm.collectionVariables.set('order_id', v); } catch (e) {}"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Place order (new address)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"address\": {\n        \"fullName\": \"Sara Ahmed\",\n        \"phone\": \"+966501112222\",\n        \"addressLine1\": \"Tahlia St 42A\",\n        \"city\": \"Jeddah\",\n        \"postalCode\": \"21563\"\n    },\n    \"saveAddress\": true,\n    \"contact\": {\n        \"name\": \"Sara Ahmed\",\n        \"email\": \"sara@example.com\",\n        \"phone\": \"+966501112222\"\n    },\n    \"paymentMethod\": \"cod\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.data.order._id; if (v) pm.collectionVariables.set('order_id', v); } catch (e) {}"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "My orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders/my-orders?status=&page=1&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"my-orders"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": ""
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						},
+						"description": "status: pending | confirmed | processing | shipped (or in-transit) | delivered | cancelled | return_requested | returned",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Order details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders/{{order_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"{{order_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Cancel order",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/orders/{{order_id}}/cancel",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"{{order_id}}",
+								"cancel"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"Changed my mind\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Request return",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/orders/{{order_id}}/return",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"{{order_id}}",
+								"return"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"The product arrived damaged\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Reorder (buy again)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders/{{order_id}}/reorder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"{{order_id}}",
+								"reorder"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "⭐ Reviews",
+			"item": [
+				{
+					"name": "Add / update my review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/products/{{product_id}}/reviews",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"{{product_id}}",
+								"reviews"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rating\": 5,\n    \"comment\": \"My skin has never felt better!\",\n    \"lang\": \"en\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.data._id; if (v) pm.collectionVariables.set('review_id', v); } catch (e) {}"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Delete my review",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products/{{product_id}}/reviews",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"{{product_id}}",
+								"reviews"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Mark review helpful (toggle)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/reviews/{{review_id}}/helpful",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"{{review_id}}",
+								"helpful"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🛠️ Admin",
+			"item": [
+				{
+					"name": "Dashboard stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/stats?days=30",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"stats"
+							],
+							"query": [
+								{
+									"key": "days",
+									"value": "30"
+								}
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Products (all, incl. inactive)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/products?page=1&limit=20",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"products"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Product details (+ bundles)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"products",
+								"{{product_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"products"
+							]
+						},
+						"description": "Use form-data to upload image (field \"image\") and up to 6 gallery images (\"galleryImages\"). Arrays (benefitsEn...) as JSON strings in form-data.",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"slug\": \"rose-water-toner\",\n    \"nameEn\": \"Rose Water Toner\",\n    \"nameAr\": \"تونر ماء الورد\",\n    \"subtitleEn\": \"Hydrating floral toner\",\n    \"subtitleAr\": \"تونر مرطب بماء الورد\",\n    \"descriptionEn\": \"A gentle toner that balances and hydrates.\",\n    \"descriptionAr\": \"تونر لطيف يوازن ويرطب البشرة.\",\n    \"ingredientsEn\": \"Rosa Damascena Water, Glycerin\",\n    \"ingredientsAr\": \"ماء الورد الدمشقي، الجلسرين\",\n    \"howToUseEn\": \"Apply with a cotton pad.\",\n    \"howToUseAr\": \"يوضع بقطنة على الوجه.\",\n    \"skinTypeEn\": \"All, Sensitive\",\n    \"skinTypeAr\": \"جميع الأنواع، الحساسة\",\n    \"benefitsEn\": [\n        \"Balances pH\"\n    ],\n    \"benefitsAr\": [\n        \"يوازن الحموضة\"\n    ],\n    \"price\": 150,\n    \"discountPrice\": 120,\n    \"size\": \"200ml\",\n    \"category\": \"{{category_id}}\",\n    \"stock\": 50,\n    \"isBestSeller\": false,\n    \"isNew\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.data._id; if (v) pm.collectionVariables.set('product_id', v); } catch (e) {}"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Update product (price change re-prices bundles)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"products",
+								"{{product_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"price\": 160,\n    \"discountPrice\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Set stock",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/products/{{product_id}}/stock",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"products",
+								"{{product_id}}",
+								"stock"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"stock\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Adjust stock",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/products/{{product_id}}/stock",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"products",
+								"{{product_id}}",
+								"stock"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"adjust\": -5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Deactivate product (soft delete)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"products",
+								"{{product_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete product permanently",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/products/{{product_id}}?hard=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"products",
+								"{{product_id}}"
+							],
+							"query": [
+								{
+									"key": "hard",
+									"value": "true"
+								}
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Categories (all)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"categories"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"categories"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"slug\": \"body-care\",\n    \"nameEn\": \"Body Care\",\n    \"nameAr\": \"العناية بالجسم\",\n    \"descriptionEn\": \"Lotions and oils\",\n    \"descriptionAr\": \"لوشن وزيوت\",\n    \"sortOrder\": 7\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.data._id; if (v) pm.collectionVariables.set('category_id', v); } catch (e) {}"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Update category",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/categories/{{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"categories",
+								"{{category_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Delete category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/categories/{{category_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"categories",
+								"{{category_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Bundles (all)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/bundles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"bundles"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Bundle details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/bundles/{{bundle_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"bundles",
+								"{{bundle_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create bundle",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/bundles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"bundles"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"slug\": \"glow-starter-kit\",\n    \"nameEn\": \"Glow Starter Kit\",\n    \"nameAr\": \"مجموعة الإشراقة\",\n    \"descriptionEn\": \"Cleanse and hydrate.\",\n    \"descriptionAr\": \"تنظيف وترطيب.\",\n    \"discountPercentage\": 10,\n    \"items\": [\n        {\n            \"product\": \"<PRODUCT_ID_1>\",\n            \"stepEn\": \"Step 1: Cleanse\",\n            \"stepAr\": \"الخطوة 1: التنظيف\",\n            \"benefitEn\": \"Removes impurities\",\n            \"benefitAr\": \"يزيل الشوائب\",\n            \"quantity\": 1\n        },\n        {\n            \"product\": \"<PRODUCT_ID_2>\",\n            \"stepEn\": \"Step 2: Hydrate\",\n            \"stepAr\": \"الخطوة 2: الترطيب\",\n            \"benefitEn\": \"Deep hydration\",\n            \"benefitAr\": \"ترطيب عميق\",\n            \"quantity\": 1\n        }\n    ],\n    \"benefitsEn\": [\n        \"Glowing skin\"\n    ],\n    \"benefitsAr\": [\n        \"بشرة مشرقة\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.data._id; if (v) pm.collectionVariables.set('bundle_id', v); } catch (e) {}"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Update bundle",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/bundles/{{bundle_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"bundles",
+								"{{bundle_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"discountPercentage\": 20\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Recalculate bundle price",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/bundles/{{bundle_id}}/recalculate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"bundles",
+								"{{bundle_id}}",
+								"recalculate"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete bundle",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/bundles/{{bundle_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"bundles",
+								"{{bundle_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
 				},
 				{
 					"name": "Orders",
-					"item": [
-						{
-							"name": "Create Order (Checkout)",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/orders?status=pending&q=&page=1&limit=20",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "pending"
 								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"shippingAddress\": \"123 El-Tahrir Street, Cairo, Egypt\",\n    \"phone\": \"01012345678\",\n    \"paymentMethod\": \"COD\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
+								{
+									"key": "q",
+									"value": ""
 								},
-								"url": {
-									"raw": "{{base_url}}/api/orders",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"orders"
-									]
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
 								}
-							},
-							"response": []
+							]
 						},
-						{
-							"name": "Get My Orders",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/orders/my-orders",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"orders",
-										"my-orders"
-									]
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
 								}
-							},
-							"response": []
+							]
+						}
+					}
+				},
+				{
+					"name": "Order details (+ allowed transitions)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/orders/{{order_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"orders",
+								"{{order_id}}"
+							]
 						},
-						{
-							"name": "Get Order By ID",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/orders/ORDER_ID",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"orders",
-										"ORDER_ID"
-									]
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
 								}
-							},
-							"response": []
+							]
+						}
+					}
+				},
+				{
+					"name": "Update order status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/orders/{{order_id}}/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"orders",
+								"{{order_id}}",
+								"status"
+							]
+						},
+						"description": "pending → confirmed/processing/shipped/cancelled; shipped → delivered; delivered → returned; return_requested → returned/delivered",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"shipped\",\n    \"note\": \"Handed to courier\",\n    \"trackingNumber\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/users?q=&role=user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"users"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": ""
+								},
+								{
+									"key": "role",
+									"value": "user"
+								}
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.data[0]._id; if (v) pm.collectionVariables.set('user_id', v); } catch (e) {}"
+								]
+							}
 						}
 					]
 				},
 				{
-					"name": "Profile",
-					"item": [
-						{
-							"name": "Get Profile",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/users/profile",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"users",
-										"profile"
-									]
-								}
-							},
-							"response": []
+					"name": "User details (+ stats)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"{{user_id}}"
+							]
 						},
-						{
-							"name": "Update Profile",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"Test User Updated\",\n    \"email\": \"user_updated@test.com\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}/api/users/profile",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"users",
-										"profile"
-									]
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
 								}
-							},
-							"response": []
+							]
+						}
+					}
+				},
+				{
+					"name": "Create user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"users"
+							]
 						},
-						{
-							"name": "Delete Profile (Account)",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/users/profile",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"users",
-										"profile"
-									]
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
 								}
-							},
-							"response": []
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Staff\",\n    \"email\": \"staff@example.com\",\n    \"password\": \"secret12\",\n    \"role\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"{{user_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"isActive\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"{{user_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Coupons",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/coupons",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"coupons"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create coupon",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/coupons",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"coupons"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"EID30\",\n    \"discountType\": \"percentage\",\n    \"value\": 30,\n    \"maxDiscount\": 150,\n    \"minOrderAmount\": 200,\n    \"usageLimit\": 500,\n    \"perUserLimit\": 1,\n    \"expiresAt\": \"2026-12-31T23:59:59.000Z\",\n    \"descriptionEn\": \"Eid offer\",\n    \"descriptionAr\": \"عرض العيد\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const json = pm.response.json();",
+									"try { const v = json.data._id; if (v) pm.collectionVariables.set('coupon_id', v); } catch (e) {}"
+								]
+							}
 						}
 					]
+				},
+				{
+					"name": "Update coupon",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/coupons/{{coupon_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"coupons",
+								"{{coupon_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"isActive\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Delete coupon",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/coupons/{{coupon_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"coupons",
+								"{{coupon_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Reviews (moderation)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/reviews?isApproved=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "isApproved",
+									"value": "true"
+								}
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Hide / show review",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/reviews/{{review_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"reviews",
+								"{{review_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"isApproved\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Delete review",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/reviews/{{review_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"reviews",
+								"{{review_id}}"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Newsletter subscribers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/newsletter",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"newsletter"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
 				}
 			]
-		},
-		{
-			"name": "Admin APIs",
-			"item": [
-				{
-					"name": "Product Management",
-					"item": [
-						{
-							"name": "Create Product",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "name",
-											"value": "Admin Product Test",
-											"type": "text"
-										},
-										{
-											"key": "description",
-											"value": "Created via Admin API",
-											"type": "text"
-										},
-										{
-											"key": "price",
-											"value": "150",
-											"type": "text"
-										},
-										{
-											"key": "category",
-											"value": "6ad53e71ce5be60fa6318c9b",
-											"type": "text"
-										},
-										{
-											"key": "image",
-											"type": "file",
-											"src": ""
-										}
-									]
-								},
-								"url": {
-									"raw": "{{base_url}}/api/admin/products",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"products"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update Product",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "name",
-											"value": "Admin Product Updated",
-											"type": "text"
-										},
-										{
-											"key": "description",
-											"value": "Updated via Admin API",
-											"type": "text"
-										},
-										{
-											"key": "price",
-											"value": "175",
-											"type": "text"
-										},
-										{
-											"key": "image",
-											"type": "file",
-											"src": ""
-										}
-									]
-								},
-								"url": {
-									"raw": "{{base_url}}/api/admin/products/PRODUCT_ID",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"products",
-										"6ad53e72ce5be60fa6318ca1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete Product",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/admin/products/PRODUCT_ID",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"products",
-										"6ad53e72ce5be60fa6318ca1"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Bundle Management",
-					"item": [
-						{
-							"name": "Get All Bundles (Admin)",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/admin/bundles?page=1&limit=10",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"bundles"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "limit",
-											"value": "10"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create Bundle",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"slug\": \"custom-glow-set\",\n    \"nameEn\": \"Custom Glow Set\",\n    \"nameAr\": \"مجموعة التوهج المخصصة\",\n    \"subtitleEn\": \"Hydrating serum and restorative cream pair\",\n    \"subtitleAr\": \"ثنائي السيروم المرطب وكريم الترميم\",\n    \"descriptionEn\": \"A high-performance two-step daily clinical ritual.\",\n    \"descriptionAr\": \"روتين سريري يومي من خطوتين عالي الفعالية.\",\n    \"discountPercentage\": 15,\n    \"bundlePrice\": 595,\n    \"benefitsEn\": [\n        \"Deep hydration\",\n        \"Repairs lipid barrier\"\n    ],\n    \"benefitsAr\": [\n        \"ترطيب عميق\",\n        \"ترميم حاجز البشرة\"\n    ],\n    \"items\": [\n        {\n            \"product\": \"6ad53e72ce5be60fa6318ca1\",\n            \"stepEn\": \"Step 1: Hydrate\",\n            \"stepAr\": \"الخطوة 1: الترطيب الفائق\",\n            \"benefitEn\": \"Deep moisture reservoir\",\n            \"benefitAr\": \"تغذية عميقة بمخازن الرطوبة\",\n            \"quantity\": 1,\n            \"order\": 1\n        },\n        {\n            \"product\": \"6ad53e72ce5be60fa6318ca2\",\n            \"stepEn\": \"Step 2: Seal\",\n            \"stepAr\": \"الخطوة 2: قفل الترطيب\",\n            \"benefitEn\": \"Locks hydration with ceramides\",\n            \"benefitAr\": \"يحبس الترطيب بالسيراميد\",\n            \"quantity\": 1,\n            \"order\": 2\n        }\n    ]\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}/api/admin/bundles",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"bundles"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update Bundle",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"discountPercentage\": 20\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}/api/admin/bundles/6ad53e7229f647c88e8a422f",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"bundles",
-										"6ad53e7229f647c88e8a422f"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Recalculate Bundle Prices",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "PATCH",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/admin/bundles/6ad53e7229f647c88e8a422f/recalculate",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"bundles",
-										"6ad53e7229f647c88e8a422f",
-										"recalculate"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete Bundle",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/admin/bundles/6ad53e7229f647c88e8a422f",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"bundles",
-										"6ad53e7229f647c88e8a422f"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Category Management",
-					"item": [
-						{
-							"name": "Create Category",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "name",
-											"value": "Admin Category Test",
-											"type": "text"
-										},
-										{
-											"key": "description",
-											"value": "Created via Admin API",
-											"type": "text"
-										},
-										{
-											"key": "image",
-											"type": "file",
-											"src": ""
-										}
-									]
-								},
-								"url": {
-									"raw": "{{base_url}}/api/admin/categories",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"categories"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update Category",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "name",
-											"value": "Admin Category Updated",
-											"type": "text"
-										},
-										{
-											"key": "description",
-											"value": "Updated via Admin API",
-											"type": "text"
-										},
-										{
-											"key": "image",
-											"type": "file",
-											"src": ""
-										}
-									]
-								},
-								"url": {
-									"raw": "{{base_url}}/api/admin/categories/CATEGORY_ID",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"categories",
-										"6ad53e71ce5be60fa6318c9b"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete Category",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/admin/categories/CATEGORY_ID",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"categories",
-										"6ad53e71ce5be60fa6318c9b"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Order Management",
-					"item": [
-						{
-							"name": "Get All Orders",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/admin/orders",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"orders"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update Order Status",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"status\": \"shipped\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}/api/admin/orders/ORDER_ID/status",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"orders",
-										"ORDER_ID",
-										"status"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "User Management",
-					"item": [
-						{
-							"name": "Create User",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"Jane Doe\",\n    \"email\": \"jane@gmail.com\",\n    \"password\": \"password123\",\n    \"role\": \"user\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}/api/admin/users",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"users"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get All Users",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/admin/users",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"users"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update User / Deactivate / Activate",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"Jane Updated\",\n    \"isActive\": false\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}/api/admin/users/USER_ID",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"users",
-										"6ad53e7129f647c88e8a422e"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete User",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/api/admin/users/USER_ID",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"admin",
-										"users",
-										"6ad53e7129f647c88e8a422e"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				}
-			]
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
 		}
 	],
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "http://localhost:3000",
+			"value": "http://localhost:5000",
 			"type": "string"
 		},
 		{
@@ -1466,18 +3156,33 @@
 			"type": "string"
 		},
 		{
-			"key": "category_id",
-			"value": "6ad53e71ce5be60fa6318c9b",
+			"key": "admin_token",
+			"value": "",
 			"type": "string"
 		},
 		{
 			"key": "product_id",
-			"value": "6ad53e72ce5be60fa6318ca1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "product_slug",
+			"value": "ocean-glow-hydra-serum",
+			"type": "string"
+		},
+		{
+			"key": "category_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "category_slug",
+			"value": "serums",
 			"type": "string"
 		},
 		{
 			"key": "bundle_id",
-			"value": "6ad53e7229f647c88e8a422f",
+			"value": "",
 			"type": "string"
 		},
 		{
@@ -1486,8 +3191,28 @@
 			"type": "string"
 		},
 		{
+			"key": "address_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "order_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "review_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "coupon_id",
+			"value": "",
+			"type": "string"
+		},
+		{
 			"key": "user_id",
-			"value": "6ad53e7129f647c88e8a422e",
+			"value": "",
 			"type": "string"
 		}
 	]

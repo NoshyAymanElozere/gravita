@@ -2,46 +2,25 @@
 
 import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { Language, Product, CartItem, Coupon, Order, Address, UserProfile, Category, Bundle } from '../types';
-import { PRODUCTS, BUNDLES } from '../constants/data';
-import { useAppStore } from './useAppStore';
+import { Product, Bundle } from '../types';
+import { useAppStore, convertBundleToProduct } from './useAppStore';
 
-export function convertBundleToProduct(bundle: Bundle): Product {
-  return {
-    id: bundle.id,
-    slug: bundle.slug,
-    nameEn: bundle.nameEn,
-    nameAr: bundle.nameAr,
-    subtitleEn: bundle.subtitleEn,
-    subtitleAr: bundle.subtitleAr,
-    descriptionEn: bundle.descriptionEn,
-    descriptionAr: bundle.descriptionAr,
-    ingredientsEn: bundle.items.map(item => item.product.nameEn).join(', '),
-    ingredientsAr: bundle.items.map(item => item.product.nameAr).join('، '),
-    skinTypeEn: 'Various',
-    skinTypeAr: 'مختلف',
-    benefitsEn: bundle.benefitsEn,
-    benefitsAr: bundle.benefitsAr,
-    howToUseEn: bundle.items.map((item, idx) => `Step ${idx + 1}: ${item.stepEn}`).join('\n'),
-    howToUseAr: bundle.items.map((item, idx) => `الخطوة ${idx + 1}: ${item.stepAr}`).join('\n'),
-    price: bundle.originalPrice,
-    discountPrice: bundle.bundlePrice,
-    rating: 5.0,
-    reviewCount: 1,
-    size: 'Complete Set',
-    image: bundle.image,
-    galleryImages: [bundle.image],
-    isBestSeller: true,
-    isNew: false,
-    stockStatus: 'in_stock',
-    categorySlug: 'bundles'
-  };
-}
+export { convertBundleToProduct };
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const pathname = usePathname();
   const storeActivePage = useAppStore((state) => state.activePage);
   const storeSetActivePage = useAppStore((state) => state.setActivePage);
+  const catalogLoaded = useAppStore((state) => state.catalogLoaded);
+
+  // Restore the saved session/guest cart, then load the catalog and the account from the API
+  useEffect(() => {
+    const store = useAppStore;
+    Promise.resolve(store.persist.rehydrate()).then(() => {
+      store.getState().initSession();
+    });
+    store.getState().loadCatalog();
+  }, []);
 
   // Sync state active page with current router pathname
   useEffect(() => {
@@ -62,23 +41,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Sync selectedProduct and selectedBundle with query parameters (support back/forward/refresh navigation)
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || !catalogLoaded) return;
 
     const handleUrlChange = () => {
       const params = new URLSearchParams(window.location.search);
       const type = params.get('type');
       const id = params.get('id');
 
-      const { selectedProduct, selectedBundle } = useAppStore.getState();
+      const { selectedProduct, selectedBundle, products, bundles } = useAppStore.getState();
 
       if (type === 'product' && id) {
-        const prod = PRODUCTS.find((p) => p.id === id);
-        if (prod && (!selectedProduct || selectedProduct.id !== id)) {
+        const prod = products.find((p) => p.id === id || p.slug === id);
+        if (prod && (!selectedProduct || selectedProduct.id !== prod.id)) {
           useAppStore.setState({ selectedProduct: prod, selectedBundle: null });
         }
       } else if (type === 'bundle' && id) {
-        const bund = BUNDLES.find((b) => b.id === id);
-        if (bund && (!selectedBundle || selectedBundle.id !== id)) {
+        const bund = bundles.find((b) => b.id === id || b.slug === id);
+        if (bund && (!selectedBundle || selectedBundle.id !== bund.id)) {
           useAppStore.setState({ selectedBundle: bund, selectedProduct: null });
         }
       } else {
@@ -94,7 +73,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return () => {
       window.removeEventListener('popstate', handleUrlChange);
     };
-  }, []);
+  }, [catalogLoaded]);
 
   return <>{children}</>;
 };
@@ -129,8 +108,8 @@ export const useApp = () => {
       router.push(path);
     },
     setSelectedProduct: (product: Product | null) => {
-      if (product && (product.categorySlug === 'bundles' || product.id.startsWith('bundle_'))) {
-        const bundle = BUNDLES.find(b => b.id === product.id);
+      if (product && product.categorySlug === 'bundles') {
+        const bundle = store.bundles.find(b => b.id === product.id);
         if (bundle) {
           setSelectedBundleRedirect(bundle);
           return;

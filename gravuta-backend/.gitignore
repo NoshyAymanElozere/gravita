@@ -1,0 +1,10 @@
+# الأسرار والإعدادات المحلية
+.env
+.env.*
+!.env.example
+
+# الحزم (ملاحظة: node_modules مضاف للمستودع سابقاً - استخدم git rm -r --cached node_modules لإزالته)
+node_modules/
+
+# السجلات
+*.log
