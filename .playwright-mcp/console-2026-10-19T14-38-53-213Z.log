@@ -1,0 +1,218 @@
+[     169ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[     197ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[    7853ms] [ERROR] Failed to load resource: net::ERR_FILE_NOT_FOUND @ blob:http://localhost:5180/1fa61188-e86d-4af9-b133-d43258ae4c6a:0
+[    8051ms] [ERROR] Failed to load resource: net::ERR_FILE_NOT_FOUND @ blob:http://localhost:5180/119e2fdd-7ab7-4413-a609-5dcfbf07dbb8:0
+[    8057ms] [ERROR] Failed to load resource: net::ERR_FILE_NOT_FOUND @ blob:http://localhost:5180/1a7a76a2-8d51-4feb-a40f-a71d10413d73:0
+[   23903ms] ReferenceError: useState is not defined
+    at usePreview (http://localhost:5180/src/components/shared/image-upload.tsx?t=1792420756954:33:39)
+    at ImageUpload (http://localhost:5180/src/components/shared/image-upload.tsx?t=1792420756954:58:21)
+    at renderWithHooks (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:11596:26)
+    at mountIndeterminateComponent (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:14974:21)
+    at beginWork (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:15962:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:3680:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:3705:24)
+    at invokeGuardedCallback (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:3739:39)
+    at beginWork$1 (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:19818:15)
+    at performUnitOfWork (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:19251:20)
+[   23910ms] ReferenceError: useState is not defined
+    at usePreview (http://localhost:5180/src/components/shared/image-upload.tsx?t=1792420756954:33:39)
+    at GalleryTile (http://localhost:5180/src/components/shared/image-upload.tsx?t=1792420756954:218:21)
+    at renderWithHooks (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:11596:26)
+    at mountIndeterminateComponent (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:14974:21)
+    at beginWork (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:15962:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:3680:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:3705:24)
+    at invokeGuardedCallback (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:3739:39)
+    at beginWork$1 (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:19818:15)
+    at performUnitOfWork (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:19251:20)
+[   23913ms] ReferenceError: useState is not defined
+    at usePreview (http://localhost:5180/src/components/shared/image-upload.tsx?t=1792420756954:33:39)
+    at ImageUpload (http://localhost:5180/src/components/shared/image-upload.tsx?t=1792420756954:58:21)
+    at renderWithHooks (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:11596:26)
+    at mountIndeterminateComponent (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:14974:21)
+    at beginWork (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:15962:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:3680:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:3705:24)
+    at invokeGuardedCallback (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:3739:39)
+    at beginWork$1 (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:19818:15)
+    at performUnitOfWork (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:19251:20)
+[   23914ms] ReferenceError: useState is not defined
+    at usePreview (http://localhost:5180/src/components/shared/image-upload.tsx?t=1792420756954:33:39)
+    at GalleryTile (http://localhost:5180/src/components/shared/image-upload.tsx?t=1792420756954:218:21)
+    at renderWithHooks (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:11596:26)
+    at mountIndeterminateComponent (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:14974:21)
+    at beginWork (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:15962:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:3680:22)
+    at Object.invokeGuardedCallbackDev (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:3705:24)
+    at invokeGuardedCallback (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:3739:39)
+    at beginWork$1 (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:19818:15)
+    at performUnitOfWork (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:19251:20)
+[   23918ms] [ERROR] The above error occurred in the <ImageUpload> component:
+
+    at ImageUpload (http://localhost:5180/src/components/shared/image-upload.tsx?t=1792420756954:54:122)
+    at div
+    at div
+    at section
+    at SectionCard (http://localhost:5180/src/components/shared/page-header.tsx:179:100)
+    at div
+    at div
+    at form
+    at ProductFormPage (http://localhost:5180/src/features/products/pages/ProductFormPage.tsx:179:20)
+    at RenderedRoute (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:4121:5)
+    at Outlet (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:4527:26)
+    at div
+    at main
+    at div
+    at div
+    at Provider2 (http://localhost:5180/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=c72daa73:58:15)
+    at TooltipProvider (http://localhost:5180/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=c72daa73:254:5)
+    at Layout (http://localhost:5180/src/components/layout/Layout.tsx?t=1792420618067:33:53)
+    at RenderedRoute (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:4121:5)
+    at Outlet (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:4527:26)
+    at ProtectedRoute (http://localhost:5180/src/components/shared/RouteGuards.tsx:29:22)
+    at RenderedRoute (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:4121:5)
+    at Routes (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:4591:5)
+    at Router (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:4534:15)
+    at BrowserRouter (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:5272:5)
+    at App
+    at QueryClientProvider (http://localhost:5180/node_modules/.vite/deps/@tanstack_react-query.js?v=1fe94ae4:3170:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries. @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:14079
+[   23919ms] [ERROR] The above error occurred in the <GalleryTile> component:
+
+    at GalleryTile (http://localhost:5180/src/components/shared/image-upload.tsx?t=1792420756954:215:24)
+    at div
+    at div
+    at GalleryUpload (http://localhost:5180/src/components/shared/image-upload.tsx?t=1792420756954:270:85)
+    at div
+    at div
+    at section
+    at SectionCard (http://localhost:5180/src/components/shared/page-header.tsx:179:100)
+    at div
+    at div
+    at form
+    at ProductFormPage (http://localhost:5180/src/features/products/pages/ProductFormPage.tsx:179:20)
+    at RenderedRoute (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:4121:5)
+    at Outlet (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:4527:26)
+    at div
+    at main
+    at div
+    at div
+    at Provider2 (http://localhost:5180/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=c72daa73:58:15)
+    at TooltipProvider (http://localhost:5180/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=c72daa73:254:5)
+    at Layout (http://localhost:5180/src/components/layout/Layout.tsx?t=1792420618067:33:53)
+    at RenderedRoute (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:4121:5)
+    at Outlet (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:4527:26)
+    at ProtectedRoute (http://localhost:5180/src/components/shared/RouteGuards.tsx:29:22)
+    at RenderedRoute (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:4121:5)
+    at Routes (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:4591:5)
+    at Router (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:4534:15)
+    at BrowserRouter (http://localhost:5180/node_modules/.vite/deps/react-router-dom.js?v=3b7bd3ab:5272:5)
+    at App
+    at QueryClientProvider (http://localhost:5180/node_modules/.vite/deps/@tanstack_react-query.js?v=1fe94ae4:3170:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries. @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:14079
+[   23921ms] ReferenceError: useState is not defined
+    at usePreview (http://localhost:5180/src/components/shared/image-upload.tsx?t=1792420756954:33:39)
+    at ImageUpload (http://localhost:5180/src/components/shared/image-upload.tsx?t=1792420756954:58:21)
+    at renderWithHooks (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:11596:26)
+    at mountIndeterminateComponent (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:14974:21)
+    at beginWork (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:15962:22)
+    at beginWork$1 (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:19806:22)
+    at performUnitOfWork (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:19251:20)
+    at workLoopSync (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:19190:13)
+    at renderRootSync (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:19169:15)
+    at recoverFromConcurrentError (http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:18786:28)
+[   31969ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[   31995ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[   59374ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[   59398ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  106119ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  106144ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  131341ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  131364ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  137917ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  137940ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  151141ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  151170ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  157274ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:5000/api/admin/products/6ad62b85ec7cd81a768454ae?hard=true:0
+[  227260ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  227285ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  233955ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  233976ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  235699ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  235731ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  237433ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  237455ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  239156ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  239180ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  243596ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  243620ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  259955ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  259981ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  262204ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:5000/api/admin/categories/6ad625827009381b0f41b849:0
+[  271386ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  271411ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  288551ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:5000/api/admin/categories:0
+[  351325ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:5000/api/admin/categories/6ad625827009381b0f41b849:0
+[  369459ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  369490ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  371734ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  371757ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  373465ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  373486ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  379387ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  379414ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  382828ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5180/customers:0
+[  425564ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  425592ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  428922ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5180/customers/6ad62d06ec7cd81a768454b2:0
+[  443255ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  443280ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  443449ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5180/profile:0
+[  443450ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "new-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5180/profile:0
+[  443450ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "new-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5180/profile:0
+[  449584ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:5000/api/users/me/password:0
+[  454525ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  454550ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  464572ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  464606ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  467011ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  467032ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  474489ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  474510ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  477950ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5180/customers?role=admin:0
+[  488420ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  488447ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  511956ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  511994ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  529806ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  529846ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  534012ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  534034ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  539231ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  539254ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  554829ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  554859ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  562961ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  562987ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  566937ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  566958ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  573708ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  573741ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  613923ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  613950ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  635309ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  635334ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  648187ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  648215ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  648402ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:5000/api/admin/stats?days=30:0
+[  648405ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:5000/api/auth/me:0
+[  648406ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:5000/api/admin/categories?limit=100:0
+[  648406ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:5000/api/admin/products?page=1&limit=15:0
+[  648555ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  648586ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783
+[  649588ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5180/node_modules/.vite/deps/chunk-BVQ4LMF2.js?v=15fc801e:21608
+[  649612ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:5180/node_modules/.vite/deps/chunk-I6HM5P5L.js?v=15fc801e:1783

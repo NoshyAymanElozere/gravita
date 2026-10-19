@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { UploadCloud, X, ImagePlus } from 'lucide-react'
 import { cn } from '@/utils/utils'
@@ -11,11 +11,19 @@ const MAX_BYTES = 5 * 1024 * 1024 // backend multer limit
 const ACCEPT = 'image/jpeg,image/png,image/gif,image/webp'
 
 function usePreview(value: ImageValue) {
-  const objectUrl = useMemo(() => (value instanceof File ? URL.createObjectURL(value) : null), [value])
-  useEffect(() => () => {
-    if (objectUrl) URL.revokeObjectURL(objectUrl)
-  }, [objectUrl])
-  return objectUrl ?? (typeof value === 'string' ? resolveImageUrl(value) : undefined)
+  // Created inside the effect so StrictMode's mount/unmount/mount cycle never leaves a revoked URL
+  const [objectUrl, setObjectUrl] = useState<string | null>(null)
+  useEffect(() => {
+    if (!(value instanceof File)) {
+      setObjectUrl(null)
+      return
+    }
+    const url = URL.createObjectURL(value)
+    setObjectUrl(url)
+    return () => URL.revokeObjectURL(url)
+  }, [value])
+  if (value instanceof File) return objectUrl ?? undefined
+  return typeof value === 'string' ? resolveImageUrl(value) : undefined
 }
 
 function validateFile(file: File): string | null {
@@ -67,7 +75,7 @@ export function ImageUpload({ value, onChange, label, disabled, className, aspec
           shownError && 'border-destructive'
         )}
       >
-        <input ref={inputRef} type="file" accept={ACCEPT} onChange={pick} className="hidden" disabled={disabled} />
+        <input ref={inputRef} type="file" accept={ACCEPT} onChange={pick} onClick={(e) => e.stopPropagation()} className="hidden" disabled={disabled} />
         {preview ? (
           <>
             <img src={preview} alt="" className="h-full w-full object-cover" />

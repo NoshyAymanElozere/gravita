@@ -1,7 +1,7 @@
 import React from 'react'
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { cn, formatCurrency, formatNumber } from '@/utils/utils'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Skeleton } from './misc'
 
 interface StatCardProps {

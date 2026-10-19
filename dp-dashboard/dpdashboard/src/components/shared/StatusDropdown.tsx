@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { ChevronDown, Check } from 'lucide-react'
 import { useTranslation } from 'react-i18next'

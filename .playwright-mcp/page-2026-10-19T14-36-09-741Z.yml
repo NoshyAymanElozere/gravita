@@ -1,0 +1,24 @@
+- main [ref=f3e4]:
+  - generic [ref=f3e5]:
+    - img "AURA Laboratories" [ref=f3e9]
+    - button "العربية" [ref=f3e10] [cursor=pointer]
+  - generic [ref=f3e15]:
+    - generic [ref=f3e17]:
+      - heading "Sign in" [level=1] [ref=f3e23]
+      - paragraph [ref=f3e24]: Use your administrator account to continue.
+    - generic [ref=f3e25]:
+      - generic [ref=f3e26]:
+        - generic [ref=f3e27]: Email*
+        - textbox "Email*" [active] [ref=f3e29]:
+          - /placeholder: admin@example.com
+      - generic [ref=f3e30]:
+        - generic [ref=f3e31]: Password*
+        - generic [ref=f3e32]:
+          - textbox "Password*" [ref=f3e33]:
+            - /placeholder: ••••••••
+          - button "Show password" [ref=f3e34] [cursor=pointer]
+      - generic [ref=f3e38] [cursor=pointer]:
+        - checkbox "Keep me signed in" [checked] [ref=f3e39]
+        - text: Keep me signed in
+      - button "Sign in" [ref=f3e41] [cursor=pointer]
+    - paragraph [ref=f3e42]: Access is restricted to store administrators.

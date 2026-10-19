@@ -1,0 +1,308 @@
+- generic:
+  - generic:
+    - generic:
+      - generic [aria-hidden]:
+        - complementary:
+          - button
+          - navigation:
+            - generic:
+              - paragraph: Store
+              - list:
+                - listitem:
+                  - link:
+                    - /url: /
+                    - generic: Overview
+                - listitem:
+                  - link:
+                    - /url: /orders
+                    - generic: Orders
+            - generic:
+              - paragraph: Catalog
+              - list:
+                - listitem:
+                  - link:
+                    - /url: /products
+                    - generic: Products
+                - listitem:
+                  - link:
+                    - /url: /categories
+                    - generic: Categories
+                - listitem:
+                  - link:
+                    - /url: /bundles
+                    - generic: Bundles
+            - generic:
+              - paragraph: Customers & marketing
+              - list:
+                - listitem:
+                  - link:
+                    - /url: /customers
+                    - generic: Customers
+                - listitem:
+                  - link:
+                    - /url: /coupons
+                    - generic: Coupons
+                - listitem:
+                  - link:
+                    - /url: /reviews
+                    - generic: Reviews
+                - listitem:
+                  - link:
+                    - /url: /newsletter
+                    - generic: Newsletter
+          - generic:
+            - link:
+              - /url: http://localhost:3000
+              - generic: Open storefront
+      - generic:
+        - banner [aria-hidden]:
+          - generic:
+            - paragraph: Welcome back, الأدمن الرئيسي
+          - generic:
+            - button:
+              - generic: ع
+            - button
+            - button
+            - button:
+              - generic: اا
+        - main:
+          - generic:
+            - generic:
+              - generic [aria-hidden]:
+                - generic:
+                  - generic:
+                    - heading [level=1]: Categories
+                    - paragraph: Group products into shop categories
+                - generic:
+                  - button: Add category
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic [aria-hidden]:
+                              - grid:
+                                - rowgroup:
+                                  - row:
+                                    - columnheader:
+                                      - generic: Category
+                                    - columnheader:
+                                      - generic: Slug (URL)
+                                    - columnheader:
+                                      - generic: Products
+                                    - columnheader:
+                                      - generic: Sort order
+                                    - columnheader:
+                                      - generic: Status
+                                    - columnheader
+                                  - row:
+                                    - gridcell:
+                                      - generic:
+                                        - generic:
+                                          - paragraph: Cleansers
+                                          - paragraph: منظفات البشرة
+                                    - gridcell:
+                                      - generic: cleansers
+                                    - gridcell:
+                                      - link:
+                                        - /url: /products?category=6ad625827009381b0f41b849
+                                        - text: "1"
+                                    - gridcell:
+                                      - generic: "1"
+                                    - gridcell:
+                                      - generic:
+                                        - generic:
+                                          - button:
+                                            - generic: Active
+                                    - gridcell:
+                                      - generic:
+                                        - button
+                                        - button
+                                  - row:
+                                    - gridcell:
+                                      - generic:
+                                        - generic:
+                                          - paragraph: Serums & Elixirs
+                                          - paragraph: السيروم والإكسير
+                                    - gridcell:
+                                      - generic: serums
+                                    - gridcell:
+                                      - link:
+                                        - /url: /products?category=6ad625827009381b0f41b84b
+                                        - text: "1"
+                                    - gridcell:
+                                      - generic: "2"
+                                    - gridcell:
+                                      - generic:
+                                        - generic:
+                                          - button:
+                                            - generic: Active
+                                    - gridcell:
+                                      - generic:
+                                        - button
+                                        - button
+                                  - row:
+                                    - gridcell:
+                                      - generic:
+                                        - generic:
+                                          - paragraph: Moisturizers & Creams
+                                          - paragraph: المرطبات والكريمات
+                                    - gridcell:
+                                      - generic: moisturizers
+                                    - gridcell:
+                                      - link:
+                                        - /url: /products?category=6ad625827009381b0f41b84d
+                                        - text: "1"
+                                    - gridcell:
+                                      - generic: "3"
+                                    - gridcell:
+                                      - generic:
+                                        - generic:
+                                          - button:
+                                            - generic: Active
+                                    - gridcell:
+                                      - generic:
+                                        - button
+                                        - button
+                                  - row:
+                                    - gridcell:
+                                      - generic:
+                                        - generic:
+                                          - paragraph: Sunscreens & UV Protection
+                                          - paragraph: واقيات الشمس والحماية
+                                    - gridcell:
+                                      - generic: sunscreens
+                                    - gridcell:
+                                      - link:
+                                        - /url: /products?category=6ad625827009381b0f41b84f
+                                        - text: "1"
+                                    - gridcell:
+                                      - generic: "4"
+                                    - gridcell:
+                                      - generic:
+                                        - generic:
+                                          - button:
+                                            - generic: Active
+                                    - gridcell:
+                                      - generic:
+                                        - button
+                                        - button
+                                  - row:
+                                    - gridcell:
+                                      - generic:
+                                        - generic:
+                                          - paragraph: Face Masks & Peels
+                                          - paragraph: الأقنعة والتقشير
+                                    - gridcell:
+                                      - generic: face-masks
+                                    - gridcell:
+                                      - link:
+                                        - /url: /products?category=6ad625827009381b0f41b851
+                                        - text: "1"
+                                    - gridcell:
+                                      - generic: "5"
+                                    - gridcell:
+                                      - generic:
+                                        - generic:
+                                          - button:
+                                            - generic: Active
+                                    - gridcell:
+                                      - generic:
+                                        - button
+                                        - button
+                                  - row:
+                                    - gridcell:
+                                      - generic:
+                                        - generic:
+                                          - paragraph: Eye & Micro-Zone Care
+                                          - paragraph: العناية بمنطقة العين
+                                    - gridcell:
+                                      - generic: eye-care
+                                    - gridcell:
+                                      - link:
+                                        - /url: /products?category=6ad625827009381b0f41b853
+                                        - text: "1"
+                                    - gridcell:
+                                      - generic: "6"
+                                    - gridcell:
+                                      - generic:
+                                        - generic:
+                                          - button:
+                                            - generic: Active
+                                    - gridcell:
+                                      - generic:
+                                        - button
+                                        - button
+                                  - row:
+                                    - gridcell:
+                                      - generic:
+                                        - generic:
+                                          - paragraph: ZZ Test Category Edited
+                                          - paragraph: فئة تجريبية
+                                    - gridcell:
+                                      - generic: zz-test-category
+                                    - gridcell:
+                                      - link:
+                                        - /url: /products?category=6ad62c86ec7cd81a768454b0
+                                        - text: "0"
+                                    - gridcell:
+                                      - generic: "99"
+                                    - gridcell:
+                                      - generic:
+                                        - generic:
+                                          - button:
+                                            - generic: Active
+                                    - gridcell:
+                                      - generic:
+                                        - button
+                                        - button
+                  - generic [aria-hidden]:
+                    - generic:
+                      - text: Page 1 of 1
+                      - generic: · 7 records
+                    - generic:
+                      - button [disabled]
+                      - button: "1"
+                      - button [disabled]
+  - dialog [ref=f26e2]:
+    - heading "Add category" [level=2] [ref=f26e4]
+    - generic [ref=f26e5]:
+      - generic [ref=f26e6]:
+        - generic [ref=f26e7]:
+          - generic [ref=f26e8]: Image
+          - button "Change Remove" [active] [ref=f26e9] [cursor=pointer]:
+            - generic [ref=f26e10]:
+              - generic [ref=f26e11]: Change
+              - button "Remove" [ref=f26e12]
+        - generic [ref=f26e16]:
+          - generic [ref=f26e17]:
+            - generic [ref=f26e18]: Name (English)*
+            - textbox "Name (English)*" [ref=f26e20]
+          - generic [ref=f26e22]:
+            - generic [ref=f26e23]: Name (العربية)*
+            - textbox "Name (العربية)*" [ref=f26e25]
+      - generic [ref=f26e26]:
+        - generic [ref=f26e27]:
+          - generic [ref=f26e28]: Description (English)
+          - textbox "Description (English)" [ref=f26e30]
+        - generic [ref=f26e32]:
+          - generic [ref=f26e33]: Description (العربية)
+          - textbox "Description (العربية)" [ref=f26e35]
+      - generic [ref=f26e36]:
+        - generic [ref=f26e37]:
+          - generic [ref=f26e38]: Slug (URL)
+          - textbox "Slug (URL)" [ref=f26e40]
+          - paragraph [ref=f26e41]: Optional — lowercase letters, numbers and dashes. Generated from the English name if empty.
+        - generic [ref=f26e42]:
+          - generic [ref=f26e43]: Sort order
+          - spinbutton "Sort order" [ref=f26e45]: "0"
+      - generic [ref=f26e46] [cursor=pointer]:
+        - generic [ref=f26e47]: Active
+        - switch "Active" [checked] [ref=f26e48]
+        - checkbox [checked] [aria-hidden]
+      - generic [ref=f26e49]:
+        - button "Cancel" [ref=f26e50] [cursor=pointer]
+        - button "Save" [ref=f26e51] [cursor=pointer]
+    - button "Close" [ref=f26e52] [cursor=pointer]

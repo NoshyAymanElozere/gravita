@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ImageOff } from 'lucide-react'
 import { cn } from '@/utils/utils'
 import { resolveImageUrl } from '@/utils/media'
@@ -28,5 +29,24 @@ export function RatingStars({ value, size = 'sm' }: { value: number; size?: 'sm'
         </span>
       ))}
     </span>
+  )
+}
+
+/** Bilingual name: the current UI language first, the other one underneath */
+export function BiName({ en, ar, className }: { en?: string; ar?: string; className?: string }) {
+  const { i18n } = useTranslation()
+  const isAr = i18n.language === 'ar'
+  const [primary, secondary] = isAr ? [ar || en, en] : [en || ar, ar]
+  return (
+    <div className={cn('min-w-0 leading-tight', className)}>
+      <p className="truncate font-semibold" dir={isAr ? 'rtl' : 'ltr'}>
+        {primary}
+      </p>
+      {secondary && secondary !== primary && (
+        <p className="truncate text-xs text-muted-foreground" dir={isAr ? 'ltr' : 'rtl'}>
+          {secondary}
+        </p>
+      )}
+    </div>
   )
 }

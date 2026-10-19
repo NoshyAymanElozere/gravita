@@ -14,7 +14,7 @@ const SRC = '/logo-aura.png'
 const FULL = { x: 660, y: 325, w: 600, h: 440 }
 const ICON = { x: 870, y: 320, w: 180, h: 180 }
 
-const widths = { sm: 92, md: 116, lg: 160 }
+const widths = { sm: 76, md: 104, lg: 150 }
 const iconWidths = { sm: 30, md: 36, lg: 44 }
 
 function Cropped({ region, width, alt }: { region: typeof FULL; width: number; alt: string }) {

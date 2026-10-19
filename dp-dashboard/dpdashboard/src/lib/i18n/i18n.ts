@@ -8,7 +8,7 @@ const resources = {
   ar: { translation: ar }
 }
 
-const initialLang = localStorage.getItem('lang') || 'ar'
+const initialLang = localStorage.getItem('lang') || 'en'
 
 if (typeof document !== 'undefined') {
   document.documentElement.dir = initialLang === 'ar' ? 'rtl' : 'ltr'
@@ -20,7 +20,7 @@ i18n
   .init({
     resources,
     lng: initialLang,
-    fallbackLng: 'ar',
+    fallbackLng: 'en',
     interpolation: {
       escapeValue: false
     }

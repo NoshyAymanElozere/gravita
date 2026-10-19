@@ -4,7 +4,7 @@ import { dashboardRoutes } from './(dashboard)/dashboard.routes'
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Routes>
         {authRoutes}
         {dashboardRoutes}

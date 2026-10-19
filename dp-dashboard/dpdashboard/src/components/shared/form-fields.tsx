@@ -77,7 +77,9 @@ export function ControlledInput<T extends FieldValues>({
             type={type}
             placeholder={placeholder}
             disabled={disabled}
-            error={fieldState.error?.message}
+            // FormField renders the (translated) message; the control only shows the error state
+            aria-invalid={!!fieldState.error}
+            className={fieldState.error ? 'border-destructive focus-visible:ring-destructive/30' : undefined}
             {...field}
           />
         </FormField>
@@ -120,7 +122,9 @@ export function ControlledTextarea<T extends FieldValues>({
             placeholder={placeholder}
             rows={rows}
             disabled={disabled}
-            error={fieldState.error?.message}
+            // FormField renders the (translated) message; the control only shows the error state
+            aria-invalid={!!fieldState.error}
+            className={fieldState.error ? 'border-destructive focus-visible:ring-destructive/30' : undefined}
             {...field}
           />
         </FormField>
@@ -345,8 +349,10 @@ export function ControlledMultiSelect<T extends FieldValues>({
 
 export function useZodForm<T extends FieldValues>(schema: ZodSchema<T>, defaultValues?: Partial<T>) {
   return useForm<T>({
-    resolver: zodResolver(schema),
-    defaultValues: defaultValues as T,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(schema as any) as any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    defaultValues: defaultValues as any,
   })
 }
 

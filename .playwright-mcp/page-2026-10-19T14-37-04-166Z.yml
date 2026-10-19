@@ -1,0 +1,87 @@
+- generic [ref=f5e3]:
+  - complementary [ref=f5e5]:
+    - img "AURA Laboratories" [ref=f5e9]
+    - button "Collapse sidebar" [ref=f5e10] [cursor=pointer]
+    - navigation [ref=f5e13]:
+      - generic [ref=f5e14]:
+        - paragraph [ref=f5e15]: Store
+        - list [ref=f5e16]:
+          - listitem [ref=f5e17]:
+            - link "Overview" [ref=f5e18] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=f5e25]:
+            - link "Orders 2" [ref=f5e26] [cursor=pointer]:
+              - /url: /orders
+              - generic [ref=f5e30]: Orders
+              - generic [ref=f5e31]: "2"
+      - generic [ref=f5e32]:
+        - paragraph [ref=f5e33]: Catalog
+        - list [ref=f5e34]:
+          - listitem [ref=f5e35]:
+            - link "Products" [ref=f5e36] [cursor=pointer]:
+              - /url: /products
+          - listitem [ref=f5e42]:
+            - link "Categories" [ref=f5e43] [cursor=pointer]:
+              - /url: /categories
+          - listitem [ref=f5e50]:
+            - link "Bundles" [ref=f5e51] [cursor=pointer]:
+              - /url: /bundles
+      - generic [ref=f5e63]:
+        - paragraph [ref=f5e64]: Customers & marketing
+        - list [ref=f5e65]:
+          - listitem [ref=f5e66]:
+            - link "Customers" [ref=f5e67] [cursor=pointer]:
+              - /url: /customers
+          - listitem [ref=f5e74]:
+            - link "Coupons" [ref=f5e75] [cursor=pointer]:
+              - /url: /coupons
+          - listitem [ref=f5e80]:
+            - link "Reviews" [ref=f5e81] [cursor=pointer]:
+              - /url: /reviews
+          - listitem [ref=f5e85]:
+            - link "Newsletter" [ref=f5e86] [cursor=pointer]:
+              - /url: /newsletter
+    - link "Open storefront" [ref=f5e92] [cursor=pointer]:
+      - /url: http://localhost:3000
+  - generic [ref=f5e98]:
+    - banner [ref=f5e99]:
+      - paragraph [ref=f5e101]: Welcome back, الأدمن الرئيسي
+      - generic [ref=f5e102]:
+        - button "ع" [ref=f5e103] [cursor=pointer]
+        - button "Dark mode" [ref=f5e108] [cursor=pointer]
+        - button "Notifications" [ref=f5e111] [cursor=pointer]:
+          - generic [ref=f5e115]: "2"
+        - button "اا" [ref=f5e116] [cursor=pointer]
+    - main [ref=f5e120]:
+      - generic [ref=f5e122]:
+        - generic [ref=f5e129]:
+          - heading "Orders" [level=1] [ref=f5e130]
+          - paragraph [ref=f5e131]: Track, fulfil and manage customer orders
+        - generic [ref=f5e132]:
+          - searchbox "Order number, name, email or phone" [ref=f5e135]
+          - combobox [ref=f5e136] [cursor=pointer]:
+            - generic: All statuses
+          - generic [ref=f5e139]:
+            - generic [ref=f5e140]: From
+            - textbox [ref=f5e142]
+            - generic [ref=f5e143]: To
+            - textbox [ref=f5e145]
+        - generic [ref=f5e147]:
+          - grid [ref=f5e154]:
+            - rowgroup [ref=f5e155]:
+              - row "Order Customer Items Total Payment Status" [ref=f5e156]:
+                - columnheader "Order" [ref=f5e157]
+                - columnheader "Customer" [ref=f5e160]
+                - columnheader "Items" [ref=f5e163]
+                - columnheader "Total" [ref=f5e166]
+                - columnheader "Payment" [ref=f5e169]
+                - columnheader "Status" [ref=f5e172]
+                - columnheader [ref=f5e175]
+          - generic [ref=f5e177]:
+            - generic [ref=f5e178]:
+              - text: Page 1 of 1
+              - generic [ref=f5e179]: · 3 records
+            - generic [ref=f5e180]:
+              - button [disabled] [ref=f5e181] [cursor=pointer]
+              - button "1" [ref=f5e184] [cursor=pointer]
+              - button [disabled] [ref=f5e185] [cursor=pointer]

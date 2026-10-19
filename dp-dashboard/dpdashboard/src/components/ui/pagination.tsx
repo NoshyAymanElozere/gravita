@@ -1,4 +1,3 @@
-import React from 'react'
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react'
 import { cn } from '@/utils/utils'
 import { Button } from './button'

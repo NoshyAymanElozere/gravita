@@ -39,7 +39,6 @@ const DialogContent = React.forwardRef<
     xl: 'max-w-4xl',
     full: 'max-w-[95vw]',
   }
-  const isRtl = typeof document !== 'undefined' && document.documentElement.dir === 'rtl'
   return (
     <DialogPortal>
       <DialogOverlay />

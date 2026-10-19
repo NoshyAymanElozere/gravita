@@ -1,0 +1,188 @@
+- generic [ref=f12e3]:
+  - complementary [ref=f12e5]:
+    - img "AURA Laboratories" [ref=f12e9]
+    - button "Collapse sidebar" [ref=f12e10] [cursor=pointer]
+    - navigation [ref=f12e13]:
+      - generic [ref=f12e14]:
+        - paragraph [ref=f12e15]: Store
+        - list [ref=f12e16]:
+          - listitem [ref=f12e17]:
+            - link "Overview" [ref=f12e18] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=f12e25]:
+            - link "Orders" [ref=f12e26] [cursor=pointer]:
+              - /url: /orders
+      - generic [ref=f12e31]:
+        - paragraph [ref=f12e32]: Catalog
+        - list [ref=f12e33]:
+          - listitem [ref=f12e34]:
+            - link "Products" [ref=f12e35] [cursor=pointer]:
+              - /url: /products
+          - listitem [ref=f12e41]:
+            - link "Categories" [ref=f12e42] [cursor=pointer]:
+              - /url: /categories
+          - listitem [ref=f12e49]:
+            - link "Bundles" [ref=f12e50] [cursor=pointer]:
+              - /url: /bundles
+      - generic [ref=f12e62]:
+        - paragraph [ref=f12e63]: Customers & marketing
+        - list [ref=f12e64]:
+          - listitem [ref=f12e65]:
+            - link "Customers" [ref=f12e66] [cursor=pointer]:
+              - /url: /customers
+          - listitem [ref=f12e73]:
+            - link "Coupons" [ref=f12e74] [cursor=pointer]:
+              - /url: /coupons
+          - listitem [ref=f12e79]:
+            - link "Reviews" [ref=f12e80] [cursor=pointer]:
+              - /url: /reviews
+          - listitem [ref=f12e84]:
+            - link "Newsletter" [ref=f12e85] [cursor=pointer]:
+              - /url: /newsletter
+    - link "Open storefront" [ref=f12e91] [cursor=pointer]:
+      - /url: http://localhost:3000
+  - generic [ref=f12e97]:
+    - banner [ref=f12e98]:
+      - paragraph [ref=f12e100]: Welcome back, الأدمن الرئيسي
+      - generic [ref=f12e101]:
+        - button "ع" [ref=f12e102] [cursor=pointer]
+        - button "Dark mode" [ref=f12e107] [cursor=pointer]
+        - button "Notifications" [ref=f12e110] [cursor=pointer]
+        - button "اا" [ref=f12e114] [cursor=pointer]
+    - main [ref=f12e118]:
+      - generic [ref=f12e293]:
+        - generic [ref=f12e294]:
+          - generic [ref=f12e295]:
+            - link [ref=f12e296] [cursor=pointer]:
+              - /url: /products
+            - generic [ref=f12e299]:
+              - heading "ZZ Test Serum" [level=1] [ref=f12e300]
+              - paragraph [ref=f12e301]: Edit product details, pricing and media
+          - generic [ref=f12e302]:
+            - link "View on store" [ref=f12e303] [cursor=pointer]:
+              - /url: http://localhost:3000/product-details?type=product&id=6ad62b85ec7cd81a768454ae
+            - button "Cancel" [ref=f12e304] [cursor=pointer]
+            - button "Save changes" [ref=f12e305] [cursor=pointer]
+        - generic [ref=f12e306]:
+          - generic [ref=f12e307]:
+            - generic [ref=f12e308]:
+              - heading "Basic information" [level=2] [ref=f12e311]
+              - generic [ref=f12e313]:
+                - generic [ref=f12e314]:
+                  - generic [ref=f12e316]:
+                    - generic [ref=f12e317]: Name (English)*
+                    - textbox "Name (English)*" [ref=f12e319]: ZZ Test Serum
+                  - generic [ref=f12e321]:
+                    - generic [ref=f12e322]: Name (العربية)*
+                    - textbox "Name (العربية)*" [ref=f12e324]: سيروم تجريبي
+                - generic [ref=f12e325]:
+                  - generic [ref=f12e327]:
+                    - generic [ref=f12e328]: Subtitle (English)
+                    - textbox "Subtitle (English)" [ref=f12e330]
+                  - generic [ref=f12e332]:
+                    - generic [ref=f12e333]: Subtitle (العربية)
+                    - textbox "Subtitle (العربية)" [ref=f12e335]
+                - generic [ref=f12e336]:
+                  - generic [ref=f12e338]:
+                    - generic [ref=f12e339]: Description (English)*
+                    - textbox "Description (English)*" [ref=f12e341]: Dashboard verification product — safe to delete.
+                  - generic [ref=f12e343]:
+                    - generic [ref=f12e344]: Description (العربية)
+                    - textbox "Description (العربية)" [ref=f12e346]: Dashboard verification product — safe to delete.
+            - generic [ref=f12e347]:
+              - heading "Product details" [level=2] [ref=f12e350]
+              - generic [ref=f12e352]:
+                - tablist [ref=f12e353]:
+                  - tab "Ingredients" [selected] [ref=f12e354] [cursor=pointer]
+                  - tab "How to use" [ref=f12e355] [cursor=pointer]
+                  - tab "Skin type" [ref=f12e356] [cursor=pointer]
+                  - tab "Benefits" [ref=f12e357] [cursor=pointer]
+                - tabpanel "Ingredients" [ref=f12e358]:
+                  - generic [ref=f12e359]:
+                    - generic [ref=f12e361]:
+                      - generic [ref=f12e362]: Ingredients (English)
+                      - textbox "Ingredients (English)" [ref=f12e364]
+                    - generic [ref=f12e366]:
+                      - generic [ref=f12e367]: Ingredients (العربية)
+                      - textbox "Ingredients (العربية)" [ref=f12e369]
+            - generic [ref=f12e370]:
+              - heading "Images" [level=2] [ref=f12e373]
+              - generic [ref=f12e375]:
+                - generic [ref=f12e376]:
+                  - generic [ref=f12e377]: Main image
+                  - button "Change Remove" [ref=f12e378] [cursor=pointer]:
+                    - generic [ref=f12e379]:
+                      - generic [ref=f12e380]: Change
+                      - button "Remove" [ref=f12e381]
+                - generic [ref=f12e385]:
+                  - generic [ref=f12e386]: Gallery
+                  - generic [ref=f12e387]:
+                    - button "Remove" [ref=f12e389] [cursor=pointer]
+                    - button "Add images" [ref=f12e393] [cursor=pointer]
+                  - paragraph [ref=f12e399]: Up to 6 new images per save. Hover an image to remove it.
+          - generic [ref=f12e400]:
+            - generic [ref=f12e401]:
+              - heading "Pricing" [level=2] [ref=f12e404]
+              - generic [ref=f12e406]:
+                - generic [ref=f12e407]:
+                  - generic [ref=f12e408]: Price (SAR)*
+                  - spinbutton "Price (SAR)*" [ref=f12e410]: "120"
+                - generic [ref=f12e411]:
+                  - generic [ref=f12e412]: Sale price (SAR)
+                  - spinbutton "Sale price (SAR)" [ref=f12e414]: "99"
+                  - paragraph [ref=f12e415]: Leave empty for no sale price
+                - paragraph [ref=f12e416]: 18% off — customers pay SAR 99
+            - generic [ref=f12e417]:
+              - heading "Organization" [level=2] [ref=f12e420]
+              - generic [ref=f12e422]:
+                - generic [ref=f12e423]:
+                  - generic [ref=f12e424]: Category*
+                  - combobox [ref=f12e425] [cursor=pointer]:
+                    - generic: Cleansers
+                  - combobox [aria-hidden] [ref=f12e428]
+                - generic [ref=f12e429]:
+                  - generic [ref=f12e430]: Size
+                  - textbox "Size" [ref=f12e432]:
+                    - /placeholder: 50 ml
+                    - text: 30 ml
+                - generic [ref=f12e433]:
+                  - generic [ref=f12e434]: Slug (URL)
+                  - textbox "Slug (URL)" [ref=f12e436]:
+                    - /placeholder: ocean-glow-serum
+                    - text: zz-test-serum
+                  - paragraph [ref=f12e437]: Optional — lowercase letters, numbers and dashes. Generated from the English name if empty.
+            - generic [ref=f12e438]:
+              - generic [ref=f12e439]:
+                - heading "Inventory" [level=2] [ref=f12e441]
+                - button "Adjust stock" [ref=f12e443] [cursor=pointer]
+              - generic [ref=f12e445]:
+                - generic [ref=f12e446]:
+                  - generic [ref=f12e447]: "Sold: 0"
+                  - generic [ref=f12e448]: In stock
+                - generic [ref=f12e449]:
+                  - generic [ref=f12e450]:
+                    - generic [ref=f12e451]: Stock
+                    - spinbutton "Stock" [ref=f12e453]: "7"
+                  - generic [ref=f12e454]:
+                    - generic [ref=f12e455]: Low-stock threshold
+                    - spinbutton "Low-stock threshold" [ref=f12e457]: "5"
+            - generic [ref=f12e458]:
+              - heading "Visibility" [level=2] [ref=f12e461]
+              - generic [ref=f12e463]:
+                - generic [ref=f12e464] [cursor=pointer]:
+                  - generic [ref=f12e465]:
+                    - generic [ref=f12e466]: Active
+                    - generic [ref=f12e467]: Inactive products are hidden from the store
+                  - switch "Active Inactive products are hidden from the store" [checked] [ref=f12e468]
+                  - checkbox [checked] [aria-hidden]
+                - generic [ref=f12e469] [cursor=pointer]:
+                  - generic [ref=f12e470]: Best seller
+                  - switch "Best seller" [ref=f12e472]
+                  - checkbox [aria-hidden]
+                - generic [ref=f12e473] [cursor=pointer]:
+                  - generic [ref=f12e474]: New arrival
+                  - switch "New arrival" [ref=f12e476]
+                  - checkbox [aria-hidden]
+            - generic [ref=f12e477]:
+              - heading "Included in bundles" [level=2] [ref=f12e480]
+              - paragraph [ref=f12e493]: This product is not part of any bundle.

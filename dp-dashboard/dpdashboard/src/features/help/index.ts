@@ -1,1 +1,0 @@
-export { default as Help.tsx } from './pages/Help.tsx'\n

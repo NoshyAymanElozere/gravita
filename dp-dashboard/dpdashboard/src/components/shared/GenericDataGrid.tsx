@@ -236,6 +236,8 @@ export function GenericDataGrid<TData = any>({
       filter: false,
       sortable: true,
       resizable: true,
+      // Vertically centre every cell (rows are taller than one line)
+      cellStyle: { display: 'flex', alignItems: 'center' },
       ...props.defaultColDef
     }
   }, [props.defaultColDef])
@@ -286,7 +288,6 @@ export function GenericDataGrid<TData = any>({
           theme={customTheme}
           rowData={rowData}
           columnDefs={columnDefs}
-          defaultColDef={defaultColDef}
           enableRtl={isRtl}
           loading={loading}
           loadingOverlayComponent={CustomLoadingOverlay}
