@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../store/AppContext';
 import { ShoppingBag, Heart, User, Search, Globe, X, Plus, Minus, Trash2, Menu } from 'lucide-react';
-import { CATEGORIES } from '../../constants/data';
 
 const BrandLogo = () => (
   <img
@@ -30,7 +29,8 @@ export default function Header() {
     addToSearchHistory,
     clearSearchHistory,
     setSelectedProduct,
-    appliedCoupon
+    appliedCoupon,
+    categories
   } = useApp();
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -331,7 +331,7 @@ export default function Header() {
                 {language === 'en' ? 'Suggested Collections' : 'التشكيلات المقترحة'}
               </span>
               <div className="mt-3 grid grid-cols-2 gap-2">
-                {CATEGORIES.map((cat) => (
+                {categories.map((cat) => (
                   <button
                     key={cat.id}
                     onClick={() => {

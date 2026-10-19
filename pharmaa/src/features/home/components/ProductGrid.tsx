@@ -2,12 +2,11 @@
 
 import React from 'react';
 import { useApp } from '../../../store/AppContext';
-import { PRODUCTS } from '../../../constants/data';
 import ProductCard from '../../../components/shared/ProductCard';
 import SectionTitle from '../../../components/shared/SectionTitle';
 
 export default function ProductGrid() {
-  const { language } = useApp();
+  const { language, products } = useApp();
 
   const title = language === 'en' ? 'Products' : 'منتجاتنا';
   const description = language === 'en'
@@ -23,7 +22,7 @@ export default function ProductGrid() {
       />
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
-        {PRODUCTS.slice(0, 3).map((product) => (
+        {products.slice(0, 3).map((product) => (
           <div key={product.id} className="w-full">
             <ProductCard product={product} />
           </div>

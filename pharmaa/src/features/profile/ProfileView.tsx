@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useApp } from '../../store/AppContext';
-import { PRODUCTS } from '../../constants/data';
+import toast from 'react-hot-toast';
+import { useApp, convertBundleToProduct } from '../../store/AppContext';
 import {
   User,
   ShoppingBag,
@@ -24,19 +24,10 @@ import {
 } from 'lucide-react';
 
 export default function ProfileView() {
-  const {
-    language,
-    user,
-    orders,
-    wishlist,
-    toggleWishlist,
-    addToCart,
-    addNewAddress,
-    deleteAddress,
-    logoutUser,
-    setActivePage,
-    setSelectedProduct
-  } = useApp();
+  const { language, user, authReady, setActivePage } = useApp();
+
+  // Session is being restored from the API
+  if (!user && !authReady) return null;
 
   // Guard if user not logged in
   if (!user) {
@@ -60,6 +51,30 @@ export default function ProfileView() {
     );
   }
 
+  return <ProfileContent />;
+}
+
+function ProfileContent() {
+  const {
+    language,
+    user: signedInUser,
+    orders,
+    wishlist,
+    toggleWishlist,
+    addToCart,
+    addNewAddress,
+    deleteAddress,
+    logoutUser,
+    setActivePage,
+    setSelectedProduct,
+    products,
+    bundles,
+    updateProfile,
+    cancelOrder,
+    reorder
+  } = useApp();
+  const user = signedInUser!;
+
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
   const [activeSegment, setActiveSegment] = useState<'info' | 'orders' | 'wishlist' | 'addresses' | 'balance' | 'cards'>('info');
@@ -82,11 +97,11 @@ export default function ProfileView() {
   const [addrPhone, setAddrPhone] = useState('');
   const [addrSuccess, setAddrSuccess] = useState(false);
 
-  const handleCreateAddress = (e: React.FormEvent) => {
+  const handleCreateAddress = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!addrName || !addrLine || !addrCity) return;
 
-    addNewAddress({
+    const error = await addNewAddress({
       fullName: addrName,
       addressLine1: addrLine,
       city: addrCity,
@@ -96,6 +111,7 @@ export default function ProfileView() {
       phone: addrPhone || user.phone,
       isDefault: false
     });
+    if (error) return;
 
     setAddrName('');
     setAddrLine('');
@@ -107,14 +123,16 @@ export default function ProfileView() {
     setTimeout(() => setAddrSuccess(false), 3000);
   };
 
-  const handleReorder = (orderItems: any[]) => {
-    orderItems.forEach((item) => {
-      const prod = PRODUCTS.find((p) => p.id === item.productId);
-      if (prod) {
-        addToCart(prod, item.selectedSize, item.quantity);
-      }
-    });
-    setActivePage('cart');
+  // Product or bundle (as a cart product) referenced by an order line
+  const findOrderProduct = (productId: string) => {
+    const bundle = bundles.find((b) => b.id === productId);
+    return bundle ? convertBundleToProduct(bundle) : products.find((p) => p.id === productId);
+  };
+
+  const handleReorder = async (orderId: string) => {
+    const error = await reorder(orderId);
+    if (error) toast.error(error);
+    else setActivePage('cart');
   };
 
   const sidebarItems = [
@@ -234,8 +252,17 @@ export default function ProfileView() {
 
             {/* PERSONAL INFORMATION (البيانات الشخصية) */}
             {activeSegment === 'info' && (
-              <form onSubmit={(e) => {
+              <form onSubmit={async (e) => {
                 e.preventDefault();
+                const form = new FormData(e.currentTarget);
+                const digits = String(form.get('phone') || '').replace(/[^0-9]/g, '');
+                const error = await updateProfile({
+                  name: String(form.get('name') || '').trim(),
+                  email: String(form.get('email') || '').trim(),
+                  ...(digits && { phone: `+966${digits.replace(/^966/, '').replace(/^0/, '')}` })
+                });
+                if (error) toast.error(error);
+                else toast.success(language === 'en' ? 'Profile updated successfully.' : 'تم تحديث بياناتك بنجاح.');
               }} className="space-y-8 font-sans text-xs">
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-zinc-800">
@@ -247,7 +274,9 @@ export default function ProfileView() {
                     </label>
                     <input
                       type="text"
-                      defaultValue={user.name || "ادهم عصام"}
+                      name="name"
+                      required
+                      defaultValue={user.name}
                       className="w-full bg-[#fcfbfa] border border-zinc-200/80 rounded-2xl py-3 px-4 text-zinc-850 focus:outline-none focus:ring-1 focus:ring-brand-primary text-right rtl:text-right ltr:text-left text-xs font-semibold"
                     />
                   </div>
@@ -264,7 +293,8 @@ export default function ProfileView() {
                       </div>
                       <input
                         type="text"
-                        defaultValue="1025465325"
+                        name="phone"
+                        defaultValue={user.phone.replace(/^\+?966\s*/, '').replace(/\s/g, '')}
                         className="flex-1 bg-[#fcfbfa] border border-zinc-200/80 rounded-2xl py-3 px-4 text-zinc-850 focus:outline-none focus:ring-1 focus:ring-brand-primary text-right rtl:text-right ltr:text-left text-xs font-semibold"
                       />
                     </div>
@@ -277,7 +307,9 @@ export default function ProfileView() {
                     </label>
                     <input
                       type="email"
-                      defaultValue={user.email || "Test@Gmail.Com"}
+                      name="email"
+                      required
+                      defaultValue={user.email}
                       className="w-full bg-[#fcfbfa] border border-zinc-200/80 rounded-2xl py-3 px-4 text-zinc-850 focus:outline-none focus:ring-1 focus:ring-brand-primary text-right rtl:text-right ltr:text-left text-xs font-semibold"
                     />
                   </div>
@@ -380,8 +412,11 @@ export default function ProfileView() {
                       <div className="flex gap-2 flex-wrap sm:justify-end">
                         {selectedOrder.status === 'processing' && (
                           <button
-                            onClick={() => {
-                              alert(language === 'en' ? 'Order cancellation request submitted. Our support team will process it shortly.' : 'تم تقديم طلب إلغاء الطلب بنجاح. سيقوم فريقنا بمعالجته قريباً.');
+                            onClick={async () => {
+                              if (!window.confirm(language === 'en' ? 'Cancel this order?' : 'هل تريد إلغاء هذا الطلب؟')) return;
+                              const error = await cancelOrder(selectedOrder.id);
+                              if (error) toast.error(error);
+                              else toast.success(language === 'en' ? 'Your order has been cancelled.' : 'تم إلغاء طلبك بنجاح.');
                             }}
                             className="border border-red-200 text-red-750 hover:bg-red-50/50 font-bold text-xs py-2 px-4 rounded-xl transition-all cursor-pointer font-sans"
                           >
@@ -524,10 +559,12 @@ export default function ProfileView() {
                               </div>
                               <button
                                 onClick={() => {
-                                  const prod = PRODUCTS.find((p) => p.id === item.productId);
+                                  const prod = findOrderProduct(item.productId);
                                   if (prod) {
-                                    addToCart(prod, item.selectedSize, item.quantity);
-                                    alert(language === 'en' ? 'Item added to bag.' : 'تمت إضافة المنتج للحقيبة.');
+                                    addToCart(prod, prod.size, item.quantity);
+                                    toast.success(language === 'en' ? 'Item added to bag.' : 'تمت إضافة المنتج للحقيبة.');
+                                  } else {
+                                    toast.error(language === 'en' ? 'This item is no longer available.' : 'هذا المنتج لم يعد متوفراً.');
                                   }
                                 }}
                                 className="bg-brand-primary hover:bg-brand-secondary text-brand-cream font-bold text-[10px] py-2 px-3 rounded-xl transition-all duration-300 cursor-pointer"
@@ -757,7 +794,7 @@ export default function ProfileView() {
                 {wishlist.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-sans text-xs">
                     {wishlist.map((id) => {
-                      const prod = PRODUCTS.find((p) => p.id === id);
+                      const prod = products.find((p) => p.id === id);
                       if (!prod) return null;
                       return (
                         <div

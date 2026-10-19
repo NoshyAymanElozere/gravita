@@ -353,7 +353,9 @@ export const useAppStore = create<AppState>()(persist((set, get) => {
             const next = isExist ? prevWish.filter((id) => id !== productId) : [...prevWish, productId];
             set({ wishlist: next });
 
-            if (!get().token) return;
+            // The account wishlist stores products; bundle hearts stay on this device
+            const isBundle = get().bundles.some((b) => b.id === productId);
+            if (!get().token || isBundle) return;
             const request = isExist
                 ? api.delete(`/users/me/wishlist/${productId}`)
                 : api.post(`/users/me/wishlist/${productId}`);

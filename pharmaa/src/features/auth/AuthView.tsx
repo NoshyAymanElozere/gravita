@@ -15,6 +15,7 @@ export default function AuthView() {
   const [password, setPassword] = useState('');
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Translations
   const t = {
@@ -56,7 +57,7 @@ export default function AuthView() {
     forgotLinkAr: 'نسيتِ كلمة المرور الآمنة لحسابكِ؟'
   };
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
     setSuccessMsg(null);
@@ -66,24 +67,38 @@ export default function AuthView() {
       return;
     }
 
-    loginUser(email, 'Serene Al-Ghamdi');
+    setIsSubmitting(true);
+    const error = await loginUser(email, password);
+    setIsSubmitting(false);
+    if (error) {
+      setErrorMsg(error);
+      return;
+    }
+
     setSuccessMsg(language === 'en' ? 'Signed in successfully!' : 'تم تسجيل الدخول بنجاح!');
     setTimeout(() => {
       setActivePage('profile');
     }, 1000);
   };
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
     setSuccessMsg(null);
 
-    if (!name || !email || !phone) {
+    if (!name || !email || !phone || !password) {
       setErrorMsg(language === 'en' ? 'All fields are mandatory.' : 'جميع الحقول مطلوبة.');
       return;
     }
 
-    registerUser(name, email, phone);
+    setIsSubmitting(true);
+    const error = await registerUser(name, email, phone, password);
+    setIsSubmitting(false);
+    if (error) {
+      setErrorMsg(error);
+      return;
+    }
+
     setSuccessMsg(language === 'en' ? 'Account built successfully! Welcome to AURA.' : 'تم إنشاء حسابكِ بنجاح! أهلاً بكِ في عائلة أورا.');
     setTimeout(() => {
       setActivePage('profile');
@@ -176,6 +191,7 @@ export default function AuthView() {
 
             <button
               type="submit"
+              disabled={isSubmitting}
               className="btn-primary w-full !py-3.5"
             >
               {language === 'en' ? t.loginBtnEn : t.loginBtnAr}
@@ -228,8 +244,25 @@ export default function AuthView() {
               />
             </div>
 
+            <div className="space-y-1.5">
+              <label className="input-label">{language === 'en' ? 'Passphrase' : 'كلمة المرور'}</label>
+              <div className="relative">
+                <input
+                  type="password"
+                  required
+                  minLength={6}
+                  placeholder={language === 'en' ? t.placeholderPassEn : t.placeholderPassAr}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="input-field !pl-10 rtl:!pr-10 rtl:!pl-4"
+                />
+                <Lock className="absolute left-3.5 rtl:right-3.5 top-1/2 -translate-y-1/2 text-brand-sage-muted" size={14} />
+              </div>
+            </div>
+
             <button
               type="submit"
+              disabled={isSubmitting}
               className="btn-primary w-full !py-3.5"
             >
               {language === 'en' ? t.registerBtnEn : t.registerBtnAr}

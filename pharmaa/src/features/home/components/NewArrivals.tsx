@@ -2,13 +2,12 @@
 
 import React from 'react';
 import { useApp } from '../../../store/AppContext';
-import { PRODUCTS } from '../../../constants/data';
 import { ArrowRight } from 'lucide-react';
 import ProductCard from '../../../components/shared/ProductCard';
 import SectionTitle from '../../../components/shared/SectionTitle';
 
 export default function NewArrivals() {
-  const { language, setActiveCategory, setActivePage } = useApp();
+  const { language, setActiveCategory, setActivePage, products } = useApp();
 
   const title = language === 'en' ? 'New Arrivals' : 'وصل حديثاً';
   const description = language === 'en' 
@@ -37,7 +36,7 @@ export default function NewArrivals() {
 
       {/* Carousel for newly released items */}
       <div className="flex overflow-x-auto pb-6 gap-6 scrollbar-thin snap-x scroll-smooth">
-        {PRODUCTS.filter((p) => p.isNew).map((product) => (
+        {products.filter((p) => p.isNew).map((product) => (
           <div key={product.id} className="snap-start select-none flex-shrink-0 w-[160px] sm:w-[240px]">
             <ProductCard product={product} />
           </div>

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useApp, convertBundleToProduct } from '../../store/AppContext';
-import { PRODUCTS, BUNDLES } from '../../constants/data';
 import { Star, Heart, Plus, Minus, ShieldCheck, HelpCircle, ArrowRight, CornerDownLeft, Sparkles, Check, Info, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Product } from '../../types';
 import ProductCard from '../../components/shared/ProductCard';
@@ -18,7 +17,10 @@ export default function ProductDetailsView() {
     addToCart,
     wishlist,
     toggleWishlist,
-    setActivePage
+    setActivePage,
+    products,
+    bundles,
+    catalogLoaded
   } = useApp();
 
   // Translations
@@ -86,18 +88,18 @@ export default function ProductDetailsView() {
 
   // Frequently bought together states
   const bundleMatch1 = selectedProduct
-    ? (PRODUCTS.find((p) => p.id !== selectedProduct.id && p.categorySlug === 'serums') || PRODUCTS[0])
-    : PRODUCTS[0];
+    ? (products.find((p) => p.id !== selectedProduct.id && p.categorySlug === 'serums') || products[0])
+    : products[0];
   const bundleMatch2 = selectedProduct
-    ? (PRODUCTS.find((p) => p.id !== selectedProduct.id && p.id !== bundleMatch1.id && p.categorySlug === 'moisturizers') || PRODUCTS[1])
-    : PRODUCTS[1];
+    ? (products.find((p) => p.id !== selectedProduct.id && p.id !== bundleMatch1?.id && p.categorySlug === 'moisturizers') || products[1])
+    : products[1];
 
   const matchingBundle = selectedProduct
-    ? (BUNDLES.find(b => b.items.some(item => item.product.id === selectedProduct.id)) || BUNDLES[0])
-    : BUNDLES[0];
+    ? (bundles.find(b => b.items.some(item => item.product.id === selectedProduct.id)) || bundles[0])
+    : bundles[0];
 
   const productBundles = selectedProduct
-    ? BUNDLES.filter(b => b.items.some(item => item.product.id === selectedProduct.id))
+    ? bundles.filter(b => b.items.some(item => item.product.id === selectedProduct.id))
     : [];
 
   // If a bundle is selected, show the premium Bundle details section
@@ -297,6 +299,9 @@ export default function ProductDetailsView() {
 
   // Guard if no product selected
   if (!selectedProduct) {
+    // Catalog still loading from the API
+    if (!catalogLoaded) return null;
+
     return (
       <div className="max-w-7xl mx-auto px-4 py-20 text-center">
         <p className="text-zinc-650 font-serif">Select a luxury formulation to inspect.</p>
@@ -342,7 +347,7 @@ export default function ProductDetailsView() {
   const decrementQty = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
 
   // Related products (limit to same category, max 3)
-  const relatedProducts = PRODUCTS.filter(
+  const relatedProducts = products.filter(
     (p) => p.categorySlug === selectedProduct.categorySlug && p.id !== selectedProduct.id
   ).slice(0, 3);
 

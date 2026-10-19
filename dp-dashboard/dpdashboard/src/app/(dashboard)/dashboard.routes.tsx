@@ -1,67 +1,65 @@
-import { Route, Navigate } from 'react-router-dom'
+import { Link, Route } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Layout } from '@/components/layout/Layout'
 import { ProtectedRoute } from '@/components/shared/RouteGuards'
+import { Button } from '@/components/ui/button'
 
-import PlansList from '@/features/plans/pages/PlansList'
-import PlanFormPage from '@/features/plans/pages/PlanFormPage'
-import CompanyPoliciesList from '@/features/policies/pages/CompanyPoliciesList'
-import CompanyClaimsList from '@/features/claims/pages/CompanyClaimsList'
-import CompanySettlementsList from '@/features/settlements/pages/CompanySettlementsList'
-import CompanyTeamList from '@/features/team/pages/CompanyTeamList'
-import CompanyProfilePage from '@/features/profile/pages/CompanyProfilePage'
-import VehicleRequestsInbox from '@/features/vehicle-insurance/pages/VehicleRequestsInbox'
-import VehicleRequestDetail from '@/features/vehicle-insurance/pages/VehicleRequestDetail'
-import VehicleOffersList from '@/features/vehicle-insurance/pages/VehicleOffersList'
-import VehicleOfferDetail from '@/features/vehicle-insurance/pages/VehicleOfferDetail'
-import OfferFormPage from '@/features/vehicle-insurance/pages/OfferFormPage'
+import Overview from '@/features/dashboard/pages/Overview'
+import OrdersList from '@/features/orders/pages/OrdersList'
+import OrderDetail from '@/features/orders/pages/OrderDetail'
+import ProductsList from '@/features/products/pages/ProductsList'
+import ProductFormPage from '@/features/products/pages/ProductFormPage'
+import CategoriesList from '@/features/categories/pages/CategoriesList'
+import BundlesList from '@/features/bundles/pages/BundlesList'
+import BundleFormPage from '@/features/bundles/pages/BundleFormPage'
+import CustomersList from '@/features/customers/pages/CustomersList'
+import CustomerDetail from '@/features/customers/pages/CustomerDetail'
+import CouponsList from '@/features/coupons/pages/CouponsList'
+import ReviewsList from '@/features/reviews/pages/ReviewsList'
+import NewsletterList from '@/features/newsletter/pages/NewsletterList'
+import AdminProfilePage from '@/features/profile/pages/AdminProfilePage'
 
-import BlogList from '@/features/blog/pages/BlogList'
-import BlogForm from '@/features/blog/pages/BlogForm'
-import BlogView from '@/features/blog/pages/BlogView'
-import DepartmentList from '@/features/department/pages/DepartmentList'
-import SettingsOverviewPage from '@/features/settings/pages/SettingsOverviewPage'
-
-const Placeholder = ({ title }: { title: string }) => (
-  <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
-    <h2 className="text-2xl font-semibold opacity-50">{title}</h2>
-    <p className="text-muted-foreground">This page is under construction.</p>
-  </div>
-)
+function NotFound() {
+  const { t } = useTranslation()
+  return (
+    <div className="flex h-[60vh] flex-col items-center justify-center gap-3 text-center">
+      <p className="text-6xl font-black text-brand-sage-light">404</p>
+      <h2 className="text-lg font-semibold">{t('common.notFoundTitle')}</h2>
+      <p className="text-sm text-muted-foreground">{t('common.notFoundText')}</p>
+      <Button asChild variant="outline">
+        <Link to="/">{t('nav.overview')}</Link>
+      </Button>
+    </div>
+  )
+}
 
 export const dashboardRoutes = (
   <Route element={<ProtectedRoute />}>
     <Route path="/" element={<Layout />}>
-      {/* Vehicle insurance requests are the company's main workflow */}
-      <Route index element={<Navigate to="vehicle-requests" replace />} />
+      <Route index element={<Overview />} />
 
-      <Route path="vehicle-requests" element={<VehicleRequestsInbox />} />
-      <Route path="vehicle-requests/:id" element={<VehicleRequestDetail />} />
-      <Route path="vehicle-requests/:id/offer" element={<OfferFormPage mode="send" />} />
-      <Route path="vehicle-offers" element={<VehicleOffersList />} />
-      <Route path="vehicle-offers/:id" element={<VehicleOfferDetail />} />
-      <Route path="vehicle-offers/:id/edit" element={<OfferFormPage mode="edit" />} />
+      <Route path="orders" element={<OrdersList />} />
+      <Route path="orders/:id" element={<OrderDetail />} />
 
-      {/* Insurance Company Portal Routes */}
-      <Route path="plans" element={<PlansList />} />
-      <Route path="plans/new" element={<PlanFormPage mode="new" />} />
-      <Route path="plans/edit/:id" element={<PlanFormPage mode="edit" />} />
-      <Route path="plans/view/:id" element={<PlanFormPage mode="view" />} />
+      <Route path="products" element={<ProductsList />} />
+      <Route path="products/new" element={<ProductFormPage />} />
+      <Route path="products/:id/edit" element={<ProductFormPage />} />
 
-      <Route path="policies" element={<CompanyPoliciesList />} />
-      <Route path="claims" element={<CompanyClaimsList />} />
-      <Route path="settlements" element={<CompanySettlementsList />} />
-      <Route path="team" element={<CompanyTeamList />} />
-      <Route path="profile" element={<CompanyProfilePage />} />
+      <Route path="categories" element={<CategoriesList />} />
 
-      {/* Legacy Blog & Department Routes */}
-      <Route path="blogs" element={<BlogList />} />
-      <Route path="blogs/new" element={<BlogForm />} />
-      <Route path="blogs/edit/:slug" element={<BlogForm />} />
-      <Route path="blogs/view/:slug" element={<BlogView />} />
-      <Route path="departments" element={<DepartmentList />} />
-      <Route path="settings" element={<SettingsOverviewPage />} />
+      <Route path="bundles" element={<BundlesList />} />
+      <Route path="bundles/new" element={<BundleFormPage />} />
+      <Route path="bundles/:id/edit" element={<BundleFormPage />} />
 
-      <Route path="*" element={<Placeholder title="404 Not Found" />} />
+      <Route path="customers" element={<CustomersList />} />
+      <Route path="customers/:id" element={<CustomerDetail />} />
+
+      <Route path="coupons" element={<CouponsList />} />
+      <Route path="reviews" element={<ReviewsList />} />
+      <Route path="newsletter" element={<NewsletterList />} />
+      <Route path="profile" element={<AdminProfilePage />} />
+
+      <Route path="*" element={<NotFound />} />
     </Route>
   </Route>
 )

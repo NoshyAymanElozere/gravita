@@ -1,12 +1,10 @@
 import { getCookie, setCookie, eraseCookie } from '@/utils/cookies'
-import type { AuthSessionPayload, Company } from '../types/auth.types'
+import type { AdminUser } from '@/types/api'
 
-export const TOKEN_KEY = 'wathiqa-provider-token'
-const COMPANY_KEY = 'wathiqa-company'
-const PENDING_PHONE_KEY = 'wathiqa-pending-phone'
-
-export const LANG_EN = 1
-export const LANG_AR = 2
+export const TOKEN_KEY = 'aura-admin-token'
+const USER_KEY = 'aura-admin-user'
+const REMEMBER_KEY = 'aura-admin-remember'
+const LOGOUT_REASON_KEY = 'aura-admin-logout-reason'
 
 // ─── Token ───────────────────────────────────────────────────────────────────
 
@@ -14,18 +12,10 @@ export function getToken(): string | null {
   return getCookie(TOKEN_KEY)
 }
 
-export function setToken(token: string, expiresInSeconds?: number) {
-  // "Remember me" off → session cookie (cleared when the browser closes).
-  // On → keep it for the refresh window rather than the short access-token TTL,
-  // so an expired token can still be exchanged via /refresh.
-  if (!getRememberMe()) return setCookie(TOKEN_KEY, token, 0)
-  const days = expiresInSeconds ? Math.max(1, Math.ceil(expiresInSeconds / 86_400)) : 7
-  setCookie(TOKEN_KEY, token, Math.max(days, 7))
+/** "Remember me" off → session cookie; on → 7 days (the backend JWT lifetime). */
+export function setToken(token: string) {
+  setCookie(TOKEN_KEY, token, getRememberMe() ? 7 : 0)
 }
-
-// ─── Remember me (persists across token refreshes) ───────────────────────────
-
-const REMEMBER_KEY = 'wathiqa-remember-me'
 
 export function getRememberMe(): boolean {
   try {
@@ -39,49 +29,47 @@ export function setRememberMe(remember: boolean) {
   try {
     localStorage.setItem(REMEMBER_KEY, remember ? '1' : '0')
   } catch {
-    // Ignore
+    // storage unavailable
   }
 }
 
-// ─── Company snapshot (used as initial data before /me resolves) ─────────────
+// ─── Admin snapshot (initial data before /auth/me resolves) ──────────────────
 
-export function getStoredCompany(): Company | null {
+export function getStoredUser(): AdminUser | null {
   try {
-    const raw = localStorage.getItem(COMPANY_KEY)
-    return raw ? (JSON.parse(raw) as Company) : null
+    const raw = localStorage.getItem(USER_KEY)
+    return raw ? (JSON.parse(raw) as AdminUser) : null
   } catch {
     return null
   }
 }
 
-export function setStoredCompany(company: Company) {
+export function setStoredUser(user: AdminUser) {
   try {
-    localStorage.setItem(COMPANY_KEY, JSON.stringify(company))
+    localStorage.setItem(USER_KEY, JSON.stringify(user))
   } catch {
-    // Storage unavailable — the profile query still works without the snapshot
+    // storage unavailable
   }
 }
 
 export function clearAuth() {
   eraseCookie(TOKEN_KEY)
   try {
-    localStorage.removeItem(COMPANY_KEY)
+    localStorage.removeItem(USER_KEY)
   } catch {
-    // Ignore
+    // ignore
   }
 }
 
-// ─── Forced-logout reason (shown once on the login page after a hard redirect) ─
+// ─── Forced-logout reason (shown once on the login page) ─────────────────────
 
-const LOGOUT_REASON_KEY = 'wathiqa-logout-reason'
-
-export type LogoutReason = { kind: 'inactive' | 'expired'; message?: string }
+export type LogoutReason = { kind: 'expired' | 'forbidden'; message?: string }
 
 export function setLogoutReason(reason: LogoutReason) {
   try {
     sessionStorage.setItem(LOGOUT_REASON_KEY, JSON.stringify(reason))
   } catch {
-    // Ignore
+    // ignore
   }
 }
 
@@ -98,41 +86,6 @@ export function clearLogoutReason() {
   try {
     sessionStorage.removeItem(LOGOUT_REASON_KEY)
   } catch {
-    // Ignore
+    // ignore
   }
-}
-
-// ─── Pending verification (survives refresh between register → verify) ──────
-
-export function getPendingPhone(): string | null {
-  try {
-    return sessionStorage.getItem(PENDING_PHONE_KEY)
-  } catch {
-    return null
-  }
-}
-
-export function setPendingPhone(phone: string) {
-  try {
-    sessionStorage.setItem(PENDING_PHONE_KEY, phone)
-  } catch {
-    // Ignore
-  }
-}
-
-export function clearPendingPhone() {
-  try {
-    sessionStorage.removeItem(PENDING_PHONE_KEY)
-  } catch {
-    // Ignore
-  }
-}
-
-// ─── Session parsing ─────────────────────────────────────────────────────────
-
-export function extractSession(payload?: AuthSessionPayload | null) {
-  const token = payload?.access_token ?? payload?.token ?? null
-  const company = payload?.company ?? null
-  const isActive = payload?.is_active ?? company?.is_active ?? !!token
-  return { token, company, isActive, expiresIn: payload?.expires_in }
 }

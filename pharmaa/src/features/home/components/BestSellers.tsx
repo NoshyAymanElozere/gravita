@@ -2,13 +2,12 @@
 
 import React, { useRef } from 'react';
 import { useApp } from '../../../store/AppContext';
-import { PRODUCTS } from '../../../constants/data';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import ProductCard from '../../../components/shared/ProductCard';
 import SectionTitle from '../../../components/shared/SectionTitle';
 
 export default function BestSellers() {
-  const { language, setActiveCategory, setActivePage } = useApp();
+  const { language, setActiveCategory, setActivePage, products } = useApp();
   const bestSellersRef = useRef<HTMLDivElement>(null);
 
   const scrollBestSellers = (direction: 'left' | 'right') => {
@@ -64,7 +63,7 @@ export default function BestSellers() {
           ref={bestSellersRef}
           className="flex overflow-x-auto pb-6 gap-6 scrollbar-thin snap-x scroll-smooth px-2"
         >
-          {PRODUCTS.filter((p) => p.isBestSeller).map((product) => (
+          {products.filter((p) => p.isBestSeller).map((product) => (
             <div key={product.id} className="snap-start select-none flex-shrink-0 w-[160px] sm:w-[240px]">
               <ProductCard product={product} />
             </div>

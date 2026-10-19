@@ -1,13 +1,14 @@
 "use client";
 import React, { useState } from 'react';
 import { useApp } from '../../../store/AppContext';
-import { REVIEWS, PRODUCTS } from '../../../constants/data';
 import { Star, ShieldCheck, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import SectionTitle from '../../../components/shared/SectionTitle';
 
 export default function Reviews() {
-  const { language, user, setActivePage } = useApp();
-  const [reviewsList, setReviewsList] = useState(REVIEWS);
+  const { language, user, setActivePage, reviews } = useApp();
+  // Featured reviews come from the API; testimonials written here are shown on top for this visit
+  const [localReviews, setLocalReviews] = useState<typeof reviews>([]);
+  const reviewsList = [...localReviews, ...reviews];
   const [commentText, setCommentText] = useState('');
   const [rating, setRating] = useState(5);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -62,7 +63,7 @@ export default function Reviews() {
       helpfulCount: 0
     };
 
-    setReviewsList([newReview, ...reviewsList]);
+    setLocalReviews([newReview, ...localReviews]);
     setCommentText('');
     setRating(5);
   };

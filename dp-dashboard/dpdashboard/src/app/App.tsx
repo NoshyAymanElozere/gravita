@@ -4,7 +4,7 @@ import { dashboardRoutes } from './(dashboard)/dashboard.routes'
 
 function App() {
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <BrowserRouter>
       <Routes>
         {authRoutes}
         {dashboardRoutes}

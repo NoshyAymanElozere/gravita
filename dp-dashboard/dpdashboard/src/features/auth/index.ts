@@ -1,6 +1,2 @@
 export * from './api/useAuth'
 export { default as Login } from './pages/Login'
-export { default as Register } from './pages/Register'
-export { default as VerifyAccount } from './pages/VerifyAccount'
-export { default as ForgotPassword } from './pages/ForgotPassword'
-export { default as PendingApproval } from './pages/PendingApproval'

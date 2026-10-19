@@ -1,45 +1,29 @@
 import * as React from 'react'
 import { FormProvider } from 'react-hook-form'
-import { Link, useLocation, useNavigate, type Location } from 'react-router-dom'
+import { useLocation, useNavigate, type Location } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
-import { UserRound } from 'lucide-react'
+import { LockKeyhole } from 'lucide-react'
 import { useZodForm } from '@/components/shared/form-fields'
-import { useLogin } from '../api/useAuth'
+import { getApiErrorMessage, getApiErrorStatus } from '@/services/axios'
+import { NotAdminError, useLogin } from '../api/useAuth'
 import { loginSchema, type LoginForm } from '../lib/schemas'
 import { clearLogoutReason, getLogoutReason, getRememberMe, setRememberMe } from '../lib/authStorage'
-import { applyFieldErrors, getErrorMessage, getErrorStatus } from '../lib/errors'
-import {
-  AuthCard,
-  AuthCheckbox,
-  AuthField,
-  AuthPageHeader,
-  AuthSwitch,
-  FormBanner,
-  SubmitButton,
-  authLinkClass,
-  useForwardArrow,
-} from '../components/AuthUI'
+import { AuthCard, AuthCheckbox, AuthField, AuthPageHeader, FormBanner, SubmitButton } from '../components/AuthUI'
 
-type LoginState = { from?: Location; flash?: 'passwordReset' } | null
-
-type Banner = { variant: 'error' | 'warning'; title?: string; message: string; action?: 'pending' | 'verify' }
+type Banner = { variant: 'error' | 'warning'; title?: string; message: string }
 
 export default function Login() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
-  const state = location.state as LoginState
-  const Arrow = useForwardArrow()
+  const from = (location.state as { from?: Location } | null)?.from
 
   const { mutate: login, isPending } = useLogin()
-  // Explain why the user landed here after a forced logout (deactivated account / expired session)
   const [banner, setBanner] = React.useState<Banner | null>(() => {
     const reason = getLogoutReason()
     if (!reason) return null
-    return reason.kind === 'inactive'
-      ? { variant: 'warning', title: t('auth.login.deactivatedTitle'), message: reason.message || t('auth.login.deactivated') }
-      : { variant: 'warning', title: t('auth.login.expiredTitle'), message: t('auth.login.expired') }
+    return { variant: 'warning', title: t('auth.login.expiredTitle'), message: reason.message || t('auth.login.expired') }
   })
   React.useEffect(clearLogoutReason, [])
 
@@ -51,34 +35,22 @@ export default function Login() {
     login(
       { email: data.email.toLowerCase(), password: data.password },
       {
-        onSuccess: (session) => {
-          if (!session.token) {
-            setBanner({ variant: 'error', message: session.message || t('auth.errors.generic') })
-            return
-          }
-          toast.success(session.message || t('auth.login.success'))
-          const from = state?.from
+        onSuccess: () => {
+          toast.success(t('auth.login.success'))
           const target = from && from.pathname !== '/login' ? `${from.pathname}${from.search}` : '/'
           navigate(target, { replace: true })
         },
         onError: (err) => {
-          const status = getErrorStatus(err)
-          const message = getErrorMessage(err, t('auth.errors.generic'))
-
-          if (status === 403) {
-            // Inactive (awaiting admin approval) or phone not yet verified
-            const needsVerification = /verif|تحقق|تفعيل الهاتف/i.test(message)
-            setBanner({
-              variant: 'warning',
-              title: t(needsVerification ? 'auth.login.unverifiedTitle' : 'auth.login.inactiveTitle'),
-              message,
-              action: needsVerification ? 'verify' : 'pending',
-            })
+          if (err instanceof NotAdminError) {
+            setBanner({ variant: 'error', title: t('auth.login.notAdminTitle'), message: t('auth.login.notAdmin') })
             return
           }
-
-          if (status === 422) applyFieldErrors(err, methods.setError)
-          setBanner({ variant: 'error', message: status === 401 ? t('auth.login.invalidCredentials') : message })
+          const status = getApiErrorStatus(err)
+          setBanner({
+            variant: status === 403 ? 'warning' : 'error',
+            title: status === 403 ? t('auth.login.disabledTitle') : undefined,
+            message: status === 401 ? t('auth.login.invalidCredentials') : getApiErrorMessage(err, t('auth.errors.generic')),
+          })
           methods.resetField('password', { keepError: true })
         },
       }
@@ -87,32 +59,12 @@ export default function Login() {
 
   return (
     <AuthCard>
-      <AuthPageHeader icon={UserRound} title={t('auth.login.title')} subtitle={t('auth.login.subtitle')} />
+      <AuthPageHeader icon={LockKeyhole} title={t('auth.login.title')} subtitle={t('auth.login.subtitle')} />
 
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-4" noValidate>
-          {state?.flash === 'passwordReset' && !banner && (
-            <FormBanner variant="success" title={t('auth.reset.doneTitle')}>
-              {t('auth.login.afterReset')}
-            </FormBanner>
-          )}
-
           {banner && (
-            <FormBanner
-              variant={banner.variant}
-              title={banner.title}
-              action={
-                banner.action && (
-                  <Link
-                    to={banner.action === 'verify' ? '/verify-account' : '/pending-approval'}
-                    className="inline-flex items-center gap-1 font-semibold underline-offset-4 hover:underline"
-                  >
-                    {t(banner.action === 'verify' ? 'auth.login.verifyNow' : 'auth.login.whatNext')}
-                    <Arrow className="h-3.5 w-3.5" />
-                  </Link>
-                )
-              }
-            >
+            <FormBanner variant={banner.variant} title={banner.title}>
               {banner.message}
             </FormBanner>
           )}
@@ -121,13 +73,12 @@ export default function Login() {
             name="email"
             type="email"
             label={t('auth.fields.email')}
-            placeholder="contact@company.com"
+            placeholder="admin@example.com"
             autoComplete="username"
             autoFocus
             required
             dir="ltr"
           />
-
           <AuthField
             name="password"
             type="password"
@@ -137,13 +88,7 @@ export default function Login() {
             required
             dir="ltr"
           />
-
-          <div className="flex items-center justify-between gap-4">
-            <AuthCheckbox name="remember" label={t('auth.login.remember')} />
-            <Link to="/forgot-password" className={`text-sm ${authLinkClass}`}>
-              {t('auth.login.forgot')}
-            </Link>
-          </div>
+          <AuthCheckbox name="remember" label={t('auth.login.remember')} />
 
           <div className="pt-1.5">
             <SubmitButton loading={isPending}>{t('auth.login.submit')}</SubmitButton>
@@ -151,12 +96,7 @@ export default function Login() {
         </form>
       </FormProvider>
 
-      <AuthSwitch>
-        {t('auth.login.newHere')}{' '}
-        <Link to="/register" className={authLinkClass}>
-          {t('auth.login.createAccount')}
-        </Link>
-      </AuthSwitch>
+      <p className="mt-6 text-center text-xs text-zinc-400">{t('auth.login.adminOnly')}</p>
     </AuthCard>
   )
 }

@@ -2,14 +2,14 @@
 
 import React from 'react';
 import { useApp, convertBundleToProduct } from '../../store/AppContext';
-import { BUNDLES } from '../../constants/data';
+import { Bundle } from '../../types';
 import { Sparkles, ShoppingBag, ArrowRight } from 'lucide-react';
 import SectionTitle from '../../components/shared/SectionTitle';
 
 export default function BundlesListingView() {
-  const { language, setSelectedBundle, addToCart, setActivePage } = useApp();
+  const { language, setSelectedBundle, addToCart, setActivePage, bundles } = useApp();
 
-  const handleAddBundle = (bundle: typeof BUNDLES[0]) => {
+  const handleAddBundle = (bundle: Bundle) => {
     addToCart(convertBundleToProduct(bundle), 'Complete Set', 1);
     setActivePage('cart');
   };
@@ -34,7 +34,7 @@ export default function BundlesListingView() {
 
       {/* Grid of Bundles */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-        {BUNDLES.map((bundle) => {
+        {bundles.map((bundle) => {
           const savings = bundle.originalPrice - bundle.bundlePrice;
           return (
             <div

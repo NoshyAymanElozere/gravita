@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import { useApp } from '../../store/AppContext';
+import { errorMessage } from '../../store/useAppStore';
+import { api } from '../../lib/api';
 import { Mail, Instagram, ShieldCheck, Heart } from 'lucide-react';
 // sfffff
 export default function Footer() {
@@ -45,11 +48,16 @@ export default function Footer() {
     { titleEn: 'Luxury Returns', titleAr: 'سياسة الاسترجاع الفاخر', page: 'home' }
   ];
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-    setSubscribed(true);
-    setEmail('');
+    try {
+      await api.post('/newsletter', { email, lang: language });
+      setSubscribed(true);
+      setEmail('');
+    } catch (error) {
+      toast.error(errorMessage(error, language));
+    }
   };
 
   return (

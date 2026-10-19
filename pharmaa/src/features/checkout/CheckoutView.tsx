@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { useApp } from '../../store/AppContext';
+import { errorMessage } from '../../store/useAppStore';
 import { Check, ShieldCheck, CreditCard, ShoppingBag, Truck, Lock, ArrowLeft, ArrowRight } from 'lucide-react';
 
 export default function CheckoutView() {
@@ -28,7 +30,25 @@ export default function CheckoutView() {
   const [shippingCountry, setShippingCountry] = useState(user?.addresses[0]?.country ?? 'Saudi Arabia');
   const [postalCode, setPostalCode] = useState(user?.addresses[0]?.postalCode ?? '12282');
 
-  const [paymentMethod, setPaymentMethod] = useState<'credit_card' | 'cod' | 'apple_pay' | 'google_pay'>('credit_card');
+  // Cash on delivery is the default: online card payments need a payment gateway on the backend
+  const [paymentMethod, setPaymentMethod] = useState<'credit_card' | 'cod' | 'apple_pay' | 'google_pay'>('cod');
+  const [isPlacing, setIsPlacing] = useState(false);
+
+  // The signed-in profile loads from the API after mount - prefill the empty fields when it arrives
+  useEffect(() => {
+    if (!user) return;
+    const address = user.addresses.find((a) => a.isDefault) || user.addresses[0];
+    setCustomerName((v) => v || user.name);
+    setCustomerEmail((v) => v || user.email);
+    setCustomerPhone((v) => v || user.phone);
+    if (address) {
+      setShippingLine1((v) => v || address.addressLine1);
+      setShippingCity(address.city);
+      setShippingState(address.state);
+      setShippingCountry(address.country || 'Saudi Arabia');
+      setPostalCode(address.postalCode);
+    }
+  }, [user]);
   const [ccNumber, setCcNumber] = useState('');
   const [ccExpiry, setCcExpiry] = useState('');
   const [ccCvv, setCcCvv] = useState('');
@@ -138,6 +158,12 @@ export default function CheckoutView() {
   const handleNextStep = () => {
     setFormError(null);
     if (step === 1) {
+      // Orders belong to an account - the cart is kept and merged after signing in
+      if (!user) {
+        toast(language === 'en' ? 'Please sign in to complete your order.' : 'يرجى تسجيل الدخول لإتمام الطلب.');
+        setActivePage('auth');
+        return;
+      }
       if (!customerName || !customerEmail || !customerPhone) {
         setFormError(language === 'en' ? t.errorRequiredEn : t.errorRequiredAr);
         return;
@@ -163,7 +189,12 @@ export default function CheckoutView() {
     setStep((s) => s - 1);
   };
 
-  const handlePlaceOrderSubmit = () => {
+  const handlePlaceOrderSubmit = async () => {
+    if (isPlacing) return;
+    if (!user) {
+      setActivePage('auth');
+      return;
+    }
     const deliveryAddress = {
       id: `addr_check_${Date.now()}`,
       fullName: customerName,
@@ -176,8 +207,22 @@ export default function CheckoutView() {
       isDefault: false
     };
 
-    const newOrder = placeOrder(deliveryAddress, paymentMethod);
-    setPlacedOrderDetails(newOrder);
+    setFormError(null);
+    setIsPlacing(true);
+    try {
+      const newOrder = await placeOrder(deliveryAddress, paymentMethod, {
+        name: customerName,
+        email: customerEmail,
+        phone: customerPhone
+      });
+      setPlacedOrderDetails(newOrder);
+    } catch (error) {
+      const message = errorMessage(error, language);
+      setFormError(message);
+      toast.error(message);
+    } finally {
+      setIsPlacing(false);
+    }
   };
 
   // If order was successfully built
@@ -524,6 +569,7 @@ export default function CheckoutView() {
 
               <button
                 onClick={handlePlaceOrderSubmit}
+                disabled={isPlacing}
                 className="btn-primary w-full !py-4"
               >
                 <ShieldCheck size={14} />

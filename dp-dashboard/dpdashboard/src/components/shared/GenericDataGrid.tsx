@@ -8,55 +8,55 @@ import { cn } from '@/utils/utils'
 // Register all community features
 ModuleRegistry.registerModules([AllCommunityModule])
 
-// Modern theme with light and dark color schemes matching wathiqa brand
+// Modern theme with light and dark color schemes matching the AURA brand
 export const customTheme = themeQuartz
   .withParams({
     browserColorScheme: 'light',
-    accentColor: '#5c66ae',
+    accentColor: '#374037',
     backgroundColor: '#FFFFFF',
-    foregroundColor: '#1a1f36',
-    borderColor: '#e4e7ec',
+    foregroundColor: '#18181b',
+    borderColor: '#e4e4e7',
     borderRadius: 10,
-    headerBackgroundColor: '#f8f9fc',
-    headerTextColor: '#64748b',
+    headerBackgroundColor: '#fafafa',
+    headerTextColor: '#71717a',
     headerFontWeight: 600,
     headerFontSize: 13,
     fontSize: 14,
-    rowBorder: { color: '#f1f3f9', width: 1, style: 'solid' },
+    rowBorder: { color: '#f4f4f5', width: 1, style: 'solid' },
     columnBorder: false,
-    rowHoverColor: 'rgba(92, 102, 174, 0.04)',
-    selectedRowBackgroundColor: 'rgba(92, 102, 174, 0.08)',
-    rangeSelectionBackgroundColor: 'rgba(92, 102, 174, 0.12)',
+    rowHoverColor: 'rgba(116, 137, 114, 0.06)',
+    selectedRowBackgroundColor: 'rgba(116, 137, 114, 0.1)',
+    rangeSelectionBackgroundColor: 'rgba(116, 137, 114, 0.14)',
     cellHorizontalPadding: 16,
-    headerColumnResizeHandleColor: '#5c66ae',
-    fontFamily: "'IBM Plex Sans Arabic', sans-serif",
+    headerColumnResizeHandleColor: '#748972',
+    fontFamily: 'inherit',
     wrapperBorderRadius: 12,
     spacing: 6,
-    oddRowBackgroundColor: '#fafafd',
+    oddRowBackgroundColor: '#ffffff',
   }, 'light')
   .withParams({
     browserColorScheme: 'dark',
-    accentColor: '#3b82f6',
-    backgroundColor: '#0f1629',
+    accentColor: '#bad1b8',
+    backgroundColor: '#131316',
     foregroundColor: '#e2e8f0',
-    borderColor: '#1e2a4a',
+    borderColor: '#27272a',
     borderRadius: 10,
-    headerBackgroundColor: '#131b32',
-    headerTextColor: '#7c8db5',
+    headerBackgroundColor: '#18181b',
+    headerTextColor: '#a1a1aa',
     headerFontWeight: 600,
     headerFontSize: 13,
     fontSize: 14,
-    rowBorder: { color: '#1a2440', width: 1, style: 'solid' },
+    rowBorder: { color: '#1f1f23', width: 1, style: 'solid' },
     columnBorder: false,
-    rowHoverColor: 'rgba(59, 130, 246, 0.06)',
-    selectedRowBackgroundColor: 'rgba(59, 130, 246, 0.1)',
-    rangeSelectionBackgroundColor: 'rgba(59, 130, 246, 0.15)',
+    rowHoverColor: 'rgba(186, 209, 184, 0.06)',
+    selectedRowBackgroundColor: 'rgba(186, 209, 184, 0.1)',
+    rangeSelectionBackgroundColor: 'rgba(186, 209, 184, 0.15)',
     cellHorizontalPadding: 16,
-    headerColumnResizeHandleColor: '#3b82f6',
-    fontFamily: "'IBM Plex Sans Arabic', sans-serif",
+    headerColumnResizeHandleColor: '#bad1b8',
+    fontFamily: 'inherit',
     wrapperBorderRadius: 12,
     spacing: 6,
-    oddRowBackgroundColor: '#111a30',
+    oddRowBackgroundColor: '#131316',
   }, 'dark')
 
 const CustomLoadingOverlay = () => {
@@ -96,20 +96,20 @@ const CustomNoRowsOverlay = () => {
         >
           <defs>
             <linearGradient id="framelessGrad" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#5c66ae" />
-              <stop offset="100%" stopColor="#485199" />
+              <stop offset="0%" stopColor="#748972" />
+              <stop offset="100%" stopColor="#374037" />
             </linearGradient>
             <linearGradient id="lensGrad" x1="50" y1="50" x2="90" y2="90" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.8" />
               <stop offset="100%" stopColor="#CBD5E1" stopOpacity="0.3" />
             </linearGradient>
             <filter id="iconShadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="8" stdDeviation="10" floodColor="#5c66ae" floodOpacity="0.25" />
+              <feDropShadow dx="0" dy="8" stdDeviation="10" floodColor="#748972" floodOpacity="0.25" />
             </filter>
           </defs>
 
           {/* Dotted Accent Ring */}
-          <circle cx="60" cy="60" r="50" stroke="#5c66ae" strokeWidth="1.5" strokeDasharray="5 4" strokeOpacity="0.25" />
+          <circle cx="60" cy="60" r="50" stroke="#748972" strokeWidth="1.5" strokeDasharray="5 4" strokeOpacity="0.25" />
 
           {/* Frameless Floating Box / Document Canvas */}
           <rect x="28" y="34" width="64" height="52" rx="16" fill="url(#framelessGrad)" fillOpacity="0.08" stroke="url(#framelessGrad)" strokeWidth="2" strokeDasharray="4 4" />
@@ -124,8 +124,8 @@ const CustomNoRowsOverlay = () => {
           </g>
 
           {/* Sparkles */}
-          <path d="M24 26L26 30L30 32L26 34L24 38L22 34L18 32L22 30L24 26Z" fill="#F59E0B" />
-          <circle cx="98" cy="30" r="3.5" fill="#38BDF8" />
+          <path d="M24 26L26 30L30 32L26 34L24 38L22 34L18 32L22 30L24 26Z" fill="#C8B98A" />
+          <circle cx="98" cy="30" r="3.5" fill="#BAD1B8" />
         </svg>
       </div>
 
@@ -145,6 +145,9 @@ interface GenericDataGridProps<TData = any> extends AgGridReactProps<TData> {
   totalPages?: number
   onPageChange?: (page: number) => void
   paginationLinks?: Array<{ url: string | null; label: string; active: boolean }>
+  /** Total number of records (server-side pagination) */
+  totalItems?: number
+  showColumnToggle?: boolean
 }
 
 function getPaginationItems(current: number, total: number): (number | '...')[] {
@@ -174,6 +177,8 @@ export function GenericDataGrid<TData = any>({
   totalPages = 1,
   onPageChange,
   paginationLinks,
+  totalItems,
+  showColumnToggle = true,
   ...props
 }: GenericDataGridProps<TData>) {
   const { i18n } = useTranslation()
@@ -237,7 +242,7 @@ export function GenericDataGrid<TData = any>({
 
   return (
     <div className="w-full flex flex-col gap-3">
-      <div className="flex justify-end relative z-10">
+      {showColumnToggle && (<div className="flex justify-end relative z-10">
         <div className="relative" ref={dropdownRef}>
           <button
             type="button"
@@ -274,6 +279,8 @@ export function GenericDataGrid<TData = any>({
         </div>
       </div>
 
+      )}
+
       <div className="w-full animate-fade-in overflow-x-auto" style={{ height }}>
         <AgGridReact
           theme={customTheme}
@@ -306,6 +313,9 @@ export function GenericDataGrid<TData = any>({
         <div className="flex items-center justify-between px-4 py-3 bg-card border border-border/60 rounded-2xl mt-2" dir={isRtl ? 'rtl' : 'ltr'}>
           <div className="text-xs font-bold text-muted-foreground">
             {isRtl ? `الصفحة ${currentPage} من ${totalPages}` : `Page ${currentPage} of ${totalPages}`}
+            {totalItems !== undefined && (
+              <span className="ms-2 font-medium text-muted-foreground/70">· {isRtl ? `${totalItems} سجل` : `${totalItems} records`}</span>
+            )}
           </div>
           <div className="flex items-center gap-1.5">
             {paginationLinks && paginationLinks.length > 0 ? (

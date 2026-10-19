@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { useApp } from '../../store/AppContext';
-import { PRODUCTS, CATEGORIES } from '../../constants/data';
 import { Grid, List, Heart, Star, Eye, Filter, X, Check, Search } from 'lucide-react';
 import { Product } from '../../types';
 import ProductCard from '../../components/shared/ProductCard';
@@ -25,7 +24,9 @@ export default function ProductListingView() {
     priceRange,
     setPriceRange,
     sortBy,
-    setSortBy
+    setSortBy,
+    products,
+    categories
   } = useApp();
 
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -71,7 +72,7 @@ export default function ProductListingView() {
   };
 
   // 1. Filtering logic
-  const filteredProducts = PRODUCTS.filter((product) => {
+  const filteredProducts = products.filter((product) => {
     // Search filter
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();

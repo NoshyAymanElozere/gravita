@@ -1,148 +1,89 @@
-import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios'
+import axios, { type AxiosError } from 'axios'
 import toast from 'react-hot-toast'
-import { clearAuth, getToken, setLogoutReason, setToken, type LogoutReason } from '@/features/auth/lib/authStorage'
+import { clearAuth, getToken, setLogoutReason } from '@/features/auth/lib/authStorage'
 
-const baseURL = import.meta.env.VITE_API_URL ?? 'https://backend1.kazamiza.com/al-wathiqa/api/v1'
+export const API_URL: string = import.meta.env.VITE_API_URL ?? 'http://localhost:5000/api'
+
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    /** Skip the global error toast (the caller renders the error itself) */
+    silent?: boolean
+  }
+}
 
 const api = axios.create({
-  baseURL,
-  timeout: 15_000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: API_URL,
+  timeout: 20_000,
+  headers: { Accept: 'application/json' },
 })
 
-// Public auth endpoints render their own inline errors — no global toasts / refresh for them
-const PUBLIC_AUTH_PATHS = [
-  '/company/auth/login',
-  '/company/auth/register',
-  '/company/auth/verify-otp',
-  '/company/auth/resend-otp',
-  '/company/auth/forgot-password',
-  '/company/auth/verify-reset-otp',
-  '/company/auth/reset-password',
-]
-const REFRESH_PATH = '/company/auth/refresh'
-const LOGOUT_PATH = '/company/auth/logout'
+// Endpoints where a 401 means "wrong password", not "session expired"
+const CREDENTIAL_PATHS = ['/auth/login', '/users/me/password', '/users/me']
 
-const isPublicAuthRequest = (url?: string) => !!url && PUBLIC_AUTH_PATHS.some((p) => url.includes(p))
+const isCredentialRequest = (url?: string, method?: string) =>
+  !!url &&
+  CREDENTIAL_PATHS.some((p) => url === p || url.endsWith(p)) &&
+  (url.endsWith('/auth/login') || (method ?? '').toLowerCase() === 'put')
 
-// A 403 from the company's own session endpoints (/me, /refresh) means the account itself
-// is blocked (e.g. deactivated by an admin), not a missing permission on one resource.
-const isSessionRequest = (url?: string) => !!url && /\/company\/auth\/(me|refresh)\b/.test(url)
-const INACTIVE_MESSAGE = /inactive|deactivat|disabled|suspend|غير نشط|غير مفعل|معطل|موقوف/i
-
-// Request interceptor — attach auth token and lang headers
-api.interceptors.request.use(
-  (config) => {
-    // Prevent duplicate /api/v1 or /v1 prefix when baseURL already includes /api/v1
-    if (config.url) {
-      if (config.url.startsWith('/api/v1/')) {
-        config.url = config.url.replace('/api/v1', '')
-      } else if (config.url.startsWith('/v1/')) {
-        config.url = config.url.replace('/v1', '')
-      }
-    }
-
-    const token = getToken()
-    if (token && !isPublicAuthRequest(config.url)) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
-    config.headers['Accept'] = 'application/json'
-    // A request may pin its own language (e.g. loading both translations of a record)
-    if (!config.headers['Accept-Language']) {
-      config.headers['Accept-Language'] = localStorage.getItem('lang') || 'ar'
-    }
-    return config
-  },
-  (error) => Promise.reject(error)
-)
-
-// ─── Token refresh (single-flight: concurrent 401s share one refresh call) ────
-
-const ACCOUNT_BLOCKED = 'account-blocked'
-let refreshPromise: Promise<string | null> | null = null
-
-async function refreshAccessToken(): Promise<string | null> {
-  const current = getToken()
-  if (!current) return null
-  try {
-    const res = await axios.post(`${baseURL}${REFRESH_PATH}`, null, {
-      headers: {
-        Authorization: `Bearer ${current}`,
-        Accept: 'application/json',
-        'Accept-Language': localStorage.getItem('lang') || 'ar',
-      },
-      timeout: 15_000,
-    })
-    const data = res.data?.data ?? res.data
-    const token: string | undefined = data?.access_token ?? data?.token
-    if (!token) return null
-    setToken(token, data?.expires_in)
-    return token
-  } catch (err) {
-    return (err as AxiosError)?.response?.status === 403 ? ACCOUNT_BLOCKED : null
+api.interceptors.request.use((config) => {
+  const token = getToken()
+  if (token) config.headers.Authorization = `Bearer ${token}`
+  if (!config.headers['Accept-Language']) {
+    config.headers['Accept-Language'] = localStorage.getItem('lang') || 'en'
   }
+  // Let the browser set the multipart boundary
+  if (typeof FormData !== 'undefined' && config.data instanceof FormData) {
+    delete config.headers['Content-Type']
+  }
+  return config
+})
+
+type ApiErrorBody = { message?: string; errors?: unknown[] }
+
+/** Human readable message from a backend error (message + validation errors[]) */
+export function getApiErrorMessage(err: unknown, fallback = 'Something went wrong'): string {
+  const e = err as AxiosError<ApiErrorBody>
+  if (!e?.response) return e?.message === 'Network Error' || !e?.message ? 'Network error — is the API running?' : e.message
+  const body = e.response.data
+  const details = Array.isArray(body?.errors)
+    ? body!.errors
+        .map((x) => (typeof x === 'string' ? x : (x as any)?.message ?? (typeof x === 'object' ? JSON.stringify(x) : String(x))))
+        .filter(Boolean)
+    : []
+  const base = body?.message || fallback
+  return details.length ? `${base}\n• ${details.join('\n• ')}` : base
+}
+
+export function getApiErrorStatus(err: unknown): number | undefined {
+  return (err as AxiosError)?.response?.status
 }
 
 let loggingOut = false
 
-function forceLogout(reason: LogoutReason) {
+function forceLogout(message?: string) {
   clearAuth()
-  const loginPath = `${import.meta.env.BASE_URL}login`
-  if (loggingOut || window.location.pathname.startsWith(loginPath)) return
+  if (loggingOut || window.location.pathname.startsWith('/login')) return
   loggingOut = true
-  setLogoutReason(reason)
-  window.location.replace(loginPath)
+  setLogoutReason({ kind: 'expired', message })
+  window.location.replace('/login')
 }
 
-type RetriableConfig = InternalAxiosRequestConfig & { _retry?: boolean }
-
-// Response interceptor — refresh on 401, global error handling for app requests
 api.interceptors.response.use(
   (response) => response,
-  async (error: AxiosError<{ message?: string }>) => {
-    const config = error.config as RetriableConfig | undefined
+  (error: AxiosError<ApiErrorBody>) => {
     const status = error.response?.status
-    const url = config?.url
-    const message = error.response?.data?.message ?? error.message ?? 'Something went wrong'
+    const url = error.config?.url
+    const method = error.config?.method
 
-    if (isPublicAuthRequest(url)) {
-      if (!error.response) toast.error('Network error. Please check your connection.')
+    if (status === 401 && !isCredentialRequest(url, method)) {
+      forceLogout(error.response?.data?.message)
       return Promise.reject(error)
     }
 
-    if (status === 401 && config && !config._retry && !url?.includes(REFRESH_PATH) && !url?.includes(LOGOUT_PATH)) {
-      config._retry = true
-      refreshPromise ??= refreshAccessToken().finally(() => {
-        refreshPromise = null
-      })
-      const token = await refreshPromise
-      if (token && token !== ACCOUNT_BLOCKED) {
-        config.headers.Authorization = `Bearer ${token}`
-        return api(config)
-      }
-      forceLogout({ kind: token === ACCOUNT_BLOCKED ? 'inactive' : 'expired' })
-      return Promise.reject(error)
+    if (!error.config?.silent) {
+      const message = getApiErrorMessage(error)
+      toast.error(message, { id: message, duration: 6000 })
     }
-
-    if (url?.includes(LOGOUT_PATH)) return Promise.reject(error)
-
-    if (status === 403 && (isSessionRequest(url) || INACTIVE_MESSAGE.test(message))) {
-      forceLogout({ kind: 'inactive', message: error.response?.data?.message })
-      return Promise.reject(error)
-    }
-
-    if (!error.response) {
-      toast.error('Network error. Please check your connection.')
-    } else if (status === 403) {
-      toast.error('You do not have permission to perform this action.')
-    } else if (status && status >= 500) {
-      toast.error('Server error. Please try again later.')
-    } else if (status === 422) {
-      toast.error(message)
-    }
-
     return Promise.reject(error)
   }
 )

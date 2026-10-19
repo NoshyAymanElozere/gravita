@@ -16,6 +16,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Montserrat', 'Readex Pro', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        arabic: ['Readex Pro', 'Montserrat', 'sans-serif'],
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -65,11 +69,23 @@ export default {
           4: 'hsl(var(--chart-4))',
           5: 'hsl(var(--chart-5))',
         },
+        brand: {
+          primary: '#374037',
+          secondary: '#4A5948',
+          sage: '#748972',
+          'sage-light': '#BAD1B8',
+          cream: '#F4F2E4',
+        },
+        page: 'hsl(var(--page))',
         main: {
           DEFAULT: 'var(--main-color)',
           start: 'var(--gradient-start)',
           end: 'var(--gradient-end)',
         },
+      },
+      boxShadow: {
+        xs: '0 1px 2px 0 rgb(0 0 0 / 0.04)',
+        '2xs': '0 1px 1px 0 rgb(0 0 0 / 0.03)',
       },
       backgroundImage: {
         'main-gradient': 'var(--main-gradient)',

@@ -77,12 +77,12 @@ export default function CartView() {
   const shippingFee = currentSubtotal - discountValue > 200 || currentSubtotal === 0 ? 0 : 25;
   const grandTotal = currentSubtotal - discountValue + shippingFee;
 
-  const handleApplyCoupon = (e: React.FormEvent) => {
+  const handleApplyCoupon = async (e: React.FormEvent) => {
     e.preventDefault();
     setCouponError(null);
     if (!couponCode.trim()) return;
 
-    const error = applyCoupon(couponCode);
+    const error = await applyCoupon(couponCode);
     if (error) {
       setCouponError(error);
     } else {

@@ -2,10 +2,9 @@
 
 import React from 'react';
 import { useApp } from '../../../store/AppContext';
-import { PRODUCTS } from '../../../constants/data';
 
 export default function PromoBanner() {
-  const { language, setActivePage, addToCart } = useApp();
+  const { language, setActivePage, addToCart, products } = useApp();
 
   const promoHeadline = language === 'en' ? 'The Seasonal Ritual Bundle' : 'مجموعة الطقوس الموسمية الفاخرة';
   const promoDesc = language === 'en'
@@ -15,13 +14,13 @@ export default function PromoBanner() {
 
   const checkoutRitualBundle = () => {
     // Add Ocean glow, Velvet cloud, and Prebiotic cleanser
-    const clean = PRODUCTS.find((p) => p.id === 'prod_botanical_gel');
-    const serum = PRODUCTS.find((p) => p.id === 'prod_ocean_glow');
-    const moisturizer = PRODUCTS.find((p) => p.id === 'prod_velvet_cloud');
+    const clean = products.find((p) => p.slug === 'botanical-gel-pure-cleanser');
+    const serum = products.find((p) => p.slug === 'ocean-glow-hydra-serum');
+    const moisturizer = products.find((p) => p.slug === 'velvet-cloud-barrier-moisturizer');
 
-    if (clean) addToCart(clean, '150ml', 1);
-    if (serum) addToCart(serum, '50ml', 1);
-    if (moisturizer) addToCart(moisturizer, '100ml', 1);
+    if (clean) addToCart(clean, clean.size, 1);
+    if (serum) addToCart(serum, serum.size, 1);
+    if (moisturizer) addToCart(moisturizer, moisturizer.size, 1);
 
     setActivePage('cart');
   };

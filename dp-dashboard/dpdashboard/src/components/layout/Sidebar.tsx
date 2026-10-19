@@ -1,26 +1,27 @@
-import { Badge } from '@/components/ui/badge'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/shared/misc'
-import { cn } from '@/utils/utils'
-import { Logo } from '@/components/shared/Logo'
+import React from 'react'
+import { NavLink } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import {
   ChevronLeft,
   ChevronRight,
-  Inbox,
-  FileSignature
+  LayoutDashboard,
+  ShoppingBag,
+  Package,
+  FolderTree,
+  Boxes,
+  Users,
+  TicketPercent,
+  Star,
+  Mail,
+  ExternalLink,
 } from 'lucide-react'
-import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { NavLink } from 'react-router-dom'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/shared/misc'
+import { Logo } from '@/components/shared/Logo'
+import { cn } from '@/utils/utils'
+import { STOREFRONT_ORIGIN } from '@/utils/media'
+import { useOrderAlerts } from '@/features/dashboard/api/useStats'
 
-import { useProfile } from '@/features/auth/api/useAuth'
-
-// Only modules wired to the real API belong here
-const navItems: { label: string; href: string; icon: React.ElementType; badge?: number }[] = [
-  { label: 'vehicleRequests', href: '/vehicle-requests', icon: Inbox },
-  { label: 'vehicleOffers', href: '/vehicle-offers', icon: FileSignature },
-]
-
-
+type NavItemDef = { label: string; href: string; icon: React.ElementType; badge?: number }
 
 interface SidebarProps {
   collapsed: boolean
@@ -30,118 +31,129 @@ interface SidebarProps {
 export function Sidebar({ collapsed, onCollapse }: SidebarProps) {
   const { t, i18n } = useTranslation()
   const isRtl = i18n.language === 'ar'
+  const { data: alerts } = useOrderAlerts()
 
-  const { data: admin } = useProfile()
-  const adminName = admin?.name || 'Admin User'
-  const initials = adminName
-    .split(' ')
-    .map((n: string) => n[0])
-    .join('')
-    .substring(0, 2)
-    .toUpperCase()
+  const groups: { title: string; items: NavItemDef[] }[] = [
+    {
+      title: 'nav.groupMain',
+      items: [
+        { label: 'nav.overview', href: '/', icon: LayoutDashboard },
+        { label: 'nav.orders', href: '/orders', icon: ShoppingBag, badge: alerts?.attention || undefined },
+      ],
+    },
+    {
+      title: 'nav.groupCatalog',
+      items: [
+        { label: 'nav.products', href: '/products', icon: Package },
+        { label: 'nav.categories', href: '/categories', icon: FolderTree },
+        { label: 'nav.bundles', href: '/bundles', icon: Boxes },
+      ],
+    },
+    {
+      title: 'nav.groupCustomers',
+      items: [
+        { label: 'nav.customers', href: '/customers', icon: Users },
+        { label: 'nav.coupons', href: '/coupons', icon: TicketPercent },
+        { label: 'nav.reviews', href: '/reviews', icon: Star },
+        { label: 'nav.newsletter', href: '/newsletter', icon: Mail },
+      ],
+    },
+  ]
+
+  const CollapseIcon = collapsed ? (isRtl ? ChevronLeft : ChevronRight) : isRtl ? ChevronRight : ChevronLeft
 
   return (
     <aside
       className={cn(
-        'relative flex flex-col h-full bg-[#ffffff] dark:bg-[#090f1d] border-r border-gray-100 dark:border-zinc-800/80 shadow-xs transition-all duration-300 ease-in-out',
-        collapsed ? 'w-16' : 'w-60'
+        'relative flex h-full flex-col border-e border-sidebar-border bg-sidebar transition-all duration-300 ease-in-out',
+        collapsed ? 'w-[72px]' : 'w-64'
       )}
     >
-      {/* Logo */}
-      <div className="flex h-20 items-center justify-center border-b border-gray-50 dark:border-zinc-800/40 px-4 overflow-hidden">
-        <Logo collapsed={collapsed} size="md" />
+      <div className="flex h-16 shrink-0 items-center justify-center border-b border-sidebar-border px-4">
+        <Logo collapsed={collapsed} size="sm" />
       </div>
 
-      {/* Collapse toggle */}
       <button
         onClick={() => onCollapse(!collapsed)}
         className={cn(
-          'absolute top-16 z-10 flex h-6 w-6 items-center justify-center rounded-full',
-          isRtl ? '-left-3' : '-right-3',
-          'border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 shadow-md hover:bg-gray-50 dark:hover:bg-zinc-750 transition-colors'
+          'absolute top-12 z-10 hidden h-6 w-6 items-center justify-center rounded-full border border-border bg-card shadow-sm transition-colors hover:bg-accent md:flex',
+          isRtl ? '-left-3' : '-right-3'
         )}
-        aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        aria-label={collapsed ? t('nav.expand') : t('nav.collapse')}
       >
-        {collapsed ? (
-          isRtl ? <ChevronLeft className="h-3 w-3 text-gray-500 dark:text-gray-400" /> : <ChevronRight className="h-3 w-3 text-gray-500 dark:text-gray-400" />
-        ) : (
-          isRtl ? <ChevronRight className="h-3 w-3 text-gray-500 dark:text-gray-400" /> : <ChevronLeft className="h-3 w-3 text-gray-500 dark:text-gray-400" />
-        )}
+        <CollapseIcon className="h-3 w-3 text-muted-foreground" />
       </button>
 
-      {/* Nav items */}
-      <nav className="flex-1 overflow-y-auto overflow-x-hidden py-3">
-        {!collapsed && (
-          <p className="px-5 mb-2 text-[11px] font-bold text-gray-400 dark:text-zinc-500 uppercase tracking-widest">
-            {t('menu')}
-          </p>
-        )}
-        <ul className="space-y-1 px-2">
-          {navItems.map((item) => (
-            <NavItem key={item.href} item={item} collapsed={collapsed} />
-          ))}
-        </ul>
+      <nav className="flex-1 space-y-5 overflow-y-auto overflow-x-hidden px-3 py-5">
+        {groups.map((group) => (
+          <div key={group.title}>
+            {!collapsed && (
+              <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70">
+                {t(group.title)}
+              </p>
+            )}
+            <ul className="space-y-1">
+              {group.items.map((item) => (
+                <NavItem key={item.href} item={item} collapsed={collapsed} />
+              ))}
+            </ul>
+          </div>
+        ))}
       </nav>
 
-      {/* User section */}
-      <div className="border-t border-gray-100 dark:border-zinc-800/80 p-3 bg-gray-50/50 dark:bg-zinc-800/10">
-        <div className="flex items-center gap-2.5 rounded-xl p-2 hover:bg-gray-100/50 dark:hover:bg-zinc-800/30 transition-colors cursor-pointer">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr from-main/25 to-main/10 text-main text-sm font-bold border border-main/10 shadow-xs">
-            {initials}
-          </div>
-          {!collapsed && (
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-semibold text-gray-800 dark:text-gray-200">{adminName}</p>
-              <p className="truncate text-[10px] text-gray-400 dark:text-zinc-500 font-semibold">Administrator</p>
-            </div>
+      <div className="border-t border-sidebar-border p-3">
+        <a
+          href={STOREFRONT_ORIGIN}
+          target="_blank"
+          rel="noreferrer"
+          className={cn(
+            'flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground',
+            collapsed && 'justify-center px-0'
           )}
-        </div>
+          title={t('nav.viewStore')}
+        >
+          <ExternalLink className="h-4 w-4 shrink-0" />
+          {!collapsed && <span className="truncate">{t('nav.viewStore')}</span>}
+        </a>
       </div>
     </aside>
   )
 }
 
-interface NavItemProps {
-  item: { label: string; href: string; icon: React.ElementType; badge?: number }
-  collapsed: boolean
-}
-
-function NavItem({ item, collapsed }: NavItemProps) {
+function NavItem({ item, collapsed }: { item: NavItemDef; collapsed: boolean }) {
   const Icon = item.icon
   const { t, i18n } = useTranslation()
   const isRtl = i18n.language === 'ar'
-  const translatedLabel = t(item.label) !== item.label ? t(item.label) : t(item.label.toLowerCase())
+  const label = t(item.label)
 
-  const navLink = (
+  const link = (
     <NavLink
       to={item.href}
       end={item.href === '/'}
       className={({ isActive }) =>
         cn(
-          'group flex h-10 items-center gap-3.5 rounded-xl px-3.5 text-sm font-semibold transition-all duration-200 relative',
-          'text-gray-500 dark:text-zinc-400 hover:bg-gray-50 dark:hover:bg-zinc-800/50 hover:text-gray-900 dark:hover:text-zinc-100',
-          isActive && 'bg-main/10 dark:bg-main/20 text-main dark:text-main'
+          'group relative flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-medium transition-all duration-200',
+          collapsed && 'justify-center px-0',
+          isActive
+            ? 'bg-primary text-primary-foreground shadow-sm'
+            : 'text-zinc-600 hover:bg-accent hover:text-foreground dark:text-zinc-400'
         )
       }
     >
       {({ isActive }) => (
         <>
-          {isActive && (
-            <span className={cn(
-              "absolute top-2 bottom-2 w-1 rounded-full bg-main dark:bg-main",
-              isRtl ? "right-0 rounded-l-full" : "left-0 rounded-r-full"
-            )} />
-          )}
-          <Icon className={cn('h-5 w-5 shrink-0 transition-transform duration-200 group-hover:scale-105', isActive ? 'text-main dark:text-main' : 'text-gray-400 dark:text-zinc-500 group-hover:text-gray-600 dark:group-hover:text-zinc-300')} />
-          {!collapsed && (
-            <>
-              <span className="flex-1 truncate">{translatedLabel}</span>
-              {item.badge && (
-                <Badge className="h-5 min-w-5 px-1 text-[10px] bg-main dark:bg-main text-white font-bold rounded-lg border-none flex items-center justify-center">
-                  {item.badge}
-                </Badge>
+          <Icon className={cn('h-[18px] w-[18px] shrink-0', !isActive && 'text-muted-foreground group-hover:text-foreground')} />
+          {!collapsed && <span className="flex-1 truncate">{label}</span>}
+          {!!item.badge && (
+            <span
+              className={cn(
+                'flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold',
+                isActive ? 'bg-primary-foreground text-primary' : 'bg-amber-500 text-white',
+                collapsed && 'absolute -top-1 end-0 h-4 min-w-4 px-1'
               )}
-            </>
+            >
+              {item.badge}
+            </span>
           )}
         </>
       )}
@@ -152,15 +164,13 @@ function NavItem({ item, collapsed }: NavItemProps) {
     return (
       <li>
         <Tooltip delayDuration={0}>
-          <TooltipTrigger asChild>{navLink}</TooltipTrigger>
-          <TooltipContent side={isRtl ? "left" : "right"} className="font-semibold text-xs dark:bg-zinc-800 dark:text-zinc-100">{translatedLabel}</TooltipContent>
+          <TooltipTrigger asChild>{link}</TooltipTrigger>
+          <TooltipContent side={isRtl ? 'left' : 'right'} className="text-xs font-medium">
+            {label}
+          </TooltipContent>
         </Tooltip>
       </li>
     )
   }
-
-  return <li>{navLink}</li>
-
+  return <li>{link}</li>
 }
-
-

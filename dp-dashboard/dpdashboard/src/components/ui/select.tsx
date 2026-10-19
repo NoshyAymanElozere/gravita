@@ -14,9 +14,9 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      'flex h-10 w-full items-center justify-between whitespace-nowrap rounded-xl border border-gray-200 bg-white px-3.5 py-2 text-sm shadow-sm transition-all',
-      'placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary',
-      'disabled:cursor-not-allowed disabled:bg-gray-100/80 disabled:border-gray-200/80 disabled:text-gray-600 disabled:opacity-95 disabled:shadow-none [&>span]:line-clamp-1',
+      'flex h-10 w-full items-center justify-between gap-2 whitespace-nowrap rounded-xl border border-input bg-background px-3.5 py-2 text-sm shadow-xs transition-all',
+      'placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-ring',
+      'disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none [&>span]:line-clamp-1',
       error && 'border-destructive focus:ring-destructive',
       className
     )}
@@ -111,14 +111,14 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex w-full cursor-pointer select-none items-center rounded-xl py-2 pl-3 pr-9 text-sm font-medium outline-none transition-all duration-150',
+      'relative flex w-full cursor-pointer select-none items-center rounded-lg py-2 ps-3 pe-9 text-sm font-medium outline-none transition-all duration-150',
       'focus:bg-primary/10 focus:text-primary data-[state=selected]:bg-primary/15 data-[state=selected]:text-primary',
       'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       className
     )}
     {...props}
   >
-    <span className="absolute right-3 flex h-3.5 w-3.5 items-center justify-center">
+    <span className="absolute end-3 flex h-3.5 w-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
         <Check className="h-4 w-4 text-primary" />
       </SelectPrimitive.ItemIndicator>

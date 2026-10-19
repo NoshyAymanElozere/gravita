@@ -2,11 +2,10 @@
 
 import React from 'react';
 import { useApp } from '../../../store/AppContext';
-import { CATEGORIES } from '../../../constants/data';
 import SectionTitle from '../../../components/shared/SectionTitle';
 
 export default function ShopByCategory() {
-  const { language, setActiveCategory, setActivePage } = useApp();
+  const { language, setActiveCategory, setActivePage, categories } = useApp();
 
   const title = language === 'en' ? 'Shop by Category' : 'تسوقي حسب الفئة';
   const description = language === 'en' 
@@ -23,7 +22,7 @@ export default function ShopByCategory() {
 
       {/* Categories Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
-        {CATEGORIES.map((cat) => (
+        {categories.map((cat) => (
           <div
             key={cat.id}
             onClick={() => {
