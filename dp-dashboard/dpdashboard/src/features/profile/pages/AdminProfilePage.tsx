@@ -63,7 +63,7 @@ export default function AdminProfilePage() {
         },
         onError: (err) => {
           // 401 here means the current password is wrong (not an expired session)
-          if (getApiErrorStatus(err) === 401) password.setError('currentPassword', { message: 'profile.wrongPassword' })
+          if ([400, 401].includes(getApiErrorStatus(err) ?? 0)) password.setError('currentPassword', { message: 'profile.wrongPassword' })
         },
       }
     )

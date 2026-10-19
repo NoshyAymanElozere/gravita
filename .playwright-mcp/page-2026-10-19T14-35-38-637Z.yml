@@ -1,5 +1,0 @@
-- generic [active] [ref=f1e1]:
-  - text: The server is configured with a public base URL of /wathiqa/company-dashboard/ - did you mean to visit
-  - link "/wathiqa/company-dashboard/login" [ref=f1e2] [cursor=pointer]:
-    - /url: /wathiqa/company-dashboard/login
-  - text: instead?

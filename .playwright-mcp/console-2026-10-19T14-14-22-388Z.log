@@ -1,8 +1,0 @@
-[     333ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/assets/fonts/Ar-font/ReadexPro-VariableFont_HEXP,wght%20(1).ttf:0
-[     989ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/assets/fonts/Ar-font/ReadexPro-VariableFont_HEXP,wght%20(1).ttf:0
-[    2229ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/auth:0
-[    2246ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/assets/fonts/Ar-font/ReadexPro-VariableFont_HEXP,wght%20(1).ttf:0
-[    4450ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) @ http://localhost:3000/auth:0
-[   11695ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/assets/fonts/Ar-font/ReadexPro-VariableFont_HEXP,wght%20(1).ttf:0
-[   55920ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/assets/fonts/Ar-font/ReadexPro-VariableFont_HEXP,wght%20(1).ttf:0
-[   77692ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/assets/fonts/Ar-font/ReadexPro-VariableFont_HEXP,wght%20(1).ttf:0

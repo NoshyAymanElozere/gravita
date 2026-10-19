@@ -58,7 +58,7 @@ router.put(['/me', '/profile'], validate(updateProfileSchema), asyncHandler(asyn
     let token;
     if (password) {
         if (!(await bcrypt.compare(currentPassword, user.password))) {
-            throw new AppError('كلمة المرور الحالية غير صحيحة', 401);
+            throw new AppError('كلمة المرور الحالية غير صحيحة (Current password is incorrect)', 400);
         }
         user.password = await bcrypt.hash(password, 10);
         user.passwordChangedAt = new Date();
@@ -83,7 +83,7 @@ router.put(['/me/password', '/profile/password'], validate(changePasswordSchema)
     const user = await User.findById(req.user._id).select('+password');
 
     if (!(await bcrypt.compare(req.body.currentPassword, user.password))) {
-        throw new AppError('كلمة المرور الحالية غير صحيحة', 401);
+        throw new AppError('كلمة المرور الحالية غير صحيحة (Current password is incorrect)', 400);
     }
 
     user.password = await bcrypt.hash(req.body.newPassword, 10);

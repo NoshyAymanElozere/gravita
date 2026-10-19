@@ -442,6 +442,8 @@ export const en = {
     subscribedAt: 'Subscribed',
     unsubscribed: 'Unsubscribed',
     total: '{{count}} subscribers',
+    deleteTitle: 'Delete subscriber?',
+    deleteText: '{{email}} will be removed from the mailing list.',
   },
 
   profile: {

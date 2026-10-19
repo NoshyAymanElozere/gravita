@@ -6,7 +6,7 @@ Three apps that run together:
 |---|---|---|---|
 | API | `gravuta-backend` | Express 5, Mongoose 9, MongoDB | http://localhost:5000/api |
 | Storefront | `pharmaa` | Next.js 16, React 19, Zustand | http://localhost:3000 |
-| Admin dashboard | `dp-dashboard/dpdashboard` | Vite, React 18, React Query | http://localhost:5173 |
+| Admin dashboard | `dp-dashboard/dpdashboard` | Vite, React 18, React Query, Recharts | http://localhost:5173 |
 
 The storefront and the dashboard read and write the same data through the API. Prices, stock, orders and customers change in one place and show up in both.
 
@@ -28,8 +28,8 @@ npm run dev                   # NEXT_PUBLIC_API_URL defaults to http://localhost
 
 # 3. Dashboard
 cd dp-dashboard/dpdashboard
-npm install
-npm run dev                   # VITE_API_URL / VITE_STOREFRONT_URL in .env
+npm install --legacy-peer-deps   # the template has a peer-dependency conflict
+npm run dev                      # VITE_API_URL / VITE_STOREFRONT_URL in .env; use `npx vite --port 5180` if 5173 is taken
 ```
 
 Demo accounts created by the seed:

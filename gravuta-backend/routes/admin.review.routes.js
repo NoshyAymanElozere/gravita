@@ -82,4 +82,16 @@ router.get('/newsletter', asyncHandler(async (req, res) => {
     });
 }));
 
+// حذف مشترك - DELETE /api/admin/newsletter/:id
+router.delete('/newsletter/:id', asyncHandler(async (req, res) => {
+    const subscriber = await NewsletterSubscriber.findByIdAndDelete(req.params.id);
+    if (!subscriber) {
+        throw new AppError('المشترك غير موجود', 404);
+    }
+    res.status(200).json({
+        status: 'success',
+        message: '🗑️ تم حذف المشترك'
+    });
+}));
+
 module.exports = router;

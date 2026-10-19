@@ -2,15 +2,16 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { ColDef } from 'ag-grid-community'
 import toast from 'react-hot-toast'
-import { Mail, Download } from 'lucide-react'
+import { Mail, Download, Trash2 } from 'lucide-react'
 import { GenericDataGrid } from '@/components/shared/GenericDataGrid'
+import { ConfirmAction } from '@/components/shared/confirm-dialog'
 import { PageHeader, FilterBar } from '@/components/shared/page-header'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useSearchParamsState } from '@/hooks/useSearchParamsState'
 import { formatDate } from '@/utils/format'
 import type { NewsletterSubscriber } from '@/types/api'
-import { fetchAllSubscribers, useSubscriberList } from '../api/useNewsletter'
+import { fetchAllSubscribers, useDeleteSubscriber, useSubscriberList } from '../api/useNewsletter'
 import { ActiveBadge } from '@/features/customers/pages/CustomersList'
 
 const csvCell = (v: unknown) => {
@@ -23,6 +24,8 @@ export default function NewsletterList() {
   const { values, page, set } = useSearchParamsState(['isActive'] as const)
   const { data, isLoading } = useSubscriberList({ page, limit: 20, isActive: values.isActive })
   const [exporting, setExporting] = useState(false)
+  const del = useDeleteSubscriber()
+  const [deleting, setDeleting] = useState<NewsletterSubscriber | null>(null)
 
   const exportCsv = async () => {
     setExporting(true)
@@ -80,6 +83,16 @@ export default function NewsletterList() {
         minWidth: 170,
         cellRenderer: ({ data: s }: { data: NewsletterSubscriber }) => <span className="text-muted-foreground">{formatDate(s.createdAt, true)}</span>,
       },
+      {
+        headerName: '',
+        width: 70,
+        flex: 0,
+        cellRenderer: ({ data: s }: { data: NewsletterSubscriber }) => (
+          <Button variant="ghost" size="icon-sm" onClick={() => setDeleting(s)} aria-label={t('common.delete')}>
+            <Trash2 className="h-4 w-4 text-rose-500" />
+          </Button>
+        ),
+      },
     ],
     [t]
   )
@@ -130,6 +143,16 @@ export default function NewsletterList() {
           showColumnToggle={false}
         />
       </div>
+
+      <ConfirmAction
+        open={!!deleting}
+        onOpenChange={(o) => !o && setDeleting(null)}
+        title={t('newsletter.deleteTitle')}
+        description={t('newsletter.deleteText', { email: deleting?.email })}
+        confirmLabel={t('common.delete')}
+        loading={del.isPending}
+        onConfirm={() => deleting && del.mutate(deleting._id, { onSettled: () => setDeleting(null) })}
+      />
     </div>
   )
 }

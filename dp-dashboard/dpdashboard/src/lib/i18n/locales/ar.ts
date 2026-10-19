@@ -445,6 +445,8 @@ export const ar: DeepStringRecord<typeof en> = {
     subscribedAt: 'تاريخ الاشتراك',
     unsubscribed: 'ألغى الاشتراك',
     total: '{{count}} مشترك',
+    deleteTitle: 'حذف المشترك؟',
+    deleteText: 'سيتم حذف {{email}} من قائمة المراسلات.',
   },
 
   profile: {
