@@ -51,6 +51,17 @@ export interface Category extends CategoryRef {
   createdAt?: string
 }
 
+export interface Banner {
+  _id: string
+  titleEn?: string
+  titleAr?: string
+  image: string
+  link?: string
+  sortOrder: number
+  isActive: boolean
+  createdAt?: string
+}
+
 export type StockStatus = 'in_stock' | 'low_stock' | 'out_of_stock'
 
 export interface Product {

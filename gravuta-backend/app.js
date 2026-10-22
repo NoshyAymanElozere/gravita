@@ -25,6 +25,7 @@ app.use('/api/categories', require('./routes/category.routes'));
 app.use('/api/bundles', require('./routes/bundle.routes'));
 app.use('/api/reviews', require('./routes/review.routes'));
 app.use('/api/newsletter', require('./routes/newsletter.routes'));
+app.use('/api/banners', require('./routes/banner.routes'));
 app.use('/api/coupons', require('./routes/coupon.routes'));
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/users', require('./routes/user.routes'));
@@ -39,6 +40,7 @@ app.use('/api/admin/users', require('./routes/admin.user.routes'));
 app.use('/api/admin/orders', require('./routes/admin.order.routes'));
 app.use('/api/admin/coupons', require('./routes/admin.coupon.routes'));
 app.use('/api/admin/stats', require('./routes/admin.stats.routes'));
+app.use('/api/admin/banners', require('./routes/admin.banner.routes'));
 // التقييمات والنشرة البريدية: /api/admin/reviews و /api/admin/newsletter
 app.use('/api/admin', require('./routes/admin.review.routes'));
 

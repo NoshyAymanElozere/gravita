@@ -9,6 +9,7 @@ import {
   Package,
   FolderTree,
   Boxes,
+  Images,
   Users,
   TicketPercent,
   Star,
@@ -47,6 +48,7 @@ export function Sidebar({ collapsed, onCollapse }: SidebarProps) {
         { label: 'nav.products', href: '/products', icon: Package },
         { label: 'nav.categories', href: '/categories', icon: FolderTree },
         { label: 'nav.bundles', href: '/bundles', icon: Boxes },
+        { label: 'nav.banners', href: '/banners', icon: Images },
       ],
     },
     {

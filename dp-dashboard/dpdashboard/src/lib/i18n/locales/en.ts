@@ -55,6 +55,7 @@ export const en = {
     min6: 'Must be at least 6 characters',
     max50: 'Must be 50 characters or fewer',
     max80: 'Must be 80 characters or fewer',
+    max120: 'Must be 120 characters or fewer',
     max150: 'Must be 150 characters or fewer',
     max200: 'Must be 200 characters or fewer',
     max300: 'Must be 300 characters or fewer',
@@ -78,6 +79,7 @@ export const en = {
     products: 'Products',
     categories: 'Categories',
     bundles: 'Bundles',
+    banners: 'Hero banners',
     customers: 'Customers',
     coupons: 'Coupons',
     reviews: 'Reviews',
@@ -306,6 +308,21 @@ export const en = {
     products: 'Products',
     deleteTitle: 'Delete category?',
     deleteText: '"{{name}}" will be deleted. Categories that still contain products cannot be deleted.',
+  },
+
+  banners: {
+    title: 'Hero banners',
+    subtitle: 'Slides shown in the storefront home hero slider',
+    add: 'Add banner',
+    edit: 'Edit banner',
+    banner: 'Banner',
+    fieldTitle: 'Title',
+    image: 'Banner image',
+    imageRequired: 'A banner image is required',
+    link: 'Link',
+    linkHint: 'Optional URL opened when the slide is clicked',
+    deleteTitle: 'Delete banner?',
+    deleteText: 'This slide will be removed from the storefront hero slider.',
   },
 
   bundles: {

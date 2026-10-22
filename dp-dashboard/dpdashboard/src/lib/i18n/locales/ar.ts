@@ -58,6 +58,7 @@ export const ar: DeepStringRecord<typeof en> = {
     min6: 'يجب ألا يقل عن 6 أحرف',
     max50: 'يجب ألا يتجاوز 50 حرفاً',
     max80: 'يجب ألا يتجاوز 80 حرفاً',
+    max120: 'يجب ألا يتجاوز 120 حرفاً',
     max150: 'يجب ألا يتجاوز 150 حرفاً',
     max200: 'يجب ألا يتجاوز 200 حرف',
     max300: 'يجب ألا يتجاوز 300 حرف',
@@ -81,6 +82,7 @@ export const ar: DeepStringRecord<typeof en> = {
     products: 'المنتجات',
     categories: 'الفئات',
     bundles: 'الباقات',
+    banners: 'بانر الرئيسية',
     customers: 'العملاء',
     coupons: 'الكوبونات',
     reviews: 'التقييمات',
@@ -309,6 +311,21 @@ export const ar: DeepStringRecord<typeof en> = {
     products: 'المنتجات',
     deleteTitle: 'حذف الفئة؟',
     deleteText: 'سيتم حذف "{{name}}". لا يمكن حذف فئة ما زالت تحتوي على منتجات.',
+  },
+
+  banners: {
+    title: 'بانر الرئيسية',
+    subtitle: 'الشرائح التي تظهر في سلايدر الصفحة الرئيسية للمتجر',
+    add: 'إضافة شريحة',
+    edit: 'تعديل الشريحة',
+    banner: 'الشريحة',
+    fieldTitle: 'العنوان',
+    image: 'صورة البانر',
+    imageRequired: 'صورة البانر مطلوبة',
+    link: 'الرابط',
+    linkHint: 'رابط اختياري يُفتح عند الضغط على الشريحة',
+    deleteTitle: 'حذف الشريحة؟',
+    deleteText: 'ستُحذف هذه الشريحة من سلايدر الصفحة الرئيسية للمتجر.',
   },
 
   bundles: {

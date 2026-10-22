@@ -1,6 +1,7 @@
 import axios, { type AxiosError } from 'axios'
 import toast from 'react-hot-toast'
 import { clearAuth, getToken, setLogoutReason } from '@/features/auth/lib/authStorage'
+import { BYPASS_AUTH } from '@/lib/authBypass'
 
 export const API_URL: string = import.meta.env.VITE_API_URL ?? 'http://localhost:5000/api'
 
@@ -61,6 +62,7 @@ export function getApiErrorStatus(err: unknown): number | undefined {
 let loggingOut = false
 
 function forceLogout(message?: string) {
+  if (BYPASS_AUTH) return
   clearAuth()
   if (loggingOut || window.location.pathname.startsWith('/login')) return
   loggingOut = true

@@ -10,6 +10,7 @@ import OrderDetail from '@/features/orders/pages/OrderDetail'
 import ProductsList from '@/features/products/pages/ProductsList'
 import ProductFormPage from '@/features/products/pages/ProductFormPage'
 import CategoriesList from '@/features/categories/pages/CategoriesList'
+import BannersList from '@/features/banners/pages/BannersList'
 import BundlesList from '@/features/bundles/pages/BundlesList'
 import BundleFormPage from '@/features/bundles/pages/BundleFormPage'
 import CustomersList from '@/features/customers/pages/CustomersList'
@@ -46,6 +47,8 @@ export const dashboardRoutes = (
       <Route path="products/:id/edit" element={<ProductFormPage />} />
 
       <Route path="categories" element={<CategoriesList />} />
+
+      <Route path="banners" element={<BannersList />} />
 
       <Route path="bundles" element={<BundlesList />} />
       <Route path="bundles/new" element={<BundleFormPage />} />

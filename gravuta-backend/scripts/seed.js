@@ -13,6 +13,7 @@ const Product = require('../models/Product');
 const Bundle = require('../models/Bundle');
 const Coupon = require('../models/Coupon');
 const Review = require('../models/Review');
+const Banner = require('../models/Banner');
 const { buildBundlePricing } = require('../utils/bundlePricing');
 
 // بيانات المتجر المستخرجة من pharmaa/src/constants/data.ts (الفئات، المنتجات، الباقات، الكوبونات، التقييمات)
@@ -123,6 +124,21 @@ const seedCatalog = async () => {
         reviewCount++;
     }
     log(`⭐ ${reviewCount} reviews`);
+
+    // شرائح البانر الرئيسي الافتراضية (idempotent حسب الصورة)
+    const defaultBanners = [
+        { image: '/assets/images/banner1.png', titleEn: 'Banner 1', titleAr: 'بانر 1', sortOrder: 0 },
+        { image: '/assets/images/banner2.png', titleEn: 'Banner 2', titleAr: 'بانر 2', sortOrder: 1 },
+        { image: '/assets/images/banner3.png', titleEn: 'Banner 3', titleAr: 'بانر 3', sortOrder: 2 }
+    ];
+    for (const data of defaultBanners) {
+        await Banner.findOneAndUpdate(
+            { image: data.image },
+            { $setOnInsert: data },
+            { upsert: true, setDefaultsOnInsert: true }
+        );
+    }
+    log(`🖼️ ${defaultBanners.length} banners`);
 
     return { categoryIds, productIds };
 };

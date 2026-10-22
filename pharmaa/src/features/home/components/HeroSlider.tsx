@@ -1,21 +1,42 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useApp } from '../../../store/AppContext';
+import { api, resolveImage } from '../../../lib/api';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
-export default function HeroSlider() {
-  const { language, setActivePage } = useApp();
+type Banner = { image: string; link?: string };
 
-  const banners = [
-    '/assets/images/banner1.png',
-    '/assets/images/banner2.png',
-    '/assets/images/banner3.png'
-  ];
-  
+// Shown until the API responds, and if no active banners are configured in the dashboard
+const FALLBACK_BANNERS: Banner[] = [
+  { image: '/assets/images/banner1.png' },
+  { image: '/assets/images/banner2.png' },
+  { image: '/assets/images/banner3.png' },
+];
+
+export default function HeroSlider() {
+  const [banners, setBanners] = useState<Banner[]>(FALLBACK_BANNERS);
   const [currentBanner, setCurrentBanner] = useState(0);
 
+  // Load hero slides managed from the dashboard; keep the fallback if none/empty/error
   useEffect(() => {
+    let active = true;
+    api
+      .get<{ data: Banner[] }>('/banners')
+      .then((res) => {
+        const list = (res.data || []).filter((b) => b.image);
+        if (active && list.length) {
+          setBanners(list);
+          setCurrentBanner(0);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (banners.length <= 1) return;
     const timer = setInterval(() => {
       setCurrentBanner((prev) => (prev + 1) % banners.length);
     }, 6000);
@@ -29,15 +50,23 @@ export default function HeroSlider() {
     <section className="relative w-full h-[320px] sm:h-[400px] md:h-[500px] lg:h-[580px] overflow-hidden bg-brand-cream/10 rounded-2xl md:rounded-3xl shadow-md group">
       {/* Banner Images Slider */}
       <div className="absolute inset-0 w-full h-full">
-        {banners.map((banner, idx) => (
-          <div
-            key={idx}
-            className={`absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-1000 ease-in-out ${
-              idx === currentBanner ? 'opacity-100 scale-100 z-10 visible' : 'opacity-0 scale-95 pointer-events-none z-0 invisible'
-            }`}
-            style={{ backgroundImage: `url('${banner}')` }}
-          />
-        ))}
+        {banners.map((banner, idx) => {
+          const slide = (
+            <div
+              className={`absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-1000 ease-in-out ${
+                idx === currentBanner ? 'opacity-100 scale-100 z-10 visible' : 'opacity-0 scale-95 pointer-events-none z-0 invisible'
+              }`}
+              style={{ backgroundImage: `url('${resolveImage(banner.image)}')` }}
+            />
+          );
+          return banner.link ? (
+            <a key={idx} href={banner.link} aria-label={`Banner ${idx + 1}`} className="contents">
+              {slide}
+            </a>
+          ) : (
+            <React.Fragment key={idx}>{slide}</React.Fragment>
+          );
+        })}
       </div>
 
       {/* Ambient luxury light/shadow overlay */}

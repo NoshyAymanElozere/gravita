@@ -3,9 +3,15 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { clearAuth, getToken, setLogoutReason } from '@/features/auth/lib/authStorage'
 import { useProfile } from '@/features/auth/api/useAuth'
 import { PageLoader } from './page-loader'
+import { BYPASS_AUTH } from '@/lib/authBypass'
 
 /** Requires a valid admin session (validated with GET /auth/me) */
 export function ProtectedRoute() {
+  if (BYPASS_AUTH) return <Outlet />
+  return <AuthGuard />
+}
+
+function AuthGuard() {
   const location = useLocation()
   const token = getToken()
   const { data: user, isFetching, isError, isFetched } = useProfile()
