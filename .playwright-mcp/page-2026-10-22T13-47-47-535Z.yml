@@ -1,0 +1,102 @@
+- generic [active] [ref=f10e1]:
+  - generic [ref=f10e2]:
+    - banner [ref=f10e3]:
+      - generic [ref=f10e4]:
+        - generic [ref=f10e5]:
+          - button "Toggle Mobile Menu" [ref=f10e6] [cursor=pointer]
+          - img "AURA Laboratories" [ref=f10e9] [cursor=pointer]
+        - generic [ref=f10e10]:
+          - button "1" [ref=f10e11] [cursor=pointer]
+          - button [ref=f10e16] [cursor=pointer]
+          - button "العربية" [ref=f10e20]
+    - main [ref=f10e25]:
+      - generic [ref=f10e26]:
+        - heading "Secure Checkout Portal" [level=1] [ref=f10e28]
+        - generic [ref=f10e29]:
+          - generic [ref=f10e30]: "1"
+          - generic [ref=f10e33]: "2"
+          - generic [ref=f10e36]: "3"
+          - generic [ref=f10e39]: "4"
+        - generic [ref=f10e41]:
+          - generic [ref=f10e42]:
+            - generic [ref=f10e43]:
+              - heading "Checkout Details" [level=3] [ref=f10e44]
+              - generic [ref=f10e48]:
+                - generic [ref=f10e49]:
+                  - generic [ref=f10e50]: Full Legal Name
+                  - textbox [ref=f10e51]
+                - generic [ref=f10e52]:
+                  - generic [ref=f10e53]: Email for Receipt
+                  - textbox [ref=f10e54]
+              - generic [ref=f10e55]:
+                - generic [ref=f10e56]: Delivery Contact Phone
+                - textbox "+966 5x xxx xxxx" [ref=f10e57]
+            - button "Proceed" [ref=f10e59] [cursor=pointer]
+          - generic [ref=f10e64]:
+            - heading "Bag Manifest" [level=3] [ref=f10e65]
+            - generic [ref=f10e70]:
+              - generic [ref=f10e71]:
+                - heading "Solar Shield Invisible SPF50+ Defense" [level=5] [ref=f10e72]
+                - generic [ref=f10e73]: 1 x 50ml
+              - generic [ref=f10e74]: 250 AED/SAR
+            - generic [ref=f10e75]:
+              - generic [ref=f10e76]:
+                - generic [ref=f10e77]: Subtotal
+                - generic [ref=f10e78]: 250 AED/SAR
+              - generic [ref=f10e79]:
+                - generic [ref=f10e80]: Insulated Delivery
+                - generic [ref=f10e81]: 15 AED/SAR
+            - generic [ref=f10e83]:
+              - generic [ref=f10e84]: Grand Total
+              - generic [ref=f10e85]: 265 AED/SAR
+    - contentinfo [ref=f10e86]:
+      - generic [ref=f10e87]:
+        - generic [ref=f10e88]:
+          - generic [ref=f10e89]:
+            - heading "Subscribe to our Skin Journal" [level=3] [ref=f10e90]
+            - paragraph [ref=f10e91]: Receive expert advice, product launches, and exclusive member-only pricing.
+          - generic [ref=f10e93]:
+            - textbox "Enter your email address..." [ref=f10e94]
+            - button "Subscribe" [ref=f10e95] [cursor=pointer]
+        - generic [ref=f10e96]:
+          - generic [ref=f10e97]:
+            - generic [ref=f10e98]:
+              - generic [ref=f10e99]: AURA
+              - generic [ref=f10e100]: LABORATORIES
+            - paragraph [ref=f10e101]: Aura Laboratories was founded to offer high-efficacy, plant-derived, clinically sound skincare options for complex climates.
+            - generic [ref=f10e102]:
+              - link [ref=f10e103] [cursor=pointer]:
+                - /url: https://instagram.com
+              - link [ref=f10e107] [cursor=pointer]:
+                - /url: mailto:expert@aura.com
+          - generic [ref=f10e111]:
+            - heading "Company" [level=4] [ref=f10e112]
+            - list [ref=f10e113]:
+              - listitem [ref=f10e114]:
+                - button "About Us" [ref=f10e115] [cursor=pointer]
+              - listitem [ref=f10e116]:
+                - button "Contact Us" [ref=f10e117] [cursor=pointer]
+              - listitem [ref=f10e118]:
+                - button "FAQ" [ref=f10e119] [cursor=pointer]
+              - listitem [ref=f10e120]:
+                - button "Privacy Policy" [ref=f10e121] [cursor=pointer]
+              - listitem [ref=f10e122]:
+                - button "Terms of Service" [ref=f10e123] [cursor=pointer]
+          - generic [ref=f10e124]:
+            - heading "Customer Support" [level=4] [ref=f10e125]
+            - list [ref=f10e126]:
+              - listitem [ref=f10e127]:
+                - button "Shipping Guide" [ref=f10e128] [cursor=pointer]
+              - listitem [ref=f10e129]:
+                - button "Luxury Returns" [ref=f10e130] [cursor=pointer]
+          - generic [ref=f10e131]:
+            - heading "100% Secure Payment" [level=4] [ref=f10e132]
+            - paragraph [ref=f10e136]: Your transactional security is prioritized. Pay safely by bank transfer to our IBAN or in cash on delivery.
+            - generic [ref=f10e137]:
+              - generic [ref=f10e138]: Bank Transfer
+              - generic [ref=f10e139]: IBAN
+              - generic [ref=f10e140]: COD
+        - generic [ref=f10e141]:
+          - paragraph [ref=f10e142]: © 2026 AURA Laboratories. All designs are registered trademarks.
+          - generic [ref=f10e143]: Made with passion for healthy skin
+  - alert [ref=f10e147]

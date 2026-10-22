@@ -1,0 +1,132 @@
+- generic [ref=f9e1]:
+  - status [ref=f9e211]: Solar Shield Invisible SPF50+ Defense added to bag!
+  - generic [ref=f9e2]:
+    - banner [ref=f9e3]:
+      - generic [ref=f9e4]:
+        - generic [ref=f9e5]:
+          - button "Toggle Mobile Menu" [ref=f9e6] [cursor=pointer]
+          - img "AURA Laboratories" [ref=f9e9] [cursor=pointer]
+        - generic [ref=f9e10]:
+          - button "1" [ref=f9e212] [cursor=pointer]
+          - button [ref=f9e15] [cursor=pointer]
+          - button "العربية" [ref=f9e19]
+    - main [ref=f9e24]:
+      - generic [ref=f9e25]:
+        - generic [ref=f9e26]:
+          - generic [ref=f9e27]: Prescribed Formulations
+          - heading "All Collections" [level=1] [ref=f9e28]
+          - paragraph [ref=f9e29]: Clinically evaluated botanical solutions targeted for absolute skin restoration.
+        - textbox "Search elixirs, ingredients, skin concern..." [ref=f9e31]
+        - generic [ref=f9e35]:
+          - generic [ref=f9e36]: Showing 6 formulations found
+          - combobox [ref=f9e39] [cursor=pointer]:
+            - option "Best Sellers" [selected]
+            - 'option "Price: Low to High"'
+            - 'option "Price: High to Low"'
+            - option "New Arrivals"
+        - generic [ref=f9e42]:
+          - generic [ref=f9e111] [cursor=pointer]:
+            - img "Solar Shield Invisible SPF50+ Defense" [ref=f9e113]
+            - generic [ref=f9e114]:
+              - heading "Solar Shield Invisible SPF50+ Defense" [level=4] [ref=f9e116]
+              - generic [ref=f9e117]:
+                - generic [ref=f9e118]: 250 AED/SAR
+                - button "Add to cart" [active] [ref=f9e120]
+          - generic [ref=f9e126] [cursor=pointer]:
+            - generic [ref=f9e127]:
+              - img "Botanical Harmony Pure Prebiotic Cleanser" [ref=f9e128]
+              - generic [ref=f9e129]: 18% OFF
+            - generic [ref=f9e130]:
+              - heading "Botanical Harmony Pure Prebiotic Cleanser" [level=4] [ref=f9e132]
+              - generic [ref=f9e133]:
+                - generic [ref=f9e134]:
+                  - generic [ref=f9e135]: 195 AED/SAR
+                  - generic [ref=f9e136]: 160 AED/SAR
+                - button "Add to cart" [ref=f9e137]
+          - generic [ref=f9e143] [cursor=pointer]:
+            - generic [ref=f9e144]:
+              - img "Ocean Glow Hydra-Renewal Serum" [ref=f9e145]
+              - generic [ref=f9e146]: 14% OFF
+            - generic [ref=f9e147]:
+              - heading "Ocean Glow Hydra-Renewal Serum" [level=4] [ref=f9e149]
+              - generic [ref=f9e150]:
+                - generic [ref=f9e151]:
+                  - generic [ref=f9e152]: 320 AED/SAR
+                  - generic [ref=f9e153]: 275 AED/SAR
+                - button "Add to cart" [ref=f9e154]
+          - generic [ref=f9e160] [cursor=pointer]:
+            - img "Caffeine & Peptide Micro-Sculpt Eye Balm" [ref=f9e162]
+            - generic [ref=f9e163]:
+              - heading "Caffeine & Peptide Micro-Sculpt Eye Balm" [level=4] [ref=f9e165]
+              - generic [ref=f9e166]:
+                - generic [ref=f9e167]: 310 AED/SAR
+                - button "Add to cart" [ref=f9e169]
+          - generic [ref=f9e175] [cursor=pointer]:
+            - img "Velvet Cloud Lipid-Barrier Moisturizer" [ref=f9e177]
+            - generic [ref=f9e178]:
+              - heading "Velvet Cloud Lipid-Barrier Moisturizer" [level=4] [ref=f9e180]
+              - generic [ref=f9e181]:
+                - generic [ref=f9e182]: 380 AED/SAR
+                - button "Add to cart" [ref=f9e184]
+          - generic [ref=f9e190] [cursor=pointer]:
+            - generic [ref=f9e191]:
+              - img "Glacial Marine Clay Detox Mask" [ref=f9e192]
+              - generic [ref=f9e193]: 21% OFF
+            - generic [ref=f9e194]:
+              - heading "Glacial Marine Clay Detox Mask" [level=4] [ref=f9e196]
+              - generic [ref=f9e197]:
+                - generic [ref=f9e198]:
+                  - generic [ref=f9e199]: 280 AED/SAR
+                  - generic [ref=f9e200]: 220 AED/SAR
+                - button "Add to cart" [ref=f9e201]
+    - contentinfo [ref=f9e48]:
+      - generic [ref=f9e49]:
+        - generic [ref=f9e50]:
+          - generic [ref=f9e51]:
+            - heading "Subscribe to our Skin Journal" [level=3] [ref=f9e52]
+            - paragraph [ref=f9e53]: Receive expert advice, product launches, and exclusive member-only pricing.
+          - generic [ref=f9e55]:
+            - textbox "Enter your email address..." [ref=f9e56]
+            - button "Subscribe" [ref=f9e57] [cursor=pointer]
+        - generic [ref=f9e58]:
+          - generic [ref=f9e59]:
+            - generic [ref=f9e60]:
+              - generic [ref=f9e61]: AURA
+              - generic [ref=f9e62]: LABORATORIES
+            - paragraph [ref=f9e63]: Aura Laboratories was founded to offer high-efficacy, plant-derived, clinically sound skincare options for complex climates.
+            - generic [ref=f9e64]:
+              - link [ref=f9e65] [cursor=pointer]:
+                - /url: https://instagram.com
+              - link [ref=f9e69] [cursor=pointer]:
+                - /url: mailto:expert@aura.com
+          - generic [ref=f9e73]:
+            - heading "Company" [level=4] [ref=f9e74]
+            - list [ref=f9e75]:
+              - listitem [ref=f9e76]:
+                - button "About Us" [ref=f9e77] [cursor=pointer]
+              - listitem [ref=f9e78]:
+                - button "Contact Us" [ref=f9e79] [cursor=pointer]
+              - listitem [ref=f9e80]:
+                - button "FAQ" [ref=f9e81] [cursor=pointer]
+              - listitem [ref=f9e82]:
+                - button "Privacy Policy" [ref=f9e83] [cursor=pointer]
+              - listitem [ref=f9e84]:
+                - button "Terms of Service" [ref=f9e85] [cursor=pointer]
+          - generic [ref=f9e86]:
+            - heading "Customer Support" [level=4] [ref=f9e87]
+            - list [ref=f9e88]:
+              - listitem [ref=f9e89]:
+                - button "Shipping Guide" [ref=f9e90] [cursor=pointer]
+              - listitem [ref=f9e91]:
+                - button "Luxury Returns" [ref=f9e92] [cursor=pointer]
+          - generic [ref=f9e93]:
+            - heading "100% Secure Payment" [level=4] [ref=f9e94]
+            - paragraph [ref=f9e98]: Your transactional security is prioritized. Pay safely by bank transfer to our IBAN or in cash on delivery.
+            - generic [ref=f9e99]:
+              - generic [ref=f9e100]: Bank Transfer
+              - generic [ref=f9e101]: IBAN
+              - generic [ref=f9e102]: COD
+        - generic [ref=f9e103]:
+          - paragraph [ref=f9e104]: © 2026 AURA Laboratories. All designs are registered trademarks.
+          - generic [ref=f9e105]: Made with passion for healthy skin
+  - alert [ref=f9e109]
