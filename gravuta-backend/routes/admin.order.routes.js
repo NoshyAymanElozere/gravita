@@ -4,7 +4,7 @@ const Order = require('../models/Order');
 const User = require('../models/User');
 const { STATUS_TRANSITIONS } = require('../models/Order');
 const validate = require('../middlewares/validate.middleware');
-const { updateOrderStatusSchema, orderQuerySchema } = require('../validations/order.validation');
+const { updateOrderStatusSchema, updatePaymentStatusSchema, orderQuerySchema } = require('../validations/order.validation');
 const { protect, restrictTo } = require('../middlewares/auth.middleware');
 const paginate = require('../utils/paginate');
 const asyncHandler = require('../utils/asyncHandler');
@@ -113,6 +113,30 @@ router.put('/:id/status', validate(updateOrderStatusSchema), asyncHandler(async 
     res.status(200).json({
         status: 'success',
         message: `🚚 تم تحديث حالة الطلب بنجاح إلى: ${status}`,
+        data: {
+            order
+        }
+    });
+}));
+
+// 4️⃣ تحديث حالة الدفع - PATCH /api/admin/orders/:id/payment
+// { paymentStatus, paymentRef? } - مثلاً تأكيد استلام التحويل البنكي على حساب المتجر
+router.patch('/:id/payment', validate(updatePaymentStatusSchema), asyncHandler(async (req, res) => {
+    const { paymentStatus, paymentRef } = req.body;
+
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+        throw new AppError('الطلب غير موجود لتعديل حالة الدفع!', 404);
+    }
+
+    order.paymentStatus = paymentStatus;
+    if (paymentRef !== undefined) order.paymentRef = paymentRef;
+    await order.save();
+    await order.populate(orderPopulate);
+
+    res.status(200).json({
+        status: 'success',
+        message: `💳 تم تحديث حالة الدفع بنجاح إلى: ${paymentStatus}`,
         data: {
             order
         }

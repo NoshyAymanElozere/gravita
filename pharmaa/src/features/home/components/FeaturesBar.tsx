@@ -19,8 +19,8 @@ export default function FeaturesBar() {
       icon: <ShieldCheck className="text-brand-sage-muted" size={24} />,
       titleEn: '100% Secure Encrypted Payment',
       titleAr: 'دفع مشفر آمن 100٪',
-      descEn: 'Flexible payment via Credit Card, Apple Pay, Google Pay, or Cash on Delivery.',
-      descAr: 'خيارات دفع مرنة بالبطاقة الأمنة، آبل باي، أو الدفع نقداً عند الاستلام.'
+      descEn: 'Flexible payment via bank transfer to our IBAN or Cash on Delivery.',
+      descAr: 'خيارات دفع مرنة عبر التحويل البنكي على الآيبان أو الدفع نقداً عند الاستلام.'
     },
     {
       icon: <Sparkles className="text-brand-sage-muted" size={24} />,

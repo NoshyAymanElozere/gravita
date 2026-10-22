@@ -1,0 +1,150 @@
+- generic [ref=f3e3]:
+  - complementary [ref=f3e5]:
+    - img "AURA Laboratories" [ref=f3e9]
+    - navigation [ref=f3e10]:
+      - generic [ref=f3e11]:
+        - paragraph [ref=f3e12]: Store
+        - list [ref=f3e13]:
+          - listitem [ref=f3e14]:
+            - link "Overview" [ref=f3e15] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=f3e22]:
+            - link "Orders" [ref=f3e23] [cursor=pointer]:
+              - /url: /orders
+          - listitem [ref=f3e28]:
+            - link "Reports" [ref=f3e29] [cursor=pointer]:
+              - /url: /reports
+      - generic [ref=f3e34]:
+        - paragraph [ref=f3e35]: Catalog
+        - list [ref=f3e36]:
+          - listitem [ref=f3e37]:
+            - link "Products" [ref=f3e38] [cursor=pointer]:
+              - /url: /products
+          - listitem [ref=f3e44]:
+            - link "Categories" [ref=f3e45] [cursor=pointer]:
+              - /url: /categories
+          - listitem [ref=f3e52]:
+            - link "Bundles" [ref=f3e53] [cursor=pointer]:
+              - /url: /bundles
+          - listitem [ref=f3e65]:
+            - link "Hero banners" [ref=f3e66] [cursor=pointer]:
+              - /url: /banners
+      - generic [ref=f3e73]:
+        - paragraph [ref=f3e74]: Customers & marketing
+        - list [ref=f3e75]:
+          - listitem [ref=f3e76]:
+            - link "Customers" [ref=f3e77] [cursor=pointer]:
+              - /url: /customers
+          - listitem [ref=f3e84]:
+            - link "Coupons" [ref=f3e85] [cursor=pointer]:
+              - /url: /coupons
+          - listitem [ref=f3e90]:
+            - link "Reviews" [ref=f3e91] [cursor=pointer]:
+              - /url: /reviews
+          - listitem [ref=f3e95]:
+            - link "Newsletter" [ref=f3e96] [cursor=pointer]:
+              - /url: /newsletter
+    - link "Open storefront" [ref=f3e102] [cursor=pointer]:
+      - /url: http://localhost:3000
+  - generic [ref=f3e108]:
+    - banner [ref=f3e109]:
+      - button "Menu" [ref=f3e111] [cursor=pointer]
+      - generic [ref=f3e112]:
+        - button "ع" [ref=f3e113] [cursor=pointer]
+        - button "Dark mode" [ref=f3e118] [cursor=pointer]
+        - button "Notifications" [ref=f3e121] [cursor=pointer]
+        - button "اا" [ref=f3e125] [cursor=pointer]
+    - main [ref=f3e127]:
+      - generic [ref=f3e129]:
+        - generic [ref=f3e130]:
+          - generic [ref=f3e136]:
+            - heading "Reports" [level=1] [ref=f3e137]
+            - paragraph [ref=f3e138]: Sales performance for any period, ready to export
+          - button "Export CSV" [ref=f3e140] [cursor=pointer]
+        - generic [ref=f3e141]:
+          - tablist [ref=f3e142]:
+            - tab "Last 7 days" [ref=f3e143] [cursor=pointer]
+            - tab "Last 30 days" [selected] [ref=f3e144] [cursor=pointer]
+            - tab "Last 90 days" [ref=f3e145] [cursor=pointer]
+            - tab "This month" [ref=f3e146] [cursor=pointer]
+            - tab "Last month" [ref=f3e147] [cursor=pointer]
+          - generic [ref=f3e148]:
+            - textbox "From" [ref=f3e150]: 2026-09-23
+            - generic [ref=f3e151]: —
+            - textbox "To" [ref=f3e153]: 2026-10-22
+        - generic [ref=f3e154]:
+          - generic [ref=f3e157]:
+            - paragraph [ref=f3e158]: Revenue
+            - paragraph [ref=f3e159]: SAR 2,847
+          - generic [ref=f3e166]:
+            - paragraph [ref=f3e167]: Orders
+            - paragraph [ref=f3e168]: "3"
+          - generic [ref=f3e175]:
+            - paragraph [ref=f3e176]: Average order value
+            - paragraph [ref=f3e177]: SAR 949
+          - generic [ref=f3e184]:
+            - paragraph [ref=f3e185]: Units sold
+            - paragraph [ref=f3e186]: "9"
+        - generic [ref=f3e192]:
+          - generic [ref=f3e195]:
+            - paragraph [ref=f3e196]: New customers
+            - paragraph [ref=f3e197]: "4"
+          - generic [ref=f3e206]:
+            - paragraph [ref=f3e207]: Discounts given
+            - paragraph [ref=f3e208]: SAR 438
+          - generic [ref=f3e215]:
+            - paragraph [ref=f3e216]: Shipping & COD fees
+            - paragraph [ref=f3e217]: SAR 0
+        - paragraph [ref=f3e224]: Totals exclude cancelled orders.
+        - heading "Revenue over time" [level=2] [ref=f3e229]
+        - generic [ref=f3e232]:
+          - generic [ref=f3e233]:
+            - heading "Sales by payment method" [level=2] [ref=f3e236]
+            - table [ref=f3e239]:
+              - rowgroup [ref=f3e240]:
+                - row [ref=f3e241]:
+                  - columnheader "Payment method" [ref=f3e242]
+                  - columnheader "Orders" [ref=f3e243]
+                  - columnheader "Revenue" [ref=f3e244]
+              - rowgroup [ref=f3e245]:
+                - row [ref=f3e246]:
+                  - cell "Bank transfer (IBAN)" [ref=f3e247]
+                  - cell "3" [ref=f3e248]
+                  - cell "SAR 2,847" [ref=f3e249]
+          - generic [ref=f3e250]:
+            - heading "Orders by status" [level=2] [ref=f3e253]
+            - table [ref=f3e256]:
+              - rowgroup [ref=f3e257]:
+                - row [ref=f3e258]:
+                  - columnheader "Status" [ref=f3e259]
+                  - columnheader "Orders" [ref=f3e260]
+                  - columnheader "Revenue" [ref=f3e261]
+              - rowgroup [ref=f3e262]:
+                - row [ref=f3e263]:
+                  - cell "Delivered" [ref=f3e264]
+                  - cell "3" [ref=f3e271]
+                  - cell "SAR 2,847" [ref=f3e272]
+                - row [ref=f3e273]:
+                  - cell "Cancelled" [ref=f3e274]
+                  - cell "3" [ref=f3e280]
+                  - cell "SAR 795" [ref=f3e281]
+        - generic [ref=f3e283]:
+          - heading "Top sellers in this period" [level=2] [ref=f3e286]
+          - table [ref=f3e289]:
+            - rowgroup [ref=f3e290]:
+              - row [ref=f3e291]:
+                - columnheader "Product" [ref=f3e292]
+                - columnheader "Bundle / Product" [ref=f3e293]
+                - columnheader "Qty" [ref=f3e294]
+                - columnheader "Revenue" [ref=f3e295]
+            - rowgroup [ref=f3e296]:
+              - row [ref=f3e297]:
+                - cell "The Dewy Hydration Duo" [ref=f3e298]
+                - cell "Bundle" [ref=f3e299]
+                - cell "3" [ref=f3e300]
+                - cell "SAR 1,785" [ref=f3e301]
+              - row [ref=f3e302]:
+                - cell "Solar Shield Invisible SPF50+ Defense" [ref=f3e303]
+                - cell "Product" [ref=f3e304]
+                - cell "6" [ref=f3e305]
+                - cell "SAR 1,500" [ref=f3e306]

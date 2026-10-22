@@ -1,0 +1,63 @@
+- generic [active] [ref=f8e1]:
+  - generic [ref=f8e2]:
+    - banner [ref=f8e3]:
+      - generic [ref=f8e4]:
+        - generic [ref=f8e5]:
+          - button "Toggle Mobile Menu" [ref=f8e6] [cursor=pointer]
+          - img "AURA Laboratories" [ref=f8e9] [cursor=pointer]
+        - generic [ref=f8e10]:
+          - button [ref=f8e11] [cursor=pointer]
+          - button [ref=f8e15] [cursor=pointer]
+          - button "العربية" [ref=f8e19]
+    - main [ref=f8e24]
+    - contentinfo [ref=f8e25]:
+      - generic [ref=f8e26]:
+        - generic [ref=f8e27]:
+          - generic [ref=f8e28]:
+            - heading "Subscribe to our Skin Journal" [level=3] [ref=f8e29]
+            - paragraph [ref=f8e30]: Receive expert advice, product launches, and exclusive member-only pricing.
+          - generic [ref=f8e32]:
+            - textbox "Enter your email address..." [ref=f8e33]
+            - button "Subscribe" [ref=f8e34] [cursor=pointer]
+        - generic [ref=f8e35]:
+          - generic [ref=f8e36]:
+            - generic [ref=f8e37]:
+              - generic [ref=f8e38]: AURA
+              - generic [ref=f8e39]: LABORATORIES
+            - paragraph [ref=f8e40]: Aura Laboratories was founded to offer high-efficacy, plant-derived, clinically sound skincare options for complex climates.
+            - generic [ref=f8e41]:
+              - link [ref=f8e42] [cursor=pointer]:
+                - /url: https://instagram.com
+              - link [ref=f8e46] [cursor=pointer]:
+                - /url: mailto:expert@aura.com
+          - generic [ref=f8e50]:
+            - heading "Company" [level=4] [ref=f8e51]
+            - list [ref=f8e52]:
+              - listitem [ref=f8e53]:
+                - button "About Us" [ref=f8e54] [cursor=pointer]
+              - listitem [ref=f8e55]:
+                - button "Contact Us" [ref=f8e56] [cursor=pointer]
+              - listitem [ref=f8e57]:
+                - button "FAQ" [ref=f8e58] [cursor=pointer]
+              - listitem [ref=f8e59]:
+                - button "Privacy Policy" [ref=f8e60] [cursor=pointer]
+              - listitem [ref=f8e61]:
+                - button "Terms of Service" [ref=f8e62] [cursor=pointer]
+          - generic [ref=f8e63]:
+            - heading "Customer Support" [level=4] [ref=f8e64]
+            - list [ref=f8e65]:
+              - listitem [ref=f8e66]:
+                - button "Shipping Guide" [ref=f8e67] [cursor=pointer]
+              - listitem [ref=f8e68]:
+                - button "Luxury Returns" [ref=f8e69] [cursor=pointer]
+          - generic [ref=f8e70]:
+            - heading "100% Secure Payment" [level=4] [ref=f8e71]
+            - paragraph [ref=f8e75]: Your transactional security is prioritized. Pay safely by bank transfer to our IBAN or in cash on delivery.
+            - generic [ref=f8e76]:
+              - generic [ref=f8e77]: Bank Transfer
+              - generic [ref=f8e78]: IBAN
+              - generic [ref=f8e79]: COD
+        - generic [ref=f8e80]:
+          - paragraph [ref=f8e81]: © 2026 AURA Laboratories. All designs are registered trademarks.
+          - generic [ref=f8e82]: Made with passion for healthy skin
+  - alert [ref=f8e86]

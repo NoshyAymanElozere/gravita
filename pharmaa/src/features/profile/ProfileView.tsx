@@ -13,13 +13,9 @@ import {
   Check,
   Trash2,
   ArrowRight,
-  Truck,
-  Info,
-  Star,
   ChevronLeft,
   ChevronRight,
   CreditCard,
-  Wallet,
   ChevronDown
 } from 'lucide-react';
 
@@ -77,12 +73,12 @@ function ProfileContent() {
 
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab');
-  const [activeSegment, setActiveSegment] = useState<'info' | 'orders' | 'wishlist' | 'addresses' | 'balance' | 'cards'>('info');
+  const [activeSegment, setActiveSegment] = useState<'info' | 'orders' | 'wishlist' | 'addresses'>('info');
   const [orderFilter, setOrderFilter] = useState<'all' | 'processing' | 'in-transit' | 'delivered' | 'returned'>('all');
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (tab && ['info', 'orders', 'wishlist', 'addresses', 'balance', 'cards'].includes(tab)) {
+    if (tab && ['info', 'orders', 'wishlist', 'addresses'].includes(tab)) {
       setActiveSegment(tab as any);
       setSelectedOrderId(null);
     }
@@ -139,9 +135,7 @@ function ProfileContent() {
     { id: 'info', label: language === 'en' ? 'Personal Information' : 'البيانات الشخصية', icon: <User size={16} /> },
     { id: 'orders', label: language === 'en' ? 'My Orders' : 'طلباتي', icon: <ShoppingBag size={16} /> },
     { id: 'addresses', label: language === 'en' ? 'My Addresses' : 'عناويني', icon: <MapPin size={16} /> },
-    { id: 'balance', label: language === 'en' ? 'My Balance' : 'رصيدي', icon: <Wallet size={16} /> },
     { id: 'wishlist', label: language === 'en' ? 'My Favorites' : 'مفضلي', icon: <Heart size={16} /> },
-    { id: 'cards', label: language === 'en' ? 'Bank Cards' : 'البطاقات البنكية', icon: <CreditCard size={16} /> },
   ];
 
   const orderTabs = [
@@ -184,8 +178,6 @@ function ProfileContent() {
           {activeSegment === 'wishlist' && (language === 'en' ? 'My Favorites' : 'مفضلي')}
           {activeSegment === 'addresses' && (language === 'en' ? 'My Addresses' : 'عناويني')}
           {activeSegment === 'info' && (language === 'en' ? 'Personal Information' : 'البيانات الشخصية')}
-          {activeSegment === 'balance' && (language === 'en' ? 'My Balance' : 'رصيدي')}
-          {activeSegment === 'cards' && (language === 'en' ? 'Bank Cards' : 'البطاقات البنكية')}
         </h1>
 
         <div className="flex items-center space-x-2 rtl:space-x-reverse text-xs text-zinc-500 mt-2 font-sans">
@@ -198,8 +190,6 @@ function ProfileContent() {
             {activeSegment === 'wishlist' && (language === 'en' ? 'My Favorites' : 'مفضلي')}
             {activeSegment === 'addresses' && (language === 'en' ? 'My Addresses' : 'عناويني')}
             {activeSegment === 'info' && (language === 'en' ? 'Personal Information' : 'البيانات الشخصية')}
-            {activeSegment === 'balance' && (language === 'en' ? 'My Balance' : 'رصيدي')}
-            {activeSegment === 'cards' && (language === 'en' ? 'Bank Cards' : 'البطاقات البنكية')}
           </span>
         </div>
       </div>
@@ -617,13 +607,15 @@ function ProfileContent() {
                           <div className="flex justify-between items-center text-zinc-550">
                             <span>{language === 'en' ? 'Payment Method' : 'طريقة الدفع'}</span>
                             <span className="font-semibold text-brand-primary capitalize">
-                              {selectedOrder.paymentMethod === 'credit_card' 
-                                ? (language === 'en' ? 'Credit Card' : 'بطاقة ائتمانية')
+                              {selectedOrder.paymentMethod === 'bank_transfer'
+                                ? (language === 'en' ? 'Bank Transfer (IBAN)' : 'تحويل بنكي (آيبان)')
                                 : selectedOrder.paymentMethod === 'cod'
                                   ? (language === 'en' ? 'Cash on Delivery' : 'الدفع عند الاستلام')
-                                  : selectedOrder.paymentMethod === 'apple_pay'
-                                    ? 'Apple Pay'
-                                    : 'Google Pay'
+                                  : selectedOrder.paymentMethod === 'credit_card'
+                                    ? (language === 'en' ? 'Credit Card' : 'بطاقة ائتمانية')
+                                    : selectedOrder.paymentMethod === 'apple_pay'
+                                      ? 'Apple Pay'
+                                      : 'Google Pay'
                             }
                             </span>
                           </div>
@@ -974,116 +966,6 @@ function ProfileContent() {
               </div>
             )}
 
-            {/* MY BALANCE TAB */}
-            {activeSegment === 'balance' && (
-              <div className="space-y-6">
-                <h3 className="font-serif text-lg font-bold text-brand-primary border-b border-brand-cream pb-3">
-                  {language === 'en' ? 'My Balance' : 'رصيدي'}
-                </h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Premium Card */}
-                  <div className="bg-brand-primary text-brand-cream rounded-3xl p-6 relative overflow-hidden shadow-md space-y-8">
-                    <div className="absolute inset-0 bg-cover bg-center mix-blend-overlay opacity-15" style={{ backgroundImage: "url('/assets/images/Patterns-02.jpg')" }} />
-                    <div className="flex justify-between items-start z-10 relative">
-                      <div>
-                        <span className="text-[10px] uppercase tracking-widest text-brand-sage-light font-bold block">{language === 'en' ? 'Available Balance' : 'الرصيد المتاح'}</span>
-                        <span className="text-2xl font-bold font-sans block mt-1">1,250.00 {currencySymbol}</span>
-                      </div>
-                      <Wallet size={24} className="text-brand-sage-light" />
-                    </div>
-
-                    <div className="flex justify-between items-end z-10 relative">
-                      <span className="text-[11px] font-mono tracking-wider">AURA PRESTIGE CARD</span>
-                      <span className="text-xs bg-brand-cream text-brand-primary font-bold py-1 px-3.5 rounded-full">{language === 'en' ? 'Active' : 'نشط'}</span>
-                    </div>
-                  </div>
-
-                  {/* Loyalty points card */}
-                  <div className="bg-white border border-brand-cream rounded-3xl p-6 flex flex-col justify-between shadow-xs">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <span className="text-[10px] uppercase tracking-widest text-brand-sage-muted font-bold block">{language === 'en' ? 'Aura Loyalty Points' : 'نقاط ولاء أورا'}</span>
-                        <span className="text-xl font-bold font-sans text-brand-primary block mt-1">320 {language === 'en' ? 'Points' : 'نقطة'}</span>
-                      </div>
-                      <Star size={24} className="text-brand-sage-muted" />
-                    </div>
-                    <p className="text-zinc-550 text-[11px] font-sans mt-4 leading-relaxed">
-                      {language === 'en' ? 'Earn points on every clinical purchase. 100 points = 50 SAR store coupon.' : 'اكتسبي نقاطاً مع كل طلب مستحضر. كل 100 نقطة تعادل كوبون خصم بقيمة 50 ريال.'}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Transactions list */}
-                <div className="space-y-4 mt-6">
-                  <h4 className="font-serif text-sm font-bold text-brand-primary">{language === 'en' ? 'Recent Transactions' : 'العمليات الأخيرة'}</h4>
-                  <div className="bg-white border border-brand-cream rounded-2xl overflow-hidden divide-y divide-brand-cream/30 text-xs">
-                    <div className="p-4 flex justify-between items-center">
-                      <div>
-                        <span className="font-semibold block text-zinc-800">{language === 'en' ? 'Cashback from Order #NFD1234' : 'استرجاع نقدي من الطلب #NFD1234'}</span>
-                        <span className="text-[10px] text-zinc-400">2024-02-12</span>
-                      </div>
-                      <span className="text-emerald-600 font-bold font-sans">+120.00 {currencySymbol}</span>
-                    </div>
-                    <div className="p-4 flex justify-between items-center">
-                      <div>
-                        <span className="font-semibold block text-zinc-800">{language === 'en' ? 'Welcome Reward Bonus' : 'هدية التسجيل والترحيب الماسية'}</span>
-                        <span className="text-[10px] text-zinc-400">2024-01-20</span>
-                      </div>
-                      <span className="text-emerald-600 font-bold font-sans">+1,130.00 {currencySymbol}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* BANK CARDS TAB */}
-            {activeSegment === 'cards' && (
-              <div className="space-y-6">
-                <h3 className="font-serif text-lg font-bold text-brand-primary border-b border-brand-cream pb-3">
-                  {language === 'en' ? 'Saved Payment Cards' : 'البطاقات البنكية'}
-                </h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Simulated Credit Card */}
-                  <div className="bg-gradient-to-br from-[#4A5948] to-[#374037] text-brand-cream rounded-2xl p-6 relative overflow-hidden shadow-md flex flex-col justify-between h-44">
-                    <div className="flex justify-between items-start z-10 relative">
-                      <span className="font-serif font-bold text-sm tracking-wide">AURA</span>
-                      <span className="text-[10px] font-semibold text-brand-sage-light tracking-widest uppercase">MADA / VISA</span>
-                    </div>
-
-                    <div className="z-10 relative space-y-4">
-                      <div className="text-lg font-mono tracking-widest text-center">
-                        **** **** **** 4821
-                      </div>
-                      <div className="flex justify-between items-end text-[10px] font-sans">
-                        <div>
-                          <span className="text-zinc-400 block uppercase tracking-wider">Cardholder</span>
-                          <span className="font-semibold mt-0.5 block">{user.name}</span>
-                        </div>
-                        <div>
-                          <span className="text-zinc-400 block uppercase tracking-wider">Expires</span>
-                          <span className="font-semibold mt-0.5 block">08/28</span>
-                        </div>
-                      </div>
-                    </div>
-                    {/* Subtle card circle decorations */}
-                    <div className="absolute -right-16 -bottom-16 w-36 h-36 bg-brand-cream/5 rounded-full" />
-                  </div>
-
-                  {/* Add new card box */}
-                  <div className="border border-dashed border-brand-cream hover:border-brand-sage-muted rounded-2xl p-6 flex flex-col items-center justify-center text-center space-y-3 cursor-pointer transition-colors group min-h-[176px]">
-                    <div className="p-3 bg-brand-cream rounded-full group-hover:scale-110 transition-transform">
-                      <CreditCard size={20} className="text-brand-primary" />
-                    </div>
-                    <div>
-                      <h5 className="font-serif text-xs font-bold text-brand-primary">{language === 'en' ? 'Register New Payment Card' : 'إضافة بطاقة دفع جديدة'}</h5>
-                      <p className="text-[10px] text-zinc-400 mt-1 max-w-[200px]">{language === 'en' ? 'Securely save cards for swift premium checkouts.' : 'احفظي بطاقتكِ بأمان لتسهيل عمليات الدفع المستقبلية.'}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
 
           </div>
 

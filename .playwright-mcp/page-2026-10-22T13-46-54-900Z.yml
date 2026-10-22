@@ -1,0 +1,79 @@
+- generic [active] [ref=f7e1]:
+  - generic [ref=f7e2]:
+    - banner [ref=f7e3]:
+      - generic [ref=f7e4]:
+        - generic [ref=f7e5]:
+          - button "Toggle Mobile Menu" [ref=f7e6] [cursor=pointer]
+          - img "AURA Laboratories" [ref=f7e9] [cursor=pointer]
+        - generic [ref=f7e10]:
+          - button [ref=f7e11] [cursor=pointer]
+          - button [ref=f7e15] [cursor=pointer]
+          - button "العربية" [ref=f7e19]
+    - main [ref=f7e24]:
+      - generic [ref=f7e26]:
+        - generic [ref=f7e27]:
+          - heading "Enter Aura Haven" [level=2] [ref=f7e28]
+          - paragraph [ref=f7e29]: Access your curated clinical skin routines and tracking dashboards.
+        - generic [ref=f7e30]:
+          - generic [ref=f7e31]:
+            - generic [ref=f7e32]: Professional Email
+            - textbox "name@example.com" [ref=f7e34]
+          - generic [ref=f7e38]:
+            - generic [ref=f7e39]: Passphrase
+            - textbox "Enter secure passphrase..." [ref=f7e41]
+            - button "Forgot secure passphrase?" [ref=f7e45] [cursor=pointer]
+          - button "Sign In Account" [ref=f7e46] [cursor=pointer]
+        - paragraph [ref=f7e48]:
+          - text: Never consulted with Aura yet?
+          - button "Create Account" [ref=f7e49] [cursor=pointer]
+    - contentinfo [ref=f7e50]:
+      - generic [ref=f7e51]:
+        - generic [ref=f7e52]:
+          - generic [ref=f7e53]:
+            - heading "Subscribe to our Skin Journal" [level=3] [ref=f7e54]
+            - paragraph [ref=f7e55]: Receive expert advice, product launches, and exclusive member-only pricing.
+          - generic [ref=f7e57]:
+            - textbox "Enter your email address..." [ref=f7e58]
+            - button "Subscribe" [ref=f7e59] [cursor=pointer]
+        - generic [ref=f7e60]:
+          - generic [ref=f7e61]:
+            - generic [ref=f7e62]:
+              - generic [ref=f7e63]: AURA
+              - generic [ref=f7e64]: LABORATORIES
+            - paragraph [ref=f7e65]: Aura Laboratories was founded to offer high-efficacy, plant-derived, clinically sound skincare options for complex climates.
+            - generic [ref=f7e66]:
+              - link [ref=f7e67] [cursor=pointer]:
+                - /url: https://instagram.com
+              - link [ref=f7e71] [cursor=pointer]:
+                - /url: mailto:expert@aura.com
+          - generic [ref=f7e75]:
+            - heading "Company" [level=4] [ref=f7e76]
+            - list [ref=f7e77]:
+              - listitem [ref=f7e78]:
+                - button "About Us" [ref=f7e79] [cursor=pointer]
+              - listitem [ref=f7e80]:
+                - button "Contact Us" [ref=f7e81] [cursor=pointer]
+              - listitem [ref=f7e82]:
+                - button "FAQ" [ref=f7e83] [cursor=pointer]
+              - listitem [ref=f7e84]:
+                - button "Privacy Policy" [ref=f7e85] [cursor=pointer]
+              - listitem [ref=f7e86]:
+                - button "Terms of Service" [ref=f7e87] [cursor=pointer]
+          - generic [ref=f7e88]:
+            - heading "Customer Support" [level=4] [ref=f7e89]
+            - list [ref=f7e90]:
+              - listitem [ref=f7e91]:
+                - button "Shipping Guide" [ref=f7e92] [cursor=pointer]
+              - listitem [ref=f7e93]:
+                - button "Luxury Returns" [ref=f7e94] [cursor=pointer]
+          - generic [ref=f7e95]:
+            - heading "100% Secure Payment" [level=4] [ref=f7e96]
+            - paragraph [ref=f7e100]: Your transactional security is prioritized. Pay safely by bank transfer to our IBAN or in cash on delivery.
+            - generic [ref=f7e101]:
+              - generic [ref=f7e102]: Bank Transfer
+              - generic [ref=f7e103]: IBAN
+              - generic [ref=f7e104]: COD
+        - generic [ref=f7e105]:
+          - paragraph [ref=f7e106]: © 2026 AURA Laboratories. All designs are registered trademarks.
+          - generic [ref=f7e107]: Made with passion for healthy skin
+  - alert [ref=f7e111]

@@ -63,6 +63,7 @@ const FOLDERS = [
     {
         name: '🛍️ Catalog',
         items: [
+            r('Store config (payments, bank IBAN, shipping)', 'GET', '/api/config'),
             r('Categories (with productCount)', 'GET', '/api/categories', {
                 test: saveVar('category_id', 'json.data[0]._id')
             }),
@@ -137,7 +138,7 @@ const FOLDERS = [
         items: [
             r('Place order (saved address)', 'POST', '/api/orders', {
                 auth: 'user',
-                body: { addressId: '{{address_id}}', paymentMethod: 'cod', notes: 'Please call before delivery' },
+                body: { addressId: '{{address_id}}', paymentMethod: 'bank_transfer', notes: 'Please call before delivery' },
                 test: saveVar('order_id', 'json.data.order._id')
             }),
             r('Place order (new address)', 'POST', '/api/orders', {
@@ -176,6 +177,8 @@ const FOLDERS = [
         name: '🛠️ Admin',
         items: [
             r('Dashboard stats', 'GET', '/api/admin/stats?days=30', { auth: 'admin' }),
+            r('Sales report (JSON)', 'GET', '/api/admin/stats/report?from=2026-01-01&to=2026-12-31', { auth: 'admin' }),
+            r('Sales report (CSV export)', 'GET', '/api/admin/stats/report?from=2026-01-01&to=2026-12-31&format=csv', { auth: 'admin' }),
 
             r('Products (all, incl. inactive)', 'GET', '/api/admin/products?page=1&limit=20', { auth: 'admin' }),
             r('Product details (+ bundles)', 'GET', '/api/admin/products/{{product_id}}', { auth: 'admin' }),
@@ -238,6 +241,10 @@ const FOLDERS = [
                 auth: 'admin',
                 description: 'pending → confirmed/processing/shipped/cancelled; shipped → delivered; delivered → returned; return_requested → returned/delivered',
                 body: { status: 'shipped', note: 'Handed to courier', trackingNumber: '' }
+            }),
+            r('Update payment status (confirm bank transfer)', 'PATCH', '/api/admin/orders/{{order_id}}/payment', {
+                auth: 'admin',
+                body: { paymentStatus: 'paid', paymentRef: 'TRX-123456' }
             }),
 
             r('Users', 'GET', '/api/admin/users?q=&role=user', { auth: 'admin', test: saveVar('user_id', 'json.data[0]._id') }),

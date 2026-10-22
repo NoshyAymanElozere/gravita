@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
+const { OFFLINE_PAYMENT_METHODS } = require('../models/Order');
 const Cart = require('../models/Cart');
 const User = require('../models/User');
 const Product = require('../models/Product');
@@ -63,8 +64,9 @@ router.post('/', validate(createOrderSchema), asyncHandler(async (req, res) => {
     const { addressId, address, saveAddress, contact, paymentMethod, notes } = req.body;
 
     // الدفع الإلكتروني يحتاج ربط بوابة دفع أولاً (لا نستقبل بيانات البطاقات في السيرفر)
-    if (paymentMethod !== 'cod' && process.env.ONLINE_PAYMENTS_ENABLED !== 'true') {
-        throw new AppError('الدفع الإلكتروني غير متاح حالياً، يرجى اختيار الدفع عند الاستلام (cod)', 400);
+    // الدفع عند الاستلام والتحويل البنكي على الآيبان متاحان دائماً
+    if (!OFFLINE_PAYMENT_METHODS.includes(paymentMethod) && process.env.ONLINE_PAYMENTS_ENABLED !== 'true') {
+        throw new AppError('الدفع الإلكتروني غير متاح حالياً، يرجى اختيار الدفع عند الاستلام (cod) أو التحويل البنكي (bank_transfer)', 400);
     }
 
     // 1. تحديد عنوان الشحن (محفوظ أو جديد)

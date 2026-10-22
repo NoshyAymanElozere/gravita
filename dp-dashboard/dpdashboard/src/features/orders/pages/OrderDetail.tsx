@@ -10,7 +10,9 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/utils/utils'
 import { formatDate, formatMoney, formatNum } from '@/utils/format'
 import type { Order, OrderItem } from '@/types/api'
-import { useOrder } from '../api/useOrders'
+import { useOrder, useUpdatePaymentStatus } from '../api/useOrders'
+import { ConfirmAction } from '@/components/shared/confirm-dialog'
+import { Input } from '@/components/ui/input'
 import { ORDER_STATUS_META, OrderStatusBadge, PaymentStatusBadge } from '../lib/status'
 import { StatusUpdateCard } from '../components/StatusUpdateCard'
 
@@ -124,6 +126,9 @@ export default function OrderDetail() {
   const { t } = useTranslation()
   const { data, isLoading, isError } = useOrder(id)
   const order = data?.order
+  const [payOpen, setPayOpen] = useState(false)
+  const [payRef, setPayRef] = useState('')
+  const updatePayment = useUpdatePaymentStatus(id)
 
   if (isLoading) {
     return (
@@ -273,10 +278,21 @@ export default function OrderDetail() {
               </div>
               <div className="flex items-center justify-between gap-2">
                 <dt className="text-muted-foreground">{t('orders.paymentStatus')}</dt>
-                <dd>
+                <dd className="flex items-center gap-2">
                   <PaymentStatusBadge status={order.paymentStatus} />
+                  {order.paymentStatus === 'pending' && order.status !== 'cancelled' && (
+                    <Button size="sm" variant="outline" onClick={() => setPayOpen(true)}>
+                      {t('orders.markPaid')}
+                    </Button>
+                  )}
                 </dd>
               </div>
+              {order.paymentRef ? (
+                <div className="flex items-center justify-between gap-2">
+                  <dt className="text-muted-foreground">{t('orders.paymentRef')}</dt>
+                  <dd className="font-mono text-xs font-semibold" dir="ltr">{order.paymentRef}</dd>
+                </div>
+              ) : null}
               <div className="flex items-center justify-between gap-2">
                 <dt className="flex items-center gap-1.5 text-muted-foreground">
                   <Truck className="h-3.5 w-3.5" />
@@ -308,6 +324,33 @@ export default function OrderDetail() {
           )}
         </div>
       </div>
+
+      <ConfirmAction
+        open={payOpen}
+        onOpenChange={setPayOpen}
+        variant="default"
+        title={t('orders.markPaidTitle')}
+        description={t('orders.markPaidText', { number: order.orderNumber })}
+        confirmLabel={t('orders.markPaid')}
+        loading={updatePayment.isPending}
+        onConfirm={() =>
+          updatePayment.mutate(
+            { paymentStatus: 'paid', paymentRef: payRef.trim() || undefined },
+            { onSuccess: () => setPayOpen(false) }
+          )
+        }
+      >
+        <div className="space-y-1.5">
+          <label htmlFor="payment-ref" className="text-sm font-medium">{t('orders.paymentRef')}</label>
+          <Input
+            id="payment-ref"
+            value={payRef}
+            onChange={(e) => setPayRef(e.target.value)}
+            placeholder={t('orders.paymentRefHint')}
+            dir="ltr"
+          />
+        </div>
+      </ConfirmAction>
     </div>
   )
 }

@@ -4,7 +4,15 @@ import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useApp } from '../../store/AppContext';
 import { errorMessage } from '../../store/useAppStore';
-import { Check, ShieldCheck, CreditCard, ShoppingBag, Truck, Lock, ArrowLeft, ArrowRight } from 'lucide-react';
+import { api } from '../../lib/api';
+import { Check, ShieldCheck, CreditCard, ShoppingBag, Truck, Lock, ArrowLeft, ArrowRight, Landmark, Copy } from 'lucide-react';
+
+// بيانات الحساب البنكي للتحويل - تُجلب من GET /api/config وهذه قيم احتياطية فقط
+const DEFAULT_BANK_INFO = {
+  bankName: 'Saudi National Bank (SNB)',
+  iban: 'SA00 0000 0000 0000 0000 0000',
+  accountName: 'AURA Laboratories Trading Co.'
+};
 
 export default function CheckoutView() {
   const {
@@ -30,9 +38,20 @@ export default function CheckoutView() {
   const [shippingCountry, setShippingCountry] = useState(user?.addresses[0]?.country ?? 'Saudi Arabia');
   const [postalCode, setPostalCode] = useState(user?.addresses[0]?.postalCode ?? '12282');
 
-  // Cash on delivery is the default: online card payments need a payment gateway on the backend
-  const [paymentMethod, setPaymentMethod] = useState<'credit_card' | 'cod' | 'apple_pay' | 'google_pay'>('cod');
+  // Cash on delivery or a manual bank transfer to the store IBAN - no card gateway needed
+  const [paymentMethod, setPaymentMethod] = useState<'cod' | 'bank_transfer'>('cod');
   const [isPlacing, setIsPlacing] = useState(false);
+  const [bankInfo, setBankInfo] = useState(DEFAULT_BANK_INFO);
+
+  // Store bank details for the IBAN transfer option come from the API config
+  useEffect(() => {
+    api.get('/config')
+      .then((res) => {
+        const bank = res.data?.payments?.bankTransfer;
+        if (bank?.iban) setBankInfo(bank);
+      })
+      .catch(() => { /* keep defaults */ });
+  }, []);
 
   // The signed-in profile loads from the API after mount - prefill the empty fields when it arrives
   useEffect(() => {
@@ -49,9 +68,6 @@ export default function CheckoutView() {
       setPostalCode(address.postalCode);
     }
   }, [user]);
-  const [ccNumber, setCcNumber] = useState('');
-  const [ccExpiry, setCcExpiry] = useState('');
-  const [ccCvv, setCcCvv] = useState('');
 
   // Translations
   const t = {
@@ -87,16 +103,22 @@ export default function CheckoutView() {
     postalAr: 'الرمز البريدي / صندوق البريد',
     countryEn: 'Country',
     countryAr: 'الدولة',
-    payCCEn: 'Encrypted Credit / Debit Card',
-    payCCAr: 'بطاقة ائتمانية مشفرة (فيزا/ماستركارد)',
+    payBankEn: 'Bank Transfer (IBAN)',
+    payBankAr: 'تحويل بنكي على الآيبان',
+    payBankHintEn: 'Transfer the order total to our bank account. Your order ships once the transfer is confirmed.',
+    payBankHintAr: 'حوّلي قيمة الطلب إلى الحساب البنكي للمتجر، ويتم شحن الطلب فور تأكيد وصول التحويل.',
     payCODEn: 'Cash on Delivery (COD)',
     payCODAr: 'الدفع نقداً عند الاستلام (+15 ريال رسوم)',
-    cardNumEn: 'Card Number',
-    cardNumAr: 'رقم البطاقة الائتمانية',
-    validEn: 'Expires (MM/YY)',
-    validAr: 'تاريخ الصلاحية (MM/YY)',
-    cardHolderEn: 'Card Holder Name',
-    cardHolderAr: 'اسم صاحب البطاقة',
+    bankNameEn: 'Bank',
+    bankNameAr: 'البنك',
+    accountNameEn: 'Account Name',
+    accountNameAr: 'اسم الحساب',
+    ibanEn: 'IBAN',
+    ibanAr: 'رقم الآيبان',
+    transferRefEn: 'Use your order number as the transfer reference.',
+    transferRefAr: 'استخدمي رقم الطلب كمرجع عند إجراء التحويل البنكي.',
+    copiedEn: 'IBAN copied!',
+    copiedAr: 'تم نسخ رقم الآيبان!',
     reviewTitleEn: 'Confirm and Transmit Order',
     reviewTitleAr: 'مراجعة وتأكيد طلبية أورا',
     termsEn: 'By placing this order you consent to temperature-controlled bio-skincare deliveries.',
@@ -171,12 +193,6 @@ export default function CheckoutView() {
     }
     if (step === 2) {
       if (!shippingLine1 || !shippingCity || !postalCode) {
-        setFormError(language === 'en' ? t.errorRequiredEn : t.errorRequiredAr);
-        return;
-      }
-    }
-    if (step === 3) {
-      if (paymentMethod === 'credit_card' && (!ccNumber || !ccExpiry || !ccCvv)) {
         setFormError(language === 'en' ? t.errorRequiredEn : t.errorRequiredAr);
         return;
       }
@@ -265,6 +281,35 @@ export default function CheckoutView() {
               <span className="font-semibold text-zinc-800">3-5 {language === 'en' ? 'Business Days' : 'أيام عمل'}</span>
             </div>
           </div>
+
+          {/* Bank transfer instructions: the order ships after the transfer lands on the store IBAN */}
+          {placedOrderDetails.paymentMethod === 'bank_transfer' && (
+            <div className="p-4 bg-brand-cream/40 border border-brand-sage-light/20 rounded-2xl space-y-2.5">
+              <div className="flex items-center gap-2 text-brand-primary font-bold">
+                <Landmark size={14} />
+                <span>{language === 'en' ? 'Complete your payment by bank transfer' : 'أكملي الدفع عبر التحويل البنكي'}</span>
+              </div>
+              <div className="flex justify-between items-center gap-3">
+                <span className="text-[10px] text-brand-sage-muted uppercase font-semibold">{language === 'en' ? t.bankNameEn : t.bankNameAr}</span>
+                <span className="font-semibold text-zinc-800">{bankInfo.bankName}</span>
+              </div>
+              <div className="flex justify-between items-center gap-3">
+                <span className="text-[10px] text-brand-sage-muted uppercase font-semibold">{language === 'en' ? t.accountNameEn : t.accountNameAr}</span>
+                <span className="font-semibold text-zinc-800">{bankInfo.accountName}</span>
+              </div>
+              <div className="flex justify-between items-center gap-3">
+                <span className="text-[10px] text-brand-sage-muted uppercase font-semibold">{language === 'en' ? t.ibanEn : t.ibanAr}</span>
+                <span className="font-mono font-bold text-brand-primary select-all" dir="ltr">{bankInfo.iban}</span>
+              </div>
+              <div className="flex justify-between items-center gap-3">
+                <span className="text-[10px] text-brand-sage-muted uppercase font-semibold">{language === 'en' ? 'Amount' : 'المبلغ'}</span>
+                <span className="font-bold text-zinc-800">{placedOrderDetails.total} {t.aed}</span>
+              </div>
+              <p className="text-[10px] text-amber-700 bg-amber-50 border border-amber-100 rounded-lg p-2.5 leading-relaxed">
+                {language === 'en' ? t.transferRefEn : t.transferRefAr} ({placedOrderDetails.orderNumber})
+              </p>
+            </div>
+          )}
         </div>
 
         <button
@@ -459,57 +504,6 @@ export default function CheckoutView() {
               </h3>
 
               <div className="space-y-3">
-                {/* CC input choose option */}
-                <label className={`flex items-start p-4 border rounded-2xl cursor-pointer transition-all ${paymentMethod === 'credit_card' ? 'border-brand-primary bg-brand-cream/15' : 'border-brand-sage-light/15 hover:bg-brand-cream/10'
-                  }`}>
-                  <input
-                    type="radio"
-                    name="payOption"
-                    checked={paymentMethod === 'credit_card'}
-                    onChange={() => setPaymentMethod('credit_card')}
-                    className="w-4 h-4 accent-brand-primary mr-3 rtl:ml-3 flex-shrink-0 mt-0.5"
-                  />
-                  <div className="flex-1">
-                    <span className="font-bold text-brand-primary block">{language === 'en' ? t.payCCEn : t.payCCAr}</span>
-
-                    {paymentMethod === 'credit_card' && (
-                      <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 outline-none border-t border-brand-sage-light/10 pt-4 animate-fade-in">
-                        <div className="sm:col-span-3 space-y-1">
-                          <label className="text-[10px] text-brand-sage-muted uppercase font-semibold">{t.cardNumEn}</label>
-                          <input
-                            type="text"
-                            placeholder="4242 •••• •••• ••••"
-                            value={ccNumber}
-                            onChange={(e) => setCcNumber(e.target.value)}
-                            className="bg-white border border-brand-sage-light/20 focus:border-brand-primary rounded-xl py-2 px-3 text-xs w-full text-zinc-800 font-mono focus:outline-none"
-                          />
-                        </div>
-                        <div className="space-y-1">
-                          <label className="text-[10px] text-brand-sage-muted uppercase font-semibold">{t.validEn}</label>
-                          <input
-                            type="text"
-                            placeholder="MM/YY"
-                            value={ccExpiry}
-                            onChange={(e) => setCcExpiry(e.target.value)}
-                            className="bg-white border border-brand-sage-light/20 focus:border-brand-primary rounded-xl py-2 px-3 text-xs w-full text-zinc-800 font-mono focus:outline-none"
-                          />
-                        </div>
-                        <div className="space-y-1">
-                          <label className="text-[10px] text-brand-sage-muted uppercase font-semibold">CVV</label>
-                          <input
-                            type="password"
-                            placeholder="•••"
-                            maxLength={3}
-                            value={ccCvv}
-                            onChange={(e) => setCcCvv(e.target.value)}
-                            className="bg-white border border-brand-sage-light/20 focus:border-brand-primary rounded-xl py-2 px-3 text-xs w-full text-zinc-800 font-mono focus:outline-none"
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </label>
-
                 {/* COD option choose */}
                 <label className={`flex items-start p-4 border rounded-2xl cursor-pointer transition-all ${paymentMethod === 'cod' ? 'border-brand-primary bg-brand-cream/15' : 'border-brand-sage-light/15 hover:bg-brand-cream/10'
                   }`}>
@@ -520,8 +514,62 @@ export default function CheckoutView() {
                     onChange={() => setPaymentMethod('cod')}
                     className="w-4 h-4 accent-brand-primary mr-3 rtl:ml-3 flex-shrink-0 mt-0.5"
                   />
-                  <div>
+                  <div className="flex items-center gap-2">
+                    <Truck size={16} className="text-brand-sage-muted flex-shrink-0" />
                     <span className="font-bold text-brand-primary block">{language === 'en' ? t.payCODEn : t.payCODAr}</span>
+                  </div>
+                </label>
+
+                {/* Bank transfer to the store IBAN */}
+                <label className={`flex items-start p-4 border rounded-2xl cursor-pointer transition-all ${paymentMethod === 'bank_transfer' ? 'border-brand-primary bg-brand-cream/15' : 'border-brand-sage-light/15 hover:bg-brand-cream/10'
+                  }`}>
+                  <input
+                    type="radio"
+                    name="payOption"
+                    checked={paymentMethod === 'bank_transfer'}
+                    onChange={() => setPaymentMethod('bank_transfer')}
+                    className="w-4 h-4 accent-brand-primary mr-3 rtl:ml-3 flex-shrink-0 mt-0.5"
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <Landmark size={16} className="text-brand-sage-muted flex-shrink-0" />
+                      <span className="font-bold text-brand-primary block">{language === 'en' ? t.payBankEn : t.payBankAr}</span>
+                    </div>
+                    <p className="text-[10px] text-brand-sage-muted mt-1 leading-relaxed">
+                      {language === 'en' ? t.payBankHintEn : t.payBankHintAr}
+                    </p>
+
+                    {paymentMethod === 'bank_transfer' && (
+                      <div className="mt-4 border-t border-brand-sage-light/10 pt-4 space-y-2.5 animate-fade-in">
+                        <div className="flex justify-between items-center gap-3">
+                          <span className="text-[10px] text-brand-sage-muted uppercase font-semibold">{language === 'en' ? t.bankNameEn : t.bankNameAr}</span>
+                          <span className="font-semibold text-zinc-800">{bankInfo.bankName}</span>
+                        </div>
+                        <div className="flex justify-between items-center gap-3">
+                          <span className="text-[10px] text-brand-sage-muted uppercase font-semibold">{language === 'en' ? t.accountNameEn : t.accountNameAr}</span>
+                          <span className="font-semibold text-zinc-800">{bankInfo.accountName}</span>
+                        </div>
+                        <div className="flex justify-between items-center gap-3">
+                          <span className="text-[10px] text-brand-sage-muted uppercase font-semibold">{language === 'en' ? t.ibanEn : t.ibanAr}</span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              navigator.clipboard?.writeText(bankInfo.iban.replace(/\s/g, ''));
+                              toast.success(language === 'en' ? t.copiedEn : t.copiedAr);
+                            }}
+                            className="flex items-center gap-1.5 font-mono font-bold text-brand-primary bg-white border border-brand-sage-light/20 rounded-lg py-1.5 px-2.5 hover:border-brand-primary transition-colors cursor-pointer select-all"
+                            dir="ltr"
+                          >
+                            <span>{bankInfo.iban}</span>
+                            <Copy size={12} className="text-brand-sage-muted flex-shrink-0" />
+                          </button>
+                        </div>
+                        <p className="text-[10px] text-amber-700 bg-amber-50 border border-amber-100 rounded-lg p-2.5 leading-relaxed">
+                          {language === 'en' ? t.transferRefEn : t.transferRefAr}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </label>
               </div>
@@ -556,7 +604,11 @@ export default function CheckoutView() {
                   </div>
                   <div>
                     <span className="text-[9px] text-brand-sage-muted uppercase tracking-wider font-bold block">Authorization Method:</span>
-                    <span className="font-semibold text-brand-primary text-xs uppercase">{paymentMethod === 'cod' ? 'Cash on Delivery' : 'Encrypted Card'}</span>
+                    <span className="font-semibold text-brand-primary text-xs uppercase">
+                      {paymentMethod === 'cod'
+                        ? (language === 'en' ? 'Cash on Delivery' : 'الدفع عند الاستلام')
+                        : (language === 'en' ? 'Bank Transfer (IBAN)' : 'تحويل بنكي (آيبان)')}
+                    </span>
                   </div>
                 </div>
               </div>

@@ -49,6 +49,19 @@ export function useOrder(id?: string) {
   })
 }
 
+/** Confirm a bank transfer landed (or correct a payment state) */
+export function useUpdatePaymentStatus(id: string) {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (payload: { paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded'; paymentRef?: string }) =>
+      (await api.patch<ApiEnvelope<{ order: Order }>>(`/admin/orders/${id}/payment`, cleanParams(payload))).data,
+    onSuccess: (res) => {
+      toast.success(res.message || 'Payment updated')
+      qc.invalidateQueries({ queryKey: orderKeys.all })
+    },
+  })
+}
+
 export function useUpdateOrderStatus(id: string) {
   const qc = useQueryClient()
   return useMutation({

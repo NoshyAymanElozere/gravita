@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const { objectId, phoneRule, addressSchema } = require('./common.validation');
-const { ORDER_STATUSES, PAYMENT_METHODS } = require('../models/Order');
+const { ORDER_STATUSES, PAYMENT_METHODS, PAYMENT_STATUSES } = require('../models/Order');
 
 const updateOrderStatusSchema = Joi.object({
     status: Joi.string()
@@ -37,6 +37,18 @@ const createOrderSchema = Joi.object({
     'object.xor': 'أرسل addressId أو address وليس كلاهما'
 });
 
+// تحديث حالة الدفع (مثلاً: تأكيد وصول التحويل البنكي على الآيبان)
+const updatePaymentStatusSchema = Joi.object({
+    paymentStatus: Joi.string()
+        .valid(...PAYMENT_STATUSES)
+        .required()
+        .messages({
+            'any.only': `حالة الدفع غير صالحة، يجب أن تكون إحدى القيم: ${PAYMENT_STATUSES.join(', ')}`,
+            'any.required': 'حالة الدفع مطلوبة'
+        }),
+    paymentRef: Joi.string().trim().max(120).allow('')
+});
+
 const cancelOrderSchema = Joi.object({
     reason: Joi.string().trim().max(300).allow('')
 });
@@ -60,6 +72,7 @@ const orderQuerySchema = Joi.object({
 module.exports = {
     createOrderSchema,
     updateOrderStatusSchema,
+    updatePaymentStatusSchema,
     cancelOrderSchema,
     returnOrderSchema,
     orderQuerySchema

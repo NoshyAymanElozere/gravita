@@ -169,13 +169,12 @@ export default function Footer() {
             </h4>
             <p className="text-[11px] text-brand-cream/80 leading-relaxed">
               {language === 'en'
-                ? 'Your transactional security is prioritized. Express checkout accepts Apple Pay, Google Pay, and robust encrypted credit payments.'
-                : 'أمن معاملتكم له الأولوية القصوى لدينا. الدفع السريع يقبل آبل باي، جوجل باي، والدفع ببطاقات الائتمان المشفرة.'}
+                ? 'Your transactional security is prioritized. Pay safely by bank transfer to our IBAN or in cash on delivery.'
+                : 'أمن معاملتكم له الأولوية القصوى لدينا. ادفعي بأمان عبر التحويل البنكي على الآيبان أو نقداً عند الاستلام.'}
             </p>
             <div className="flex flex-wrap gap-2 pt-1">
-              <span className="bg-brand-secondary/60 rounded-md px-2 py-0.5 text-[8.5px] uppercase tracking-wider font-bold text-brand-cream border border-brand-cream/10">Visa</span>
-              <span className="bg-brand-secondary/60 rounded-md px-2 py-0.5 text-[8.5px] uppercase tracking-wider font-bold text-brand-cream border border-brand-cream/10">Mastercard</span>
-              <span className="bg-brand-secondary/60 rounded-md px-2 py-0.5 text-[8.5px] uppercase tracking-wider font-bold text-brand-cream border border-brand-cream/10">Apple Pay</span>
+              <span className="bg-brand-secondary/60 rounded-md px-2 py-0.5 text-[8.5px] uppercase tracking-wider font-bold text-brand-cream border border-brand-cream/10">{language === 'en' ? 'Bank Transfer' : 'تحويل بنكي'}</span>
+              <span className="bg-brand-secondary/60 rounded-md px-2 py-0.5 text-[8.5px] uppercase tracking-wider font-bold text-brand-cream border border-brand-cream/10">IBAN</span>
               <span className="bg-brand-secondary/60 rounded-md px-2 py-0.5 text-[8.5px] uppercase tracking-wider font-bold text-brand-cream border border-brand-cream/10">COD</span>
             </div>
           </div>

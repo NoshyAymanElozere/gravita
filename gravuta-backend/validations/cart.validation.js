@@ -60,8 +60,9 @@ const mergeCartSchema = Joi.object({
 });
 
 // GET /api/cart?paymentMethod=cod - لعرض رسوم الدفع عند الاستلام ضمن الحساب
+const { PAYMENT_METHODS } = require('../models/Order');
 const cartQuerySchema = Joi.object({
-    paymentMethod: Joi.string().valid('cod', 'credit_card', 'apple_pay', 'google_pay')
+    paymentMethod: Joi.string().valid(...PAYMENT_METHODS)
 });
 
 module.exports = {

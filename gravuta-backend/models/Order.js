@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 const { orderAddressSchema } = require('./schemas/address.schema');
 
 const ORDER_STATUSES = ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'return_requested', 'returned'];
-const PAYMENT_METHODS = ['cod', 'credit_card', 'apple_pay', 'google_pay'];
+const PAYMENT_METHODS = ['cod', 'bank_transfer', 'credit_card', 'apple_pay', 'google_pay'];
+// طرق الدفع غير الإلكترونية (لا تحتاج بوابة دفع): نقداً عند الاستلام أو تحويل بنكي على الآيبان
+const OFFLINE_PAYMENT_METHODS = ['cod', 'bank_transfer'];
 const PAYMENT_STATUSES = ['pending', 'paid', 'failed', 'refunded'];
 
 // الانتقالات المسموحة بين حالات الطلب (للأدمن)
@@ -174,4 +176,6 @@ const Order = mongoose.model('Order', orderSchema);
 module.exports = Order;
 module.exports.ORDER_STATUSES = ORDER_STATUSES;
 module.exports.PAYMENT_METHODS = PAYMENT_METHODS;
+module.exports.OFFLINE_PAYMENT_METHODS = OFFLINE_PAYMENT_METHODS;
+module.exports.PAYMENT_STATUSES = PAYMENT_STATUSES;
 module.exports.STATUS_TRANSITIONS = STATUS_TRANSITIONS;

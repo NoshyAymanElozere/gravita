@@ -1,0 +1,249 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - generic [ref=f1e49]:
+      - complementary [ref=f1e51]:
+        - img "AURA Laboratories" [ref=f1e55]
+        - navigation [ref=f1e56]:
+          - generic [ref=f1e57]:
+            - paragraph [ref=f1e58]: Store
+            - list [ref=f1e59]:
+              - listitem [ref=f1e60]:
+                - link "Overview" [ref=f1e61] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=f1e68]:
+                - link "Orders" [ref=f1e69] [cursor=pointer]:
+                  - /url: /orders
+          - generic [ref=f1e74]:
+            - paragraph [ref=f1e75]: Catalog
+            - list [ref=f1e76]:
+              - listitem [ref=f1e77]:
+                - link "Products" [ref=f1e78] [cursor=pointer]:
+                  - /url: /products
+              - listitem [ref=f1e84]:
+                - link "Categories" [ref=f1e85] [cursor=pointer]:
+                  - /url: /categories
+              - listitem [ref=f1e92]:
+                - link "Bundles" [ref=f1e93] [cursor=pointer]:
+                  - /url: /bundles
+          - generic [ref=f1e105]:
+            - paragraph [ref=f1e106]: Customers & marketing
+            - list [ref=f1e107]:
+              - listitem [ref=f1e108]:
+                - link "Customers" [ref=f1e109] [cursor=pointer]:
+                  - /url: /customers
+              - listitem [ref=f1e116]:
+                - link "Coupons" [ref=f1e117] [cursor=pointer]:
+                  - /url: /coupons
+              - listitem [ref=f1e122]:
+                - link "Reviews" [ref=f1e123] [cursor=pointer]:
+                  - /url: /reviews
+              - listitem [ref=f1e127]:
+                - link "Newsletter" [ref=f1e128] [cursor=pointer]:
+                  - /url: /newsletter
+        - link "Open storefront" [ref=f1e134] [cursor=pointer]:
+          - /url: http://localhost:3000
+      - generic [ref=f1e140]:
+        - banner [ref=f1e141]:
+          - button "Menu" [ref=f1e143] [cursor=pointer]
+          - generic [ref=f1e144]:
+            - button "ع" [ref=f1e145] [cursor=pointer]
+            - button "Dark mode" [ref=f1e150] [cursor=pointer]
+            - button "Notifications" [ref=f1e153] [cursor=pointer]
+            - button "اا" [ref=f1e157] [cursor=pointer]
+        - main [ref=f1e159]:
+          - generic [ref=f1e161]:
+            - generic [ref=f1e162]:
+              - generic [ref=f1e170]:
+                - heading "Overview" [level=1] [ref=f1e171]
+                - paragraph [ref=f1e172]: How your store is performing
+              - generic [ref=f1e173]:
+                - tablist [ref=f1e174]:
+                  - tab "Last 7 days" [ref=f1e175] [cursor=pointer]
+                  - tab "Last 30 days" [selected] [ref=f1e176] [cursor=pointer]
+                  - tab "Last 90 days" [ref=f1e177] [cursor=pointer]
+                - button "Refresh" [ref=f1e178] [cursor=pointer]
+            - generic [ref=f1e179]:
+              - generic [ref=f1e182]:
+                - paragraph [ref=f1e183]: Revenue
+                - paragraph [ref=f1e184]: SAR 2,847
+              - generic [ref=f1e191]:
+                - paragraph [ref=f1e192]: Orders
+                - paragraph [ref=f1e193]: "3"
+              - generic [ref=f1e200]:
+                - paragraph [ref=f1e201]: Average order value
+                - paragraph [ref=f1e202]: SAR 949
+              - generic [ref=f1e209]:
+                - paragraph [ref=f1e210]: Customers
+                - paragraph [ref=f1e211]: "4"
+              - generic [ref=f1e220]:
+                - paragraph [ref=f1e221]: Active products
+                - paragraph [ref=f1e222]: "6"
+              - generic [ref=f1e230]:
+                - paragraph [ref=f1e231]: Active bundles
+                - paragraph [ref=f1e232]: "3"
+            - paragraph [ref=f1e244]: Revenue and orders cover the selected period and exclude cancelled and returned orders.
+            - generic [ref=f1e245]:
+              - generic [ref=f1e246]:
+                - generic [ref=f1e248]:
+                  - heading "Revenue over time" [level=2] [ref=f1e249]
+                  - paragraph [ref=f1e250]: Last 30 days
+                - img [ref=f1e254]:
+                  - generic [ref=f1e258]:
+                    - generic [ref=f1e259]: Sep 23
+                    - generic [ref=f1e261]: Sep 27
+                    - generic [ref=f1e263]: Oct 1
+                    - generic [ref=f1e265]: Oct 5
+                    - generic [ref=f1e267]: Oct 9
+                    - generic [ref=f1e269]: Oct 13
+                    - generic [ref=f1e271]: Oct 17
+                    - generic [ref=f1e273]: Oct 22
+                  - generic [ref=f1e276]:
+                    - generic [ref=f1e277]: "0"
+                    - generic [ref=f1e279]: "750"
+                    - generic [ref=f1e281]: 1.5K
+                    - generic [ref=f1e283]: 2.3K
+                    - generic [ref=f1e285]: 3K
+              - generic [ref=f1e293]:
+                - generic [ref=f1e295]:
+                  - heading "Orders over time" [level=2] [ref=f1e296]
+                  - paragraph [ref=f1e297]: Last 30 days
+                - img [ref=f1e301]:
+                  - generic [ref=f1e305]:
+                    - generic [ref=f1e306]: Sep 24
+                    - generic [ref=f1e308]: Sep 28
+                    - generic [ref=f1e310]: Oct 2
+                    - generic [ref=f1e312]: Oct 6
+                    - generic [ref=f1e314]: Oct 10
+                    - generic [ref=f1e316]: Oct 14
+                    - generic [ref=f1e318]: Oct 18
+                    - generic [ref=f1e320]: Oct 22
+                  - generic [ref=f1e323]:
+                    - generic [ref=f1e324]: "0"
+                    - generic [ref=f1e326]: "1"
+                    - generic [ref=f1e328]: "2"
+                    - generic [ref=f1e330]: "3"
+                    - generic [ref=f1e332]: "4"
+            - generic [ref=f1e339]:
+              - generic [ref=f1e340]:
+                - generic [ref=f1e342]:
+                  - heading "Orders by status" [level=2] [ref=f1e343]
+                  - paragraph [ref=f1e344]: All time · click a bar to filter
+                - img [ref=f1e348]:
+                  - generic [ref=f1e350]:
+                    - generic [ref=f1e351]: Pending
+                    - generic [ref=f1e353]: Confirmed
+                    - generic [ref=f1e355]: Processing
+                    - generic [ref=f1e357]: Shipped
+                    - generic [ref=f1e359]: Delivered
+                    - generic [ref=f1e361]: Cancelled
+                    - generic [ref=f1e363]: Returnrequested
+                    - generic [ref=f1e365]: Returned
+                  - generic [ref=f1e386] [cursor=pointer]:
+                    - generic [ref=f1e387]: "0"
+                    - generic [ref=f1e388]: "0"
+                    - generic [ref=f1e389]: "0"
+                    - generic [ref=f1e390]: "0"
+                    - generic [ref=f1e391]: "3"
+                    - generic [ref=f1e392]: "3"
+                    - generic [ref=f1e393]: "0"
+                    - generic [ref=f1e394]: "0"
+              - generic [ref=f1e395]:
+                - generic [ref=f1e396]:
+                  - generic [ref=f1e397]:
+                    - heading "Top products" [level=2] [ref=f1e398]
+                    - paragraph [ref=f1e399]: By units sold
+                  - link "View all" [ref=f1e401] [cursor=pointer]:
+                    - /url: /products?sort=best-selling
+                - table [ref=f1e404]:
+                  - rowgroup [ref=f1e405]:
+                    - row [ref=f1e406]:
+                      - columnheader "Product" [ref=f1e407]
+                      - columnheader "Sold" [ref=f1e408]
+                      - columnheader "Stock" [ref=f1e409]
+                  - rowgroup [ref=f1e410]:
+                    - row [ref=f1e411]:
+                      - cell [ref=f1e412]:
+                        - link "Solar Shield Invisible SPF50+ Defense" [ref=f1e413] [cursor=pointer]:
+                          - /url: /products/6ada1170de12386aa5c886f8/edit
+                      - cell "6" [ref=f1e416]
+                      - cell "94" [ref=f1e417]
+                    - row [ref=f1e418]:
+                      - cell [ref=f1e419]:
+                        - link "Velvet Cloud Lipid-Barrier Moisturizer" [ref=f1e420] [cursor=pointer]:
+                          - /url: /products/6ada1170de12386aa5c886f6/edit
+                      - cell "3" [ref=f1e423]
+                      - cell "97" [ref=f1e424]
+                    - row [ref=f1e425]:
+                      - cell [ref=f1e426]:
+                        - link "Ocean Glow Hydra-Renewal Serum" [ref=f1e427] [cursor=pointer]:
+                          - /url: /products/6ada1170de12386aa5c886f5/edit
+                      - cell "3" [ref=f1e430]
+                      - cell "97" [ref=f1e431]
+                    - row [ref=f1e432]:
+                      - cell [ref=f1e433]:
+                        - link "Glacial Marine Clay Detox Mask" [ref=f1e434] [cursor=pointer]:
+                          - /url: /products/6ada1170de12386aa5c886f9/edit
+                      - cell "0" [ref=f1e437]
+                      - cell "100" [ref=f1e438]
+                    - row [ref=f1e439]:
+                      - cell [ref=f1e440]:
+                        - link "Botanical Harmony Pure Prebiotic Cleanser" [ref=f1e441] [cursor=pointer]:
+                          - /url: /products/6ada1170de12386aa5c886f7/edit
+                      - cell "0" [ref=f1e444]
+                      - cell "100" [ref=f1e445]
+            - generic [ref=f1e446]:
+              - generic [ref=f1e447]:
+                - generic [ref=f1e448]:
+                  - heading "Recent orders" [level=2] [ref=f1e450]
+                  - link "View all" [ref=f1e452] [cursor=pointer]:
+                    - /url: /orders
+                - table [ref=f1e455]:
+                  - rowgroup [ref=f1e456]:
+                    - row [ref=f1e457]:
+                      - columnheader "Order" [ref=f1e458]
+                      - columnheader "Customer" [ref=f1e459]
+                      - columnheader "Status" [ref=f1e460]
+                      - columnheader "Total" [ref=f1e461]
+                  - rowgroup [ref=f1e462]:
+                    - row [ref=f1e463] [cursor=pointer]:
+                      - cell [ref=f1e464]:
+                        - paragraph [ref=f1e465]: AURA-144403
+                        - paragraph [ref=f1e466]: Oct 22, 2026, 04:38 PM
+                      - cell "Cycle Test Customer" [ref=f1e467]
+                      - cell "Cancelled" [ref=f1e468]
+                      - cell "SAR 265" [ref=f1e474]
+                    - row [ref=f1e475] [cursor=pointer]:
+                      - cell [ref=f1e476]:
+                        - paragraph [ref=f1e477]: AURA-578963
+                        - paragraph [ref=f1e478]: Oct 22, 2026, 04:38 PM
+                      - cell "Cycle Test Customer" [ref=f1e479]
+                      - cell "Delivered" [ref=f1e480]
+                      - cell "SAR 876" [ref=f1e487]
+                    - row [ref=f1e488] [cursor=pointer]:
+                      - cell [ref=f1e489]:
+                        - paragraph [ref=f1e490]: AURA-569138
+                        - paragraph [ref=f1e491]: Oct 22, 2026, 04:38 PM
+                      - cell "Cycle Test Customer" [ref=f1e492]
+                      - cell "Cancelled" [ref=f1e493]
+                      - cell "SAR 265" [ref=f1e499]
+                    - row [ref=f1e500] [cursor=pointer]:
+                      - cell [ref=f1e501]:
+                        - paragraph [ref=f1e502]: AURA-288752
+                        - paragraph [ref=f1e503]: Oct 22, 2026, 04:38 PM
+                      - cell "Cycle Test Customer" [ref=f1e504]
+                      - cell "Delivered" [ref=f1e505]
+                      - cell "SAR 876" [ref=f1e512]
+                    - row [ref=f1e513] [cursor=pointer]:
+                      - cell [ref=f1e514]:
+                        - paragraph [ref=f1e515]: AURA-389215
+                        - paragraph [ref=f1e516]: Oct 22, 2026, 04:37 PM
+                      - cell "Cycle Test Customer" [ref=f1e517]
+                      - cell "Cancelled" [ref=f1e518]
+                      - cell "SAR 265" [ref=f1e524]
+              - generic [ref=f1e525]:
+                - generic [ref=f1e527]:
+                  - heading "Low stock" [level=2] [ref=f1e528]
+                  - paragraph [ref=f1e532]: At or below their low-stock threshold
+                - paragraph [ref=f1e540]: All products are well stocked
+    - status [ref=f1e546]: Welcome back!
+  - generic [aria-hidden] [ref=f1e547]: Pending

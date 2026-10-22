@@ -5,6 +5,7 @@ import { ProtectedRoute } from '@/components/shared/RouteGuards'
 import { Button } from '@/components/ui/button'
 
 import Overview from '@/features/dashboard/pages/Overview'
+import ReportsPage from '@/features/reports/pages/ReportsPage'
 import OrdersList from '@/features/orders/pages/OrdersList'
 import OrderDetail from '@/features/orders/pages/OrderDetail'
 import ProductsList from '@/features/products/pages/ProductsList'
@@ -38,6 +39,8 @@ export const dashboardRoutes = (
   <Route element={<ProtectedRoute />}>
     <Route path="/" element={<Layout />}>
       <Route index element={<Overview />} />
+
+      <Route path="reports" element={<ReportsPage />} />
 
       <Route path="orders" element={<OrdersList />} />
       <Route path="orders/:id" element={<OrderDetail />} />

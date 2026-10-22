@@ -10,6 +10,7 @@
     "seed": "node scripts/seed.js",
     "seed:bundles": "node scripts/seed.js",
     "migrate": "node scripts/migrate.js",
+    "test:cycle": "node scripts/fullCycleTest.js",
     "postman": "node scripts/buildPostmanCollection.js"
   },
   "keywords": [],

@@ -55,7 +55,7 @@ Order {
   items: [{ itemType, product?, bundle?, nameEn, nameAr, image, size, quantity, unitPrice, lineTotal,
             bundleSnapshot?: { originalPrice, discountPercentage, items: [{ product, nameEn, nameAr, quantity, stepEn, stepAr }] } }],
   contact: { name, email, phone }, shippingAddress: Address (no _id/isDefault), notes,
-  paymentMethod: 'cod' | 'credit_card' | 'apple_pay' | 'google_pay', paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded',
+  paymentMethod: 'cod' | 'bank_transfer' | 'credit_card' | 'apple_pay' | 'google_pay', paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded',
   coupon?: { code, discountType, value },
   subtotal, discount, shippingFee, codFee, total,
   status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'return_requested' | 'returned',
@@ -73,6 +73,7 @@ User { _id, name, email, phone, role: 'user' | 'admin', isActive, addresses: Add
 
 | Method | Path | Notes |
 |---|---|---|
+| GET | `/config` | available `payments.methods`, `payments.bankTransfer { bankName, iban, accountName }` (from `BANK_*` env), COD fee, shipping rules |
 | GET | `/categories` | active, sorted, with `productCount` |
 | GET | `/categories/:idOrSlug` | |
 | GET | `/products` | `category` (slug/id), `skinType`, `minPrice`, `maxPrice`, `q`, `bestSeller`, `isNew`, `inStock`, `sort` = `best-selling` \| `price-low-high` \| `price-high-low` \| `newest` \| `rating` |
@@ -121,7 +122,7 @@ Stock is checked on every add/update (`409` with `errors: [{ requested, availabl
 
 | Method | Path | Body / notes |
 |---|---|---|
-| POST | `/orders` | `{ addressId }` **or** `{ address, saveAddress? }`, `contact?`, `paymentMethod` (`cod` only until a gateway is enabled), `notes?` → `{ order }`; reserves stock, consumes coupon, clears cart |
+| POST | `/orders` | `{ addressId }` **or** `{ address, saveAddress? }`, `contact?`, `paymentMethod` (`cod` and `bank_transfer` always; cards need `ONLINE_PAYMENTS_ENABLED=true`), `notes?` → `{ order }`; reserves stock, consumes coupon, clears cart |
 | GET | `/orders/my-orders?status=` | `in-transit` = `shipped`; also returns `statusCounts` |
 | GET | `/orders/:id` | → `{ order, canCancel, canReturn, returnWindowDays }` |
 | PATCH | `/orders/:id/cancel` | `{ reason? }` — `pending`/`confirmed` only; restocks |
@@ -135,6 +136,7 @@ Stock is checked on every add/update (`409` with `errors: [{ requested, availabl
 | Method | Path | Notes |
 |---|---|---|
 | GET | `/admin/stats?days=30` | `revenue { total, orders, averageOrderValue }`, `ordersByStatus`, `dailySales [{date, revenue, orders}]`, `topProducts`, `lowStock`, `totals { users, products, bundles }` |
+| GET | `/admin/stats/report?from=&to=` | sales report: `summary { orders, revenue, averageOrderValue, unitsSold, discounts, shippingCollected, newCustomers }`, `byDay`, `byStatus`, `byPaymentMethod`, `topProducts`; `&format=csv` downloads every order in the period as CSV |
 | GET / POST | `/admin/products` | list accepts the shop filters + `isActive`; POST JSON or `multipart/form-data` (`image`, `galleryImages[]` files; array fields as JSON strings) |
 | GET / PUT / DELETE | `/admin/products/:id` | GET → `{ product, bundles }`; PUT re-prices bundles when `price` changes (`bundleSync`); DELETE = deactivate, `?hard=true` = delete (409 if in a bundle) |
 | PATCH | `/admin/products/:id/stock` | `{ stock }` or `{ adjust }` |
@@ -146,6 +148,7 @@ Stock is checked on every add/update (`409` with `errors: [{ requested, availabl
 | GET | `/admin/orders?status=&q=&from=&to=` | `q` = order number / customer name / email / phone |
 | GET | `/admin/orders/:id` | → `{ order, allowedTransitions }` |
 | PUT | `/admin/orders/:id/status` | `{ status, note?, trackingNumber?, estimatedDelivery? }`; transitions: pending → confirmed/processing/shipped/cancelled, confirmed → processing/shipped/cancelled, processing → shipped/cancelled, shipped → delivered, delivered → returned, return_requested → returned/delivered |
+| PATCH | `/admin/orders/:id/payment` | `{ paymentStatus: 'pending'\|'paid'\|'failed'\|'refunded', paymentRef? }` — e.g. confirm a bank transfer arrived |
 | GET / POST | `/admin/users?q=&role=&isActive=` | |
 | GET / PUT / DELETE | `/admin/users/:id` | GET → `{ user, stats: { ordersCount, totalSpent } }`; DELETE deactivates users with orders |
 | GET / POST | `/admin/coupons` | |

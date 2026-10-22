@@ -102,7 +102,7 @@ export interface Order {
     selectedSize: string;
   }[];
   shippingAddress: Address;
-  paymentMethod: 'credit_card' | 'cod' | 'apple_pay' | 'google_pay';
+  paymentMethod: 'cod' | 'bank_transfer' | 'credit_card' | 'apple_pay' | 'google_pay';
   couponApplied?: string;
   subtotal: number;
   discount: number;

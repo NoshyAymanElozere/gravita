@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useApp } from '../../store/AppContext';
-import { Lock, Mail, User, ShieldCheck, ArrowRight, Chrome, Facebook, Info } from 'lucide-react';
+import { Lock, Mail, User, ShieldCheck, ArrowRight, Info } from 'lucide-react';
 
 export default function AuthView() {
   const { language, loginUser, registerUser, setActivePage } = useApp();
@@ -51,8 +51,6 @@ export default function AuthView() {
     signInLinkAr: 'تسجيل الدخول',
     backLinkEn: 'Back to Authentication',
     backLinkAr: 'العودة للخلف',
-    socialHeaderEn: 'Or authorize with luxury partners',
-    socialHeaderAr: 'أو الدخول الآمن بواسطة الشركاء الموثقين',
     forgotLinkEn: 'Forgot secure passphrase?',
     forgotLinkAr: 'نسيتِ كلمة المرور الآمنة لحسابكِ؟'
   };
@@ -103,14 +101,6 @@ export default function AuthView() {
     setTimeout(() => {
       setActivePage('profile');
     }, 1500);
-  };
-
-  // Social sign-in needs Google/Facebook OAuth apps configured on the backend
-  const showSocialUnavailable = () => {
-    setSuccessMsg(null);
-    setErrorMsg(language === 'en'
-      ? 'Social sign-in is not available yet. Please use your email and password.'
-      : 'تسجيل الدخول عبر الشبكات الاجتماعية غير متاح حالياً، يرجى استخدام البريد الإلكتروني وكلمة المرور.');
   };
 
   const handleForgotSubmit = (e: React.FormEvent) => {
@@ -336,32 +326,6 @@ export default function AuthView() {
             )}
           </div>
         )}
-
-        {/* SOCIAL AUTH BUTTONS BAR */}
-        <div className="pt-6 border-t border-brand-sage-light/10 space-y-3">
-          <span className="block text-center text-[10px] text-brand-sage-muted uppercase font-bold tracking-wider font-sans">
-            {language === 'en' ? t.socialHeaderEn : t.socialHeaderAr}
-          </span>
-
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={showSocialUnavailable}
-              className="bg-brand-cream/35 hover:bg-brand-cream/65 text-brand-primary border border-brand-sage-light/15 py-3 px-4 rounded-xl font-bold flex items-center justify-center space-x-2 rtl:space-x-reverse cursor-pointer transition-all duration-300"
-            >
-              <Chrome size={14} className="text-red-500" />
-              <span className="font-sans text-[10px]">Google</span>
-            </button>
-            <button
-              type="button"
-              onClick={showSocialUnavailable}
-              className="bg-brand-cream/35 hover:bg-brand-cream/65 text-brand-primary border border-brand-sage-light/15 py-3 px-4 rounded-xl font-bold flex items-center justify-center space-x-2 rtl:space-x-reverse cursor-pointer transition-all duration-300"
-            >
-              <Facebook size={14} className="text-blue-600" />
-              <span className="font-sans text-[10px]">Facebook</span>
-            </button>
-          </div>
-        </div>
 
       </div>
 

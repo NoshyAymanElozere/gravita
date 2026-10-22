@@ -5,6 +5,7 @@ import {
   ChevronLeft,
   ChevronRight,
   LayoutDashboard,
+  FileBarChart,
   ShoppingBag,
   Package,
   FolderTree,
@@ -40,6 +41,7 @@ export function Sidebar({ collapsed, onCollapse }: SidebarProps) {
       items: [
         { label: 'nav.overview', href: '/', icon: LayoutDashboard },
         { label: 'nav.orders', href: '/orders', icon: ShoppingBag, badge: alerts?.attention || undefined },
+        { label: 'nav.reports', href: '/reports', icon: FileBarChart },
       ],
     },
     {

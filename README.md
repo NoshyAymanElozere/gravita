@@ -47,8 +47,21 @@ Change the admin password after the first login (dashboard → Profile).
 - `gravuta-backend/postman/pharmaa_gravuta.postman_collection.json`: ready-to-run requests (`npm run postman` regenerates it).
 - `pharmaa/BACKEND_IMPLEMENTATION_PLAN.md`: data model, bundle ↔ product relationship, design decisions.
 
+## Payments
+
+Two payment methods work out of the box, no gateway needed:
+
+- **Cash on delivery (COD)**: adds the `COD_FEE` surcharge; marked paid automatically on delivery.
+- **Bank transfer (IBAN)**: the checkout shows the store bank account (set `BANK_NAME`, `BANK_IBAN`, `BANK_ACCOUNT_NAME` in the API `.env`, served at `GET /api/config`). The admin confirms the transfer with **Mark as paid** on the order page.
+
+Card / Apple Pay / Google Pay stay disabled until a payment gateway (Moyasar, Tap, Stripe…) is connected; then set `ONLINE_PAYMENTS_ENABLED=true`.
+
+## Reports & full-cycle test
+
+- Dashboard → **Reports**: revenue, orders, units, new customers for any period, with breakdowns by payment method / status / top sellers and a CSV export (`GET /api/admin/stats/report`).
+- Admins change any user's password from Customers → Edit (the e2e test verifies it).
+- `npm run test:cycle` in `gravuta-backend` (with the API running and seeded) exercises the whole cycle: register → cart (product + bundle) → coupon → bank-transfer order → stock → mark paid → confirm/ship/deliver → COD order → cancel + restock → stats/report/CSV → admin password change.
+
 ## Not wired up yet
 
-- **Card / Apple Pay / Google Pay**: orders are cash on delivery until a payment gateway (Moyasar, Tap, Stripe…) is connected. Then set `ONLINE_PAYMENTS_ENABLED=true` in the API.
-- **Forgot password, Google/Facebook sign-in**: need an email service and OAuth apps.
-- **Storefront profile "Balance" and "Bank cards" tabs**: there is no wallet or saved-card backend.
+- **Forgot password**: needs an email service.

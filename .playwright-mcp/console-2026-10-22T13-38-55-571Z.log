@@ -1,0 +1,3 @@
+[   12329ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:4173/assets/vendor-query-B-vGZDVG.js:8
+[   12440ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:5000/api/auth/me:0
+[   12514ms] [INFO] 🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙 @ http://localhost:4173/assets/vendor-query-B-vGZDVG.js:8

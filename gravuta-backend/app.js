@@ -20,6 +20,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ربط مسارات المستخدمين والمسارات العامة (User / Public Endpoints)
+app.use('/api/config', require('./routes/config.routes'));
 app.use('/api/products', require('./routes/product.routes'));
 app.use('/api/categories', require('./routes/category.routes'));
 app.use('/api/bundles', require('./routes/bundle.routes'));

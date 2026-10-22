@@ -175,7 +175,7 @@ export const ORDER_STATUSES = [
 ] as const
 export type OrderStatus = (typeof ORDER_STATUSES)[number]
 
-export type PaymentMethod = 'cod' | 'credit_card' | 'apple_pay' | 'google_pay'
+export type PaymentMethod = 'cod' | 'bank_transfer' | 'credit_card' | 'apple_pay' | 'google_pay'
 export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded'
 
 export interface BundleSnapshot {
@@ -217,6 +217,7 @@ export interface Order {
   notes?: string
   paymentMethod: PaymentMethod
   paymentStatus: PaymentStatus
+  paymentRef?: string
   coupon?: { code: string; discountType: 'percentage' | 'fixed'; value: number } | null
   subtotal: number
   discount: number
@@ -300,4 +301,21 @@ export interface AdminStats {
   topProducts: Array<{ _id: string; slug: string; nameEn: string; nameAr: string; soldCount: number; stock: number; image?: string; stockStatus?: StockStatus }>
   lowStock: Array<{ _id: string; slug: string; nameEn: string; nameAr: string; stock: number; lowStockThreshold: number; stockStatus?: StockStatus }>
   totals: { users: number; products: number; bundles: number }
+}
+
+export interface SalesReport {
+  period: { from: string; to: string }
+  summary: {
+    orders: number
+    revenue: number
+    averageOrderValue: number
+    unitsSold: number
+    discounts: number
+    shippingCollected: number
+    newCustomers: number
+  }
+  byDay: Array<{ date: string; revenue: number; orders: number }>
+  byStatus: Partial<Record<OrderStatus, { count: number; revenue: number }>>
+  byPaymentMethod: Partial<Record<PaymentMethod, { count: number; revenue: number }>>
+  topProducts: Array<{ nameEn: string; nameAr: string; itemType: 'product' | 'bundle'; quantity: number; revenue: number }>
 }

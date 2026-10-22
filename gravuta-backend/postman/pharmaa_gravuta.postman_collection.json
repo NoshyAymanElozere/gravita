@@ -174,6 +174,23 @@
 			"name": "🛍️ Catalog",
 			"item": [
 				{
+					"name": "Store config (payments, bank IBAN, shipping)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/config",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"config"
+							]
+						}
+					}
+				},
+				{
 					"name": "Categories (with productCount)",
 					"request": {
 						"method": "GET",
@@ -1439,7 +1456,7 @@
 						},
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"addressId\": \"{{address_id}}\",\n    \"paymentMethod\": \"cod\",\n    \"notes\": \"Please call before delivery\"\n}",
+							"raw": "{\n    \"addressId\": \"{{address_id}}\",\n    \"paymentMethod\": \"bank_transfer\",\n    \"notes\": \"Please call before delivery\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1841,6 +1858,88 @@
 								{
 									"key": "days",
 									"value": "30"
+								}
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Sales report (JSON)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/stats/report?from=2026-01-01&to=2026-12-31",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"stats",
+								"report"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "2026-01-01"
+								},
+								{
+									"key": "to",
+									"value": "2026-12-31"
+								}
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Sales report (CSV export)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/stats/report?from=2026-01-01&to=2026-12-31&format=csv",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"stats",
+								"report"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "2026-01-01"
+								},
+								{
+									"key": "to",
+									"value": "2026-12-31"
+								},
+								{
+									"key": "format",
+									"value": "csv"
 								}
 							]
 						},
@@ -2652,6 +2751,50 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"status\": \"shipped\",\n    \"note\": \"Handed to courier\",\n    \"trackingNumber\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					}
+				},
+				{
+					"name": "Update payment status (confirm bank transfer)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/orders/{{order_id}}/payment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"orders",
+								"{{order_id}}",
+								"payment"
+							]
+						},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"paymentStatus\": \"paid\",\n    \"paymentRef\": \"TRX-123456\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

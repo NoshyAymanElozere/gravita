@@ -1,0 +1,57 @@
+- generic [ref=f2e3]:
+  - complementary [ref=f2e5]:
+    - img "AURA Laboratories" [ref=f2e9]
+    - navigation [ref=f2e10]:
+      - generic [ref=f2e11]:
+        - paragraph [ref=f2e12]: Store
+        - list [ref=f2e13]:
+          - listitem [ref=f2e14]:
+            - link "Overview" [ref=f2e15] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=f2e22]:
+            - link "Orders" [ref=f2e23] [cursor=pointer]:
+              - /url: /orders
+      - generic [ref=f2e28]:
+        - paragraph [ref=f2e29]: Catalog
+        - list [ref=f2e30]:
+          - listitem [ref=f2e31]:
+            - link "Products" [ref=f2e32] [cursor=pointer]:
+              - /url: /products
+          - listitem [ref=f2e38]:
+            - link "Categories" [ref=f2e39] [cursor=pointer]:
+              - /url: /categories
+          - listitem [ref=f2e46]:
+            - link "Bundles" [ref=f2e47] [cursor=pointer]:
+              - /url: /bundles
+      - generic [ref=f2e59]:
+        - paragraph [ref=f2e60]: Customers & marketing
+        - list [ref=f2e61]:
+          - listitem [ref=f2e62]:
+            - link "Customers" [ref=f2e63] [cursor=pointer]:
+              - /url: /customers
+          - listitem [ref=f2e70]:
+            - link "Coupons" [ref=f2e71] [cursor=pointer]:
+              - /url: /coupons
+          - listitem [ref=f2e76]:
+            - link "Reviews" [ref=f2e77] [cursor=pointer]:
+              - /url: /reviews
+          - listitem [ref=f2e81]:
+            - link "Newsletter" [ref=f2e82] [cursor=pointer]:
+              - /url: /newsletter
+    - link "Open storefront" [ref=f2e88] [cursor=pointer]:
+      - /url: http://localhost:3000
+  - generic [ref=f2e94]:
+    - banner [ref=f2e95]:
+      - button "Menu" [ref=f2e97] [cursor=pointer]
+      - generic [ref=f2e98]:
+        - button "ع" [ref=f2e99] [cursor=pointer]
+        - button "Dark mode" [ref=f2e104] [cursor=pointer]
+        - button "Notifications" [ref=f2e107] [cursor=pointer]
+        - button "اا" [ref=f2e111] [cursor=pointer]
+    - main [ref=f2e113]:
+      - generic [ref=f2e115]:
+        - paragraph [ref=f2e116]: "404"
+        - heading "Page not found" [level=2] [ref=f2e117]
+        - paragraph [ref=f2e118]: The page you are looking for does not exist.
+        - link "Overview" [ref=f2e119] [cursor=pointer]:
+          - /url: /
