@@ -11,13 +11,30 @@ export const metadata = {
   description: 'Premium formulation & pharmaceutical skincare routine',
 };
 
+const languageInitScript = `
+  try {
+    var raw = localStorage.getItem('aura-store');
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      var lang = parsed && parsed.state && parsed.state.language;
+      if (lang === 'ar' || lang === 'en') {
+        document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        document.documentElement.setAttribute('lang', lang);
+      }
+    }
+  } catch (e) {}
+`;
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: languageInitScript }} />
+      </head>
       <body className="antialiased">
         <AppProvider>
           <Toaster position="top-center" reverseOrder={false} />

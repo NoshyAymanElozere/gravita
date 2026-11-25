@@ -97,6 +97,13 @@ export const errorMessage = (error: unknown, language: Language): string => {
 // Kept for existing imports: a bundle displayed and stored in the cart as a product
 export const convertBundleToProduct = bundleToProduct;
 
+const applyDocumentLanguage = (lang: Language) => {
+    if (typeof document !== 'undefined') {
+        document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        document.documentElement.setAttribute('lang', lang);
+    }
+};
+
 export const useAppStore = create<AppState>()(persist((set, get) => {
     const notifyError = (error: unknown) => toast.error(errorMessage(error, get().language));
 
@@ -170,10 +177,7 @@ export const useAppStore = create<AppState>()(persist((set, get) => {
 
         setLanguage: (lang) => {
             set({ language: lang });
-            if (typeof window !== 'undefined') {
-                document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-                document.documentElement.setAttribute('lang', lang);
-            }
+            applyDocumentLanguage(lang);
         },
         setActivePage: (page) => set({ activePage: page }),
         setSelectedProduct: (product) => set({ selectedProduct: product, selectedBundle: product ? null : get().selectedBundle }),
@@ -497,12 +501,18 @@ export const useAppStore = create<AppState>()(persist((set, get) => {
     storage: createJSONStorage(() => localStorage),
     // Rehydrated manually in AppProvider (after mount) to avoid SSR hydration mismatches
     skipHydration: true,
-    // Session token + guest cart/wishlist/coupon survive reloads; everything else comes from the API
+    // Language + session token + guest cart/wishlist/coupon survive reloads; everything else comes from the API
     partialize: (state) => ({
+        language: state.language,
         token: state.token,
         cart: state.cart,
         wishlist: state.wishlist,
         appliedCoupon: state.appliedCoupon,
         searchHistory: state.searchHistory
-    })
+    }),
+    onRehydrateStorage: () => (state) => {
+        if (state) {
+            applyDocumentLanguage(state.language);
+        }
+    }
 }));

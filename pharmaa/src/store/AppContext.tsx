@@ -9,6 +9,7 @@ export { convertBundleToProduct };
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const pathname = usePathname();
+  const language = useAppStore((state) => state.language);
   const storeActivePage = useAppStore((state) => state.activePage);
   const storeSetActivePage = useAppStore((state) => state.setActivePage);
   const catalogLoaded = useAppStore((state) => state.catalogLoaded);
@@ -21,6 +22,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
     store.getState().loadCatalog();
   }, []);
+
+  // Keep <html dir/lang> synced with language across rehydration and route changes
+  useEffect(() => {
+    if (!useAppStore.persist.hasHydrated()) return;
+    const currentLang = useAppStore.getState().language;
+    document.documentElement.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', currentLang);
+  }, [language, pathname]);
 
   // Sync state active page with current router pathname
   useEffect(() => {

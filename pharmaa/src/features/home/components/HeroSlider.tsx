@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { api, resolveImage } from '../../../lib/api';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
@@ -59,12 +60,17 @@ export default function HeroSlider() {
               style={{ backgroundImage: `url('${resolveImage(banner.image)}')` }}
             />
           );
-          return banner.link ? (
+          if (!banner.link) {
+            return <React.Fragment key={idx}>{slide}</React.Fragment>;
+          }
+          return banner.link.startsWith('/') ? (
+            <Link key={idx} href={banner.link} aria-label={`Banner ${idx + 1}`} className="contents">
+              {slide}
+            </Link>
+          ) : (
             <a key={idx} href={banner.link} aria-label={`Banner ${idx + 1}`} className="contents">
               {slide}
             </a>
-          ) : (
-            <React.Fragment key={idx}>{slide}</React.Fragment>
           );
         })}
       </div>
