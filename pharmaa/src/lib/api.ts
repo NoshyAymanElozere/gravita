@@ -1,7 +1,8 @@
 // Thin fetch client for gravuta-backend.
-// Base URL comes from NEXT_PUBLIC_API_URL (e.g. http://localhost:5000/api).
+// Base URL comes from NEXT_PUBLIC_API_URL (e.g. https://gongiva-production.up.railway.app/api).
 
-export const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+const RAW_API_URL = (process.env.NEXT_PUBLIC_API_URL || 'https://gongiva-production.up.railway.app/api').replace(/\/+$/, '');
+export const API_URL = RAW_API_URL.endsWith('/api') ? RAW_API_URL : `${RAW_API_URL}/api`;
 export const API_ORIGIN = API_URL.replace(/\/api$/, '');
 
 export class ApiError extends Error {
@@ -65,5 +66,6 @@ export const api = {
 export const resolveImage = (src?: string | null): string => {
   if (!src) return '';
   if (src.startsWith('/uploads/')) return `${API_ORIGIN}${src}`;
+  if (src.startsWith('uploads/')) return `${API_ORIGIN}/${src}`;
   return src;
 };

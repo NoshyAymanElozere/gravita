@@ -3,7 +3,10 @@ import toast from 'react-hot-toast'
 import { clearAuth, getToken, setLogoutReason } from '@/features/auth/lib/authStorage'
 import { BYPASS_AUTH } from '@/lib/authBypass'
 
-export const API_URL: string = import.meta.env.VITE_API_URL ?? 'http://localhost:5000/api'
+const RAW_API_URL: string = (
+  import.meta.env.VITE_API_URL ?? 'https://gongiva-production.up.railway.app/api'
+).replace(/\/+$/, '')
+export const API_URL: string = RAW_API_URL.endsWith('/api') ? RAW_API_URL : `${RAW_API_URL}/api`
 
 declare module 'axios' {
   interface AxiosRequestConfig {

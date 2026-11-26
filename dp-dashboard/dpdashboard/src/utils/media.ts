@@ -3,7 +3,10 @@
 //   /assets/...       → storefront static files (prefix with the storefront origin)
 //   http(s)://, data:, blob: → already absolute
 
-const API_URL: string = import.meta.env.VITE_API_URL ?? 'http://localhost:5000/api'
+const RAW_API_URL: string = (
+  import.meta.env.VITE_API_URL ?? 'https://gongiva-production.up.railway.app/api'
+).replace(/\/+$/, '')
+const API_URL: string = RAW_API_URL.endsWith('/api') ? RAW_API_URL : `${RAW_API_URL}/api`
 const STOREFRONT_URL: string = import.meta.env.VITE_STOREFRONT_URL ?? 'http://localhost:3000'
 
 /** API origin = VITE_API_URL without the trailing `/api` segment */
