@@ -21,6 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ربط مسارات المستخدمين والمسارات العامة (User / Public Endpoints)
 app.use('/api/config', require('./routes/config.routes'));
+app.use('/api/settings', require('./routes/settings.routes'));
 app.use('/api/products', require('./routes/product.routes'));
 app.use('/api/categories', require('./routes/category.routes'));
 app.use('/api/bundles', require('./routes/bundle.routes'));
@@ -42,6 +43,7 @@ app.use('/api/admin/orders', require('./routes/admin.order.routes'));
 app.use('/api/admin/coupons', require('./routes/admin.coupon.routes'));
 app.use('/api/admin/stats', require('./routes/admin.stats.routes'));
 app.use('/api/admin/banners', require('./routes/admin.banner.routes'));
+app.use('/api/admin/settings', require('./routes/admin.settings.routes'));
 // التقييمات والنشرة البريدية: /api/admin/reviews و /api/admin/newsletter
 app.use('/api/admin', require('./routes/admin.review.routes'));
 

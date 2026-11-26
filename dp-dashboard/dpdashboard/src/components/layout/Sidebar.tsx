@@ -16,6 +16,7 @@ import {
   Star,
   Mail,
   ExternalLink,
+  Settings,
 } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/shared/misc'
 import { Logo } from '@/components/shared/Logo'
@@ -61,6 +62,10 @@ export function Sidebar({ collapsed, onCollapse }: SidebarProps) {
         { label: 'nav.reviews', href: '/reviews', icon: Star },
         { label: 'nav.newsletter', href: '/newsletter', icon: Mail },
       ],
+    },
+    {
+      title: 'nav.groupSite',
+      items: [{ label: 'nav.settings', href: '/settings', icon: Settings }],
     },
   ]
 

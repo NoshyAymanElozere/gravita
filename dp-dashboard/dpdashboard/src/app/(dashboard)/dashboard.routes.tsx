@@ -20,6 +20,7 @@ import CouponsList from '@/features/coupons/pages/CouponsList'
 import ReviewsList from '@/features/reviews/pages/ReviewsList'
 import NewsletterList from '@/features/newsletter/pages/NewsletterList'
 import AdminProfilePage from '@/features/profile/pages/AdminProfilePage'
+import SettingsPage from '@/features/settings/pages/SettingsPage'
 
 function NotFound() {
   const { t } = useTranslation()
@@ -64,6 +65,7 @@ export const dashboardRoutes = (
       <Route path="reviews" element={<ReviewsList />} />
       <Route path="newsletter" element={<NewsletterList />} />
       <Route path="profile" element={<AdminProfilePage />} />
+      <Route path="settings" element={<SettingsPage />} />
 
       <Route path="*" element={<NotFound />} />
     </Route>

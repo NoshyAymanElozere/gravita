@@ -2,15 +2,21 @@
 
 import React, { useState } from 'react';
 import { useApp } from '../../store/AppContext';
+import { useSiteLogo } from '../../lib/useSiteLogo';
 import { ShoppingBag, Heart, User, Search, Globe, X, Plus, Minus, Trash2, Menu } from 'lucide-react';
 
-const BrandLogo = () => (
-  <img
-    src="/assets/images/Logo.png"
-    alt="AURA Laboratories"
-    className="h-16 md:h-20 w-auto object-contain transition-transform duration-300 hover:scale-105"
-  />
-);
+const BrandLogo = () => {
+  const logo = useSiteLogo();
+  // Reserve the space until the logo source is known (avoids a flash of the default logo)
+  if (!logo) return <span className="block h-16 md:h-20 w-32" aria-hidden />;
+  return (
+    <img
+      src={logo}
+      alt="AURA Laboratories"
+      className="h-16 md:h-20 w-auto max-w-[220px] object-contain transition-transform duration-300 hover:scale-105"
+    />
+  );
+};
 
 export default function Header() {
   const {

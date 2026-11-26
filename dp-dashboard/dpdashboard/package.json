@@ -9,7 +9,7 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "format.fix": "prettier --write .",
     "typecheck": "tsc --project tsconfig.json",
-    "prepare": "husky install"
+    "prepare": "husky install || exit 0"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^41.4.2",
