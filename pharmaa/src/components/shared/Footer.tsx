@@ -36,7 +36,7 @@ export default function Footer() {
   };
 
   const menuCompany = [
-    { titleEn: 'About Us', titleAr: 'عن أورا', page: 'developer-specs' },
+    { titleEn: 'About Us', titleAr: 'عن أورا', page: 'home' },
     { titleEn: 'Contact Us', titleAr: 'اتصلي بنا', page: 'home' },
     { titleEn: 'FAQ', titleAr: 'الأسئلة الشائعة', page: 'home' },
     { titleEn: 'Privacy Policy', titleAr: 'سياسة الخصوصية', page: 'home' },

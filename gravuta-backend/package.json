@@ -11,7 +11,8 @@
     "seed:bundles": "node scripts/seed.js",
     "migrate": "node scripts/migrate.js",
     "test:cycle": "node scripts/fullCycleTest.js",
-    "postman": "node scripts/buildPostmanCollection.js"
+    "postman": "node scripts/buildPostmanCollection.js",
+    "test:bundles": "node scripts/bundleCycleTest.js"
   },
   "keywords": [],
   "author": "",

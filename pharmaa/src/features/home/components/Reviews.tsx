@@ -1,16 +1,21 @@
 "use client";
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import { useApp } from '../../../store/AppContext';
+import { useAppStore, errorMessage } from '../../../store/useAppStore';
+import { api } from '../../../lib/api';
+import { mapReview } from '../../../lib/mappers';
 import { Star, ShieldCheck, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import SectionTitle from '../../../components/shared/SectionTitle';
 
 export default function Reviews() {
-  const { language, user, setActivePage, reviews } = useApp();
-  // Featured reviews come from the API; testimonials written here are shown on top for this visit
-  const [localReviews, setLocalReviews] = useState<typeof reviews>([]);
-  const reviewsList = [...localReviews, ...reviews];
+  const { language, user, setActivePage, reviews, products } = useApp();
+  // Featured reviews come from the API (GET /reviews/featured); new testimonials are saved as product reviews
+  const reviewsList = reviews;
   const [commentText, setCommentText] = useState('');
   const [rating, setRating] = useState(5);
+  const [productId, setProductId] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -45,27 +50,25 @@ export default function Reviews() {
     return () => clearInterval(timer);
   }, [reviewsList.length, language]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!commentText.trim() || !user) return;
+    if (!commentText.trim() || !user || !productId || submitting) return;
 
-    const newReview = {
-      id: `rev_user_${Date.now()}`,
-      author: user.name,
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
-      rating: rating,
-      date: new Date().toISOString().split('T')[0],
-      commentEn: commentText,
-      commentAr: commentText,
-      productNameEn: 'Aura Premium Experience',
-      productNameAr: 'تجربة أورا المميزة',
-      verified: true,
-      helpfulCount: 0
-    };
-
-    setLocalReviews([newReview, ...localReviews]);
-    setCommentText('');
-    setRating(5);
+    setSubmitting(true);
+    try {
+      await api.post(`/products/${productId}/reviews`, { rating, comment: commentText.trim(), lang: language });
+      const featured = await api.get('/reviews/featured?limit=12');
+      useAppStore.setState({ reviews: featured.data.map(mapReview) });
+      toast.success(language === 'en' ? 'Thank you! Your review was published.' : 'شكراً لكِ! تم نشر تقييمكِ.');
+      setCommentText('');
+      setRating(5);
+      setProductId('');
+      setIsModalOpen(false);
+    } catch (err) {
+      toast.error(errorMessage(err, language));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -128,19 +131,29 @@ export default function Reviews() {
             >
               <div className="flex items-center justify-between pb-3 border-b border-brand-sage-light/10">
                 <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                  <img
-                    src={rev.avatar}
-                    alt={rev.author}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
+                  {rev.avatar ? (
+                    <img
+                      src={rev.avatar}
+                      alt={rev.author}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="w-10 h-10 rounded-full bg-brand-cream text-brand-primary font-serif font-bold text-sm flex items-center justify-center">
+                      {rev.author?.trim().charAt(0).toUpperCase() || '?'}
+                    </span>
+                  )}
                   <div>
                     <h4 className="font-serif text-xs font-bold text-zinc-900">{rev.author}</h4>
                     <div className="flex gap-2 items-center mt-0.5">
-                      <span className="text-[9px] text-emerald-600 font-semibold font-sans uppercase flex items-center tracking-wider gap-0.5">
-                        <ShieldCheck size={9} />
-                        {verifiedBuyer}
-                      </span>
-                      <span className="text-zinc-200">|</span>
+                      {rev.verified && (
+                        <>
+                          <span className="text-[9px] text-emerald-600 font-semibold font-sans uppercase flex items-center tracking-wider gap-0.5">
+                            <ShieldCheck size={9} />
+                            {verifiedBuyer}
+                          </span>
+                          <span className="text-zinc-200">|</span>
+                        </>
+                      )}
                       <div className="flex text-amber-500">
                         {Array.from({ length: rev.rating }).map((_, i) => (
                           <Star key={i} size={8} className="fill-current" />
@@ -179,13 +192,31 @@ export default function Reviews() {
             </button>
 
             {user ? (
-              <form onSubmit={(e) => {
-                handleSubmit(e);
-                setIsModalOpen(false);
-              }} className="space-y-4 pt-2">
+              <form onSubmit={handleSubmit} className="space-y-4 pt-2">
                 <h3 className="font-serif text-sm font-bold text-brand-primary uppercase tracking-wider pb-2 border-b border-brand-sage-light/10">
                   {language === 'en' ? 'Share Your Skincare Testimonial' : 'شاركينا تجربتكِ مع مستحضرات أورا'}
                 </h3>
+
+                <div>
+                  <label className="input-label">
+                    {language === 'en' ? 'Product' : 'المنتج'}
+                  </label>
+                  <select
+                    required
+                    value={productId}
+                    onChange={(e) => setProductId(e.target.value)}
+                    className="input-field bg-white"
+                  >
+                    <option value="" disabled>
+                      {language === 'en' ? 'Choose the product you used' : 'اختاري المنتج الذي استخدمتِه'}
+                    </option>
+                    {products.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {language === 'en' ? p.nameEn : p.nameAr}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
 
                 {/* Rating stars selector */}
@@ -235,8 +266,8 @@ export default function Reviews() {
                   >
                     {language === 'en' ? 'Cancel' : 'إلغاء'}
                   </button>
-                  <button type="submit" className="btn-primary w-full sm:w-auto">
-                    {language === 'en' ? 'Submit Testimonial' : 'إضافة تعليق'}
+                  <button type="submit" disabled={submitting} className="btn-primary w-full sm:w-auto disabled:opacity-60">
+                    {submitting ? (language === 'en' ? 'Submitting…' : 'جارٍ الإرسال…') : (language === 'en' ? 'Submit Testimonial' : 'إضافة تعليق')}
                   </button>
                 </div>
               </form>

@@ -61,6 +61,7 @@ Card / Apple Pay / Google Pay stay disabled until a payment gateway (Moyasar, Ta
 - Dashboard → **Reports**: revenue, orders, units, new customers for any period, with breakdowns by payment method / status / top sellers and a CSV export (`GET /api/admin/stats/report`).
 - Admins change any user's password from Customers → Edit (the e2e test verifies it).
 - `npm run test:cycle` in `gravuta-backend` (with the API running and seeded) exercises the whole cycle: register → cart (product + bundle) → coupon → bank-transfer order → stock → mark paid → confirm/ship/deliver → COD order → cancel + restock → stats/report/CSV → admin password change.
+- `npm run test:bundles` creates the products/bundles in `scripts/data/catalog-extra.json` through the admin API (skips ones that exist) and checks bundle pricing, price-change sync, `bundles/by-product`, bundle in cart, and product delete.
 
 ## Not wired up yet
 

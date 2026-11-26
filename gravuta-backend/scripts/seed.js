@@ -16,8 +16,15 @@ const Review = require('../models/Review');
 const Banner = require('../models/Banner');
 const { buildBundlePricing } = require('../utils/bundlePricing');
 
-// بيانات المتجر المستخرجة من pharmaa/src/constants/data.ts (الفئات، المنتجات، الباقات، الكوبونات، التقييمات)
-const catalog = require(path.join(__dirname, 'data', 'catalog.json'));
+// بيانات المتجر الأساسية (الفئات، المنتجات، الباقات، الكوبونات، التقييمات)
+const baseCatalog = require(path.join(__dirname, 'data', 'catalog.json'));
+// منتجات وباقات إضافية (تُضاف أيضاً عبر npm run test:bundles من واجهة الأدمن)
+const extraCatalog = require(path.join(__dirname, 'data', 'catalog-extra.json'));
+const catalog = {
+    ...baseCatalog,
+    products: [...baseCatalog.products, ...extraCatalog.products.map(({ isNewArrival, ...p }) => ({ ...p, isNew: isNewArrival }))],
+    bundles: [...baseCatalog.bundles, ...extraCatalog.bundles]
+};
 
 const log = (...args) => {
     if (process.env.SEED_SILENT !== 'true') console.log(...args);

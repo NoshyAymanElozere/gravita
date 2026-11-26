@@ -137,15 +137,6 @@ export default function Header() {
             >
               {language === 'en' ? 'Bundles' : 'الباقات'}
             </button>
-
-
-            <button
-              onClick={() => setActivePage('developer-specs')}
-              className={`relative py-1.5 font-sans text-xs uppercase tracking-widest font-semibold transition-all duration-300 cursor-pointer text-brand-primary/70 hover:text-brand-primary after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1.5px] after:bg-brand-primary after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-center ${activePage === 'developer-specs' ? 'text-brand-primary after:scale-x-100' : ''
-                }`}
-            >
-              {language === 'en' ? 'Specs' : 'المواصفات'}
-            </button>
           </div>
 
           {/* Right Side: Circular utility buttons */}
@@ -583,20 +574,6 @@ export default function Header() {
                   }`}
               >
                 {language === 'en' ? 'Bundles' : 'الباقات'}
-              </button>
-
-
-              <button
-                onClick={() => {
-                  setActivePage('developer-specs');
-                  setIsMobileMenuOpen(false);
-                }}
-                className={`w-full text-start py-3 px-4 rounded-xl text-xs uppercase tracking-wider font-semibold transition-all duration-200 ${activePage === 'developer-specs'
-                    ? 'bg-brand-primary text-brand-cream'
-                    : 'text-brand-primary/75 hover:bg-brand-cream/40 hover:text-brand-primary'
-                  }`}
-              >
-                {language === 'en' ? 'Specs' : 'المواصفات'}
               </button>
 
               <div className="h-[1px] bg-brand-sage-light/10 my-4" />

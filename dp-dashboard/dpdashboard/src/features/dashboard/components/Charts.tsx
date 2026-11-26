@@ -5,7 +5,7 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Cell,
+
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -105,50 +105,41 @@ export function OrdersChart({ data }: { data: AdminStats['dailySales'] }) {
 }
 
 /** Orders by status — a single-hue horizontal bar chart (status is identity; the bar length is the magnitude) */
+// Plain HTML bars: Recharts' vertical layout mis-positions labels/bars in RTL, so this
+// uses flex rows that follow the document direction automatically.
 export function StatusBreakdown({ data, onSelect }: { data: AdminStats['ordersByStatus']; onSelect?: (s: OrderStatus) => void }) {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const c = useChartColors()
-  const rtl = i18n.language === 'ar'
-  const rows = ORDER_STATUSES.map((s) => ({ status: s, label: t(`orderStatus.${s}`), count: data[s] ?? 0 }))
+  const rows = ORDER_STATUSES.map((s) => ({ status: s, label: t(`orderStatus.${s}`), count: data?.[s] ?? 0 }))
+  const max = Math.max(1, ...rows.map((r) => r.count))
+  const total = rows.reduce((sum, r) => sum + r.count, 0)
   const highlight: OrderStatus[] = ['pending', 'return_requested']
   return (
-    <ResponsiveContainer width="100%" height={ORDER_STATUSES.length * 34 + 8}>
-      <BarChart data={rows} layout="vertical" margin={{ top: 0, right: 28, left: 0, bottom: 0 }} barCategoryGap={8}>
-        <XAxis type="number" hide allowDecimals={false} reversed={rtl} />
-        <YAxis
-          type="category"
-          dataKey="label"
-          tick={{ fontSize: 12, fill: c.axis }}
-          tickLine={false}
-          axisLine={false}
-          width={118}
-          orientation={rtl ? 'right' : 'left'}
-        />
-        <Tooltip
-          cursor={{ fill: 'hsl(var(--accent))' }}
-          content={({ active, payload }) =>
-            active && payload?.length ? (
-              <div className="rounded-xl border border-border bg-popover px-3 py-2 text-xs shadow-lg">
-                <p className="text-muted-foreground">{payload[0].payload.label}</p>
-                <p className="font-semibold">{formatNum(Number(payload[0].value))}</p>
-              </div>
-            ) : null
-          }
-        />
-        <Bar
-          dataKey="count"
-          radius={rtl ? [4, 0, 0, 4] : [0, 4, 4, 0]}
-          maxBarSize={20}
-          minPointSize={2}
-          label={{ position: rtl ? 'left' : 'right', fontSize: 11, fill: c.axis }}
-          className={onSelect ? 'cursor-pointer' : undefined}
-          onClick={(d: any) => onSelect?.(d?.payload?.status ?? d?.status)}
-        >
-          {rows.map((r) => (
-            <Cell key={r.status} fill={highlight.includes(r.status) && r.count > 0 ? c.alert : c.brand} />
-          ))}
-        </Bar>
-      </BarChart>
-    </ResponsiveContainer>
+    <div className="space-y-1">
+      {rows.map((r) => {
+        const pct = (r.count / max) * 100
+        const color = highlight.includes(r.status) && r.count > 0 ? c.alert : c.brand
+        return (
+          <button
+            key={r.status}
+            type="button"
+            onClick={() => onSelect?.(r.status)}
+            disabled={!onSelect}
+            title={`${r.label}: ${formatNum(r.count)}`}
+            className="group flex w-full items-center gap-3 rounded-lg px-2 py-1.5 text-start transition-colors hover:bg-accent disabled:cursor-default disabled:hover:bg-transparent"
+          >
+            <span className="w-28 shrink-0 truncate text-xs text-muted-foreground group-hover:text-foreground">{r.label}</span>
+            <span className="relative h-4 flex-1 overflow-hidden rounded bg-muted">
+              <span
+                className="absolute inset-y-0 start-0 rounded transition-[width] duration-500"
+                style={{ width: r.count > 0 ? `max(${pct}%, 4px)` : 0, backgroundColor: color }}
+              />
+            </span>
+            <span className="w-10 shrink-0 text-end text-xs font-semibold tabular-nums">{formatNum(r.count)}</span>
+          </button>
+        )
+      })}
+      {total === 0 && <p className="pt-2 text-center text-xs text-muted-foreground">{t('common.noData')}</p>}
+    </div>
   )
 }
